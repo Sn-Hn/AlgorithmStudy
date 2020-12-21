@@ -45,17 +45,10 @@ HMCHH
 */
 
 // dfs
-// List와 map을 String으로 받았었는데 시간 초과가 났다..
-// List와 map을 char형으로 바꿔주니 통과는 한다
-// 그런데도 시간이 너무 많이 걸림..
-// 빠르게 바꿀 방법이 없나??
-// 16848KB	3900ms ;;
+// List와 map을 String으로 받았었는데 시간 초과가 남
+// List와 map을 char형으로 바꿔주니 통과는 하는데 시간이 오래 걸림
+// 16848KB	3900ms
 
-// 내일 bfs로 바꿔서 다시 풀어봐야겠다
-
-// 골드 4치고 생각 보다 너무 쉬운 문제
-// 1시간도 안걸림.. 문제 푼 속도는 30분 이내
-// 시간 초과에서 시간을 많이 씀
 public class Alphabet_1987 {
 	private static int R, C;
 	private static char map[][];

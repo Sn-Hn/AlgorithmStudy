@@ -49,7 +49,6 @@ public class GreedPersonPanda_1937 {
 	private static int N;
 	private static int map[][];
 	private static int dp[][];
-	private static int cntBamboo = 0;
 	private static int max = Integer.MIN_VALUE;
 	private static int indexMax = 0;
 	private static boolean visited[][]; 
@@ -74,45 +73,51 @@ public class GreedPersonPanda_1937 {
 		for(int i = 0; i < N; i++) {
 			for(int j = 0; j < N; j++) {
 				if(!visited[i][j]) {
-					cntBamboo = map[i][j];
-					indexMax = 0;
+//					indexMax = 0;
 					visited[i][j] = true;
-					savePanda(i, j, 1);
-					dp[i][j] = indexMax;
-					System.out.println("i : " + i + ", j : " + j + ", dp : " + dp[i][j]);
-					max = Math.max(max, indexMax);
+					max = Math.max(savePanda(i, j), max);
+//					dp[i][j] = indexMax;
+//					System.out.println("i : " + i + ", j : " + j + ", dp : " + dp[i][j]);
+					
 				}
 			}
 		}
-		printDP();
+//		printDP();
 		System.out.println(max);
 		
 		br.close();
 	}
 	
-	private static void savePanda(int x, int y, int cnt) {
-		max = Math.max(max, cnt);
-		indexMax = Math.max(indexMax, cnt);
-		printDP();
-		count = 0;
+	private static int savePanda(int x, int y) {
+		if(dp[x][y] != 0) return dp[x][y];
+		
+//		max = Math.max(max, cnt);
+//		indexMax = Math.max(indexMax, cnt);
+//		printDP();
+//		System.out.println();
+//		count = 0;
+		
+		dp[x][y] = 1;
+		
 		for(int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
 			
-			if(X >= 0 && X < N && Y >= 0 && Y < N && map[X][Y] > cntBamboo) {
+			if(X >= 0 && X < N && Y >= 0 && Y < N && map[X][Y] > map[x][y]) {
+				dp[x][y] = Math.max(savePanda(X, Y)+1, dp[x][y]);
 				visited[X][Y] = true;
-				if(dp[X][Y] != 0) {
-					indexMax = Math.max(indexMax, cnt+dp[X][Y]);
-					continue;
-				}
-				cntBamboo = map[X][Y];
-				savePanda(X, Y, cnt+1);
-				cntBamboo = map[x][y];
-				count += 1;
-				dp[X][Y] = count;
-				System.out.println(indexMax);
+//				if(dp[X][Y] != 0) {
+//					indexMax = Math.max(indexMax, cnt+dp[X][Y]);
+//					dp[X][Y] += dp[x][y];
+//					continue;
+//				}
+//				savePanda(X, Y, cnt+1);
+//				count += 1;
+//				dp[X][Y] += count;
+//				System.out.println(indexMax);
 			}
 		}
+		return dp[x][y];
 		
 	}
 	private static void printDP() {

@@ -1,8 +1,10 @@
 package boj_dfs_20201229;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -76,13 +78,9 @@ import java.util.StringTokenizer;
 
 */
 
-// 메모리 초과
 public class Mineral_2933 {
 	private static int R, C, N;
 	private static char map[][];
-	private static boolean visited[][];
-	private static int stick[];
-	private static List<Pair> list = new ArrayList<Pair>();
 	private static List<Pair> separateMineral = new ArrayList<Pair>();
 	
 	private static int dx[] = {1, -1, 0, 0};
@@ -112,22 +110,19 @@ public class Mineral_2933 {
 		}
 		
 		N = Integer.parseInt(br.readLine());
-		stick = new int[N];
+		int stick[] = new int[N];
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
 			stick[i] = R-Integer.parseInt(st.nextToken());
 		}
-		int sum = 0;
 				
 		for(int i = 0; i < N; i++) {
 			separateMineral.clear();
 			removeMineral(stick[i], i);
-			findList();
 			floorMineral();
 			if(!separateMineral.isEmpty()) {
 				dropMineral();
 			}
-			
 			
 		}
 		
@@ -158,20 +153,21 @@ public class Mineral_2933 {
 	
 	// 바닥에 붙어있는 미네랄 방문처리
 	private static void floorMineral() {
-		visited = new boolean[R][C];
+		boolean visited[][] = new boolean[R][C];
 		Queue<Pair> q = new LinkedList<Pair>();
 		
 		// 바닥에 붙어있는 미네랄
 		for(int i = 0; i < C; i++) {
 			if(map[R-1][i] == 'x') {
 				q.add(new Pair(R-1, i));
+				// 메모리초과..
+				visited[R-1][i] = true;
 			}
 		}
 		
 		while(!q.isEmpty()) {
 			Pair p = q.poll();
 			
-			visited[p.x][p.y] = true;
 			
 			for(int i = 0; i < 4; i++) {
 				int X = p.x + dx[i];
@@ -180,46 +176,22 @@ public class Mineral_2933 {
 				if(X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
 					if(map[X][Y] == 'x') {
 						q.add(new Pair(X, Y));
+						visited[X][Y] = true;
 					}
 				}
 			}
 		}
 		
 		// 미네랄이 들어 있는 리스트에서 방문하지 않은 list를 dfs돌려 분리되어 있는 미네랄을 찾음
-		for(Pair p : list) {
-			if(!visited[p.x][p.y]) {
-				separateMineral.add(new Pair(p.x, p.y));
-			}
-		}
-	}
-	
-	// 바닥에 붙어있지 않은 미네랄
-	private static void findMineral(int x, int y) {
-		visited[x][y] = true;
-		separateMineral.add(new Pair(x, y));
-		for(int i = 0; i < 4; i++) {
-			int X = x + dx[i];
-			int Y = y + dy[i];
-			
-			if(X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
-				if(map[X][Y] == 'x') {
-					findMineral(X, Y);
-				}
-			}
-		}
-	}
-	
-	// 미네랄을 찾는 메소드
-	private static void findList() {
-		list.clear();
 		for(int i = 0; i < R; i++) {
 			for(int j = 0; j < C; j++) {
-				if(map[i][j] == 'x') {
-					list.add(new Pair(i, j));
-				}
+				if(map[i][j] == 'x' && !visited[i][j]) {
+					separateMineral.add(new Pair(i, j));
+				}				
 			}
 		}
 	}
+
 	
 	// 분리된 미네랄을 떨어뜨린다.
 	private static void dropMineral() {
@@ -238,7 +210,6 @@ public class Mineral_2933 {
 			drop = i;
 		}
 		
-		
 		for(Pair p : separateMineral) {
 			map[p.x+drop][p.y] = 'x'; 
 		}
@@ -246,12 +217,15 @@ public class Mineral_2933 {
 		
 	}
 	
-	private static void printMap() {
+	private static void printMap() throws IOException {
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		for(int i = 0; i < R; i++) {
 			for(int j = 0; j < C; j++) {
-				System.out.print(map[i][j]);
+				bw.write(map[i][j]);
 			}
-			System.out.println();
+			bw.write("\n");
 		}
+		
+		bw.close();
 	}
 }

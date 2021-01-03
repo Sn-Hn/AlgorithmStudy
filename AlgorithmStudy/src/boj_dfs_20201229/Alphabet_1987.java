@@ -83,6 +83,7 @@ public class Alphabet_1987 {
 		br.close();
 	}
 	
+	// dfs
 	private static void move(int x, int y) {
 		max = Math.max(max, alphabet.size());
 		
@@ -100,7 +101,6 @@ public class Alphabet_1987 {
 				}
 			}
 		}
-		
 	}
 	
 	private static void printMap() {

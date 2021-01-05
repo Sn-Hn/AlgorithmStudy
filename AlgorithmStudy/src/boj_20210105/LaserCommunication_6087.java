@@ -98,6 +98,7 @@ public class LaserCommunication_6087 {
 			String str = br.readLine();
 			for(int j = 0; j < W; j++) {
 				map[i][j] = str.charAt(j);
+				// 레이저 위치 저장
 				if(map[i][j] == 'C') {
 					laserPosition.add(new Pair(i, j, 0, -1));
 				}
@@ -112,11 +113,14 @@ public class LaserCommunication_6087 {
 	
 	private static void findMirror() {
 		Queue<Pair> q = new LinkedList<Pair>();
+		// 전달방향을 모르니 초기 direction을 -1로 줌
 		q.add(new Pair(laserPosition.get(0).x, laserPosition.get(0).y, 0, -1));
 		visited[q.peek().x][q.peek().y] = 0;
 		
 		while(!q.isEmpty()) {
 			Pair p = q.poll();
+			
+			// 다른 레이저에게 도달했을 때 최소값 갱신
 			if(p.x == laserPosition.get(1).x && p.y == laserPosition.get(1).y) {
 				min = Math.min(min, p.mirrorCnt);
 			}
@@ -126,12 +130,16 @@ public class LaserCommunication_6087 {
 				int Y = p.y + dy[i];
 				
 				if(X >= 0 && X < H && Y >= 0 && Y < W && map[X][Y] != '*') {
+					// 초기 값이거나 전달방향이 같다면 거울의 수는 그대로
 					if(p.direction == -1 || p.direction == i) {
+						// X, Y까지의 거울의 수가 현재 거울의 수보다 크다면 갱신
 						if(visited[X][Y] >= p.mirrorCnt) {
 							visited[X][Y] = p.mirrorCnt;
 							q.add(new Pair(X, Y, p.mirrorCnt, i));
 						}
+					// 전달 방향이 달라졌다면 거울의 수는 하나 증가
 					}else {
+						// X, Y까지의 거울의 수가 현재 거울의 수보다 크다면 갱신
 						if(visited[X][Y] >= p.mirrorCnt+1) {
 							visited[X][Y] = p.mirrorCnt+1;
 							q.add(new Pair(X, Y, p.mirrorCnt+1, i));

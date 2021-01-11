@@ -1,4 +1,4 @@
-package boj_dfs_20201229;
+package boj_20201229;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

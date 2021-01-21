@@ -53,6 +53,7 @@ public class N_Queen_9663 {
 		br.close();
 	}
 	
+	// 순열을 뽑음
 	private static void permutation(int depth) {
 		if(depth == N) {
 			count += 1;
@@ -63,6 +64,7 @@ public class N_Queen_9663 {
 			if(!visited[i]) {
 				visited[i] = true;
 				queen[depth] = i;
+				// 대각선 체크
 				if(isCheck(depth)) {
 					permutation(depth+1);					
 				}
@@ -74,6 +76,10 @@ public class N_Queen_9663 {
 	private static boolean isCheck(int row) {
 		for(int i = 0; i < row; i++) {
 			// 대각선
+			// 서로의 인덱스의 차이와 값의 차이가 같다면 대각선
+			// ex)  0, 2  <=>  queen[0], queen[2]
+			// - 0번째 row, 2번째 row <=> queen[0] = 2, queen[2] = 4
+			// 두칸 <=> 두칸 이므로 대각선
 			if(Math.abs(row - i) == Math.abs(queen[row] - queen[i])) {
 				return false;
 			}

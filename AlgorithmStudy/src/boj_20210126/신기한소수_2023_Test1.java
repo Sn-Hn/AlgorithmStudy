@@ -49,7 +49,7 @@ N자리 수 중에서 신기한 소수를 오름차순으로 정렬해서 한 �
 
 // N자리의 숫자들을 순열로 뽑은 후 /10을 하면서 소수인지 판별해주면 될것같다
 
-public class 신기한소수_2023 {
+public class 신기한소수_2023_Test1 {
 	private static int N;
 	private static int result[];
 	private static StringBuilder sb = new StringBuilder();

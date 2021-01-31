@@ -66,6 +66,7 @@ public class 평범한배낭_12865 {
 			v[i] = Integer.parseInt(st.nextToken());
 		}
 		
+		// bottom-up
 		for(int i = 1; i <= N; i++) {
 			for(int j = 1; j <= K; j++) {
 				if(w[i] > j) {
@@ -81,7 +82,4 @@ public class 평범한배낭_12865 {
 		br.close();
 	}
 	
-	private static void dp(int index, int totalWeight, int totalValue) {
-		
-	}
 }

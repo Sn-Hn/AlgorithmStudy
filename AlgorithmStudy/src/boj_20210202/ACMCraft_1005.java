@@ -1,5 +1,10 @@
 package boj_20210202;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
 /*
 
 ACM Craft 분류
@@ -11,10 +16,6 @@ ACM Craft 분류
 이 게임은 지금까지 나온 게임들과는 다르게 ACM크래프트는 다이나믹한 게임 진행을 위해 건물을 짓는 순서가 정해져 있지 않다. 
 즉, 첫 번째 게임과 두 번째 게임이 건물을 짓는 순서가 다를 수도 있다. 
 매 게임시작 시 건물을 짓는 순서가 주어진다. 또한 모든 건물은 각각 건설을 시작하여 완성이 될 때까지 Delay가 존재한다.
-
- 
-
-
 
 위의 예시를 보자.
 
@@ -121,5 +122,27 @@ ACM Craft 분류
 */
 
 public class ACMCraft_1005 {
-
+	private static int T, N, K;
+	private static int dp[];
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		T = Integer.parseInt(br.readLine());
+		
+		for(int i = 0; i < T; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			N = Integer.parseInt(st.nextToken());
+			K = Integer.parseInt(st.nextToken());
+			
+			dp = new int[N+1];
+			
+			
+			
+			
+		}
+		
+		
+		
+		
+		br.close();
+	}
 }

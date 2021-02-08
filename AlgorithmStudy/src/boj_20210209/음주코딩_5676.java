@@ -128,6 +128,7 @@ public class 음주코딩_5676 {
 		br.close();
 	}
 	
+	// 트리를 쪼개면서 맨 아래까지 내려가면서 tree에 저장시킨다.
 	private static int init(int start, int end, int node) {
 		if(start == end) {
 			return tree[node] = arr[start];
@@ -136,7 +137,10 @@ public class 음주코딩_5676 {
 		return tree[node] = init(start, mid, node*2) * init(mid+1, end, node*2+1);
 	}
 	
+	// 변경시키고 싶은 값이 있을때
 	private static int update(int idx, int val, int node, int start, int end) {
+		// 변경시키고 싶은 위치가 start보다 작거나 end보다 작으면 tree[node]를 반환
+		// 변경을 시켜도 값에 상관이 없으므로
 		if(idx < start || end < idx) {
 			return tree[node];
 		}
@@ -144,13 +148,20 @@ public class 음주코딩_5676 {
 			return tree[node] = val;
 		}
 		int mid = (start + end) / 2;
+		
 		return tree[node] = update(idx, val, node*2, start, mid) * update(idx, val, node*2+1, mid+1, end);
 	}
 	
+	// left와 right는 값을 구하고 싶은 구간
 	private static int mul(int start, int end, int node, int left, int right) {
+		// 값을 구하고 싶은 구간의 left값 즉, 작은 값이 end 보다 크다면
+		// 값을 구하고 싶은 구간의 right값 즉, 큰 값이 start 보다 작다면
 		if(left > end || right < start) {
 			return 1;
 		}
+		// 값을 구하고 싶은 구간의  left값 즉, 작은 값이 start 보다 작다면
+		// 값을 구하고 싶은 구간의 right값 즉, 큰 값이 end보다 크다면 
+		// 구하고 싶은 구간이 아니므로 저장되어있는 tree[node]를 반환
 		if(left <= start && end <= right) {
 			return tree[node];
 		}

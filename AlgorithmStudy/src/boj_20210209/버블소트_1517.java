@@ -37,6 +37,7 @@ N개의 수로 이루어진 수열 A[1], A[2], …, A[N]이 있다.
 
 // https://m.blog.naver.com/PostView.nhn?blogId=fhskf94kr&logNo=221370457426&categoryNo=13&proxyReferer=https:%2F%2Fwww.google.com%2F
 // 일반 버블소트로는 시간 초과 O(n^2)
+
 public class 버블소트_1517 {
 	private static int N;
 	private static int arr[];

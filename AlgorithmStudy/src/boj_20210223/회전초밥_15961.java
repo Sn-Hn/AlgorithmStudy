@@ -1,5 +1,10 @@
 package boj_20210223;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
 /*
 
 회전 초밥 출처분류
@@ -62,7 +67,82 @@ k=4이고, 30번 초밥을 쿠폰으로 받았다고 가정하자.
 */
 
 public class 회전초밥_15961 {
-	public static void main(String[] args) {
+	private static int N, d, k, c;
+	private static int arr[];
+	private static int result = Integer.MIN_VALUE;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 		
+		N = Integer.parseInt(st.nextToken());
+		d = Integer.parseInt(st.nextToken());
+		k = Integer.parseInt(st.nextToken());
+		c = Integer.parseInt(st.nextToken());
+		
+		arr = new int[N+k-1];
+		
+		for(int i = 0; i < N; i++) {
+			arr[i] = Integer.parseInt(br.readLine());
+		}
+		for(int i = N; i < N + k - 1; i++) {
+			arr[i] = arr[i-N];
+		}
+		
+		twoPointer();
+		
+		System.out.println(result);
+		
+		br.close();
+	}
+	
+	private static void twoPointer() {
+		int start = 0;
+		int end = 0;
+		// 체크만 해주면 될 줄 알았으나
+		// 똑같은 수가 여러개 나왔을 경우가 있으니 int형으로 선언해 +1씩 해준다.
+		int visited[] = new int[d+1];
+		int max = 1;
+		visited[arr[end]] += 1;
+		
+		while(end < N+k-1 && start < N) {
+			if(end - start < k-1) {
+				end ++;
+				if(visited[arr[end]] == 0) {
+					max += 1;
+				}
+				visited[arr[end]] += 1;
+			}else {
+				if(visited[c] == 0) result = Math.max(result, max+1);
+				else result = Math.max(result, max);
+				visited[arr[start]] -= 1;
+				if(visited[arr[start]] == 0) {
+					max -= 1;					
+				}
+				start ++;
+			}
+		}
+	}
+	
+	private static void twoPointer_시간초과() {
+		int start = 0;
+		int end = k;
+		
+		// 3,300,000 * 30,000 이므로 약 9,900,000,000 약 9.9초가 나오므로 시간초과
+		while(end < N+k-1) {
+			boolean visited[] = new boolean[d+1];
+			int max = 0;
+			for(int s = start; s < end; s++) {
+				if(!visited[arr[s]]) {
+					visited[arr[s]] = true;
+					max += 1;
+				}
+			}
+			if(!visited[c]) max += 1;
+			
+			result = Math.max(result, max);
+			
+			start ++;
+			end ++;
+		}
 	}
 }

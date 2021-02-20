@@ -84,7 +84,7 @@ public class 합이0인네정수_7453 {
 		int e = 0;
 		long sum = 0;
 		
-		while(end > 0 && start < N*N) {
+		while(end >= 0 && start < N*N) {
 			sum = AB[start] + CD[end];
 			if(sum > 0) {
 				end--;
@@ -99,7 +99,7 @@ public class 합이0인네정수_7453 {
 				while(start < N*N && AB[s] + CD[end] == 0) {
 					s++;
 				}
-				result += (s-start) * (end-e);
+				result += (long)(s-start) * (long)(end-e);
 				start = s;
 				end = e;
 				

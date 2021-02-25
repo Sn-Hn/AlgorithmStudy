@@ -12,6 +12,7 @@ public class 다이어트_1484 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		G = Integer.parseInt(br.readLine());
 		max = G/2 + 1;
+	
 		w = new int[max+1];
 		
 		for(int i = 0; i < max+1; i++) {

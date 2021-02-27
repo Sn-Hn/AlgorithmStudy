@@ -158,7 +158,6 @@ public class 알고스팟_1261 {
 			q.poll();
 			
 			if(x == N && y == M) {
-				min = wall;
 				break;
 			}
 

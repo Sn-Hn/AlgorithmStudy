@@ -1,4 +1,4 @@
-package boj_20201229;
+package boj_20201229_DFS;
 
 import java.io.BufferedReader;
 import java.io.IOException;

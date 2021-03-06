@@ -1,4 +1,4 @@
-package boj_20210202;
+package boj_20210202_DP;
 
 import java.io.BufferedReader;
 import java.io.IOException;

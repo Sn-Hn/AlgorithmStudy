@@ -1,4 +1,4 @@
-package boj_20210223;
+package boj_20210223_투포인터;
 
 import java.io.BufferedReader;
 import java.io.IOException;

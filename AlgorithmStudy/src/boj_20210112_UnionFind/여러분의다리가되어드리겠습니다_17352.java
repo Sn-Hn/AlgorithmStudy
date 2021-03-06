@@ -1,4 +1,4 @@
-package boj_20210112;
+package boj_20210112_UnionFind;
 
 import java.io.BufferedReader;
 import java.io.IOException;

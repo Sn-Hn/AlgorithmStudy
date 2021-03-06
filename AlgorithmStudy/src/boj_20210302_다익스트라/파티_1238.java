@@ -1,4 +1,4 @@
-package boj_20210302;
+package boj_20210302_다익스트라;
 
 import java.io.BufferedReader;
 import java.io.IOException;

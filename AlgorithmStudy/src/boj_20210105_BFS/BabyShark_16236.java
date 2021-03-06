@@ -1,4 +1,4 @@
-package boj_20210105;
+package boj_20210105_BFS;
 
 import java.io.BufferedReader;
 import java.io.IOException;

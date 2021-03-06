@@ -1,4 +1,4 @@
-package boj_20210126;
+package boj_20210126_backtracking;
 
 import java.io.BufferedReader;
 import java.io.IOException;

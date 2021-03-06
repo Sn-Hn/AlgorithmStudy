@@ -1,4 +1,4 @@
-package boj_20210209;
+package boj_20210209_세그먼트트리;
 
 import java.io.BufferedReader;
 import java.io.IOException;

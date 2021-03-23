@@ -111,7 +111,8 @@ public class 작업_2056 {
 				
 				if(inDegree[next] == 0) {
 					q.add(next);
-					
+//					time[next] += time[now];
+//					result[next] = result[now] + time[next];
 				}
 			}
 		}

@@ -86,7 +86,7 @@ public class 줄세우기_2252 {
 		Arrays.fill(result, 1);
 		
 		topologySolve();
-		print1();
+//		print1();
 		
 		br.close();
 	}
@@ -113,7 +113,10 @@ public class 줄세우기_2252 {
 					result[next] = result[now] + 1;
 				}
 			}
+			sb.append(now + " ");
 		}
+		
+		System.out.println(sb.toString());
 	}
 	
 	private static void print() {

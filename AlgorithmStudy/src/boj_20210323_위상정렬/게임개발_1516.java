@@ -54,7 +54,6 @@ public class 게임개발_1516 {
 	private static int time[];
 	private static int result[];
 	private static int inDegree[];
-	private static List<Integer> building = new ArrayList<Integer>();
 	private static List<List<Integer>> graph = new ArrayList<List<Integer>>();
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -70,13 +69,11 @@ public class 게임개발_1516 {
 		
 		for(int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine());
-			building.clear();
 			time[i] = Integer.parseInt(st.nextToken());
 			result[i] = time[i];
 			int j = 0;
 			int a = Integer.parseInt(st.nextToken());
 			while(a != -1) {
-				building.add(a);
 				graph.get(a).add(i);
 				inDegree[i]++;
 				a = Integer.parseInt(st.nextToken());

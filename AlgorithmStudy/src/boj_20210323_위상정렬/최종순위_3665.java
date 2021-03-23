@@ -72,32 +72,31 @@ IMPOSSIBLE
 
 public class 최종순위_3665 {
 	private static int T, N, M;
-	private static int result[];
+	private static List<Integer> result = new ArrayList<Integer>();
 	private static int inDegree[];
 	private static int prevRank[];
-	private static List<List<Integer>> graph;
+	private static StringBuilder sb = new StringBuilder();
+	private static int gra[][];
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		T = Integer.parseInt(br.readLine());
 		for(int i = 1; i <= T; i++) {
 			N = Integer.parseInt(br.readLine());
-			result = new int[N+1];
 			inDegree = new int[N+1];
 			prevRank = new int[N+1];
-			graph = new ArrayList<List<Integer>>();
-			for(int j = 0; j <= N; j++) {
-				graph.add(new ArrayList<Integer>());
-			}
+			gra = new int[N+1][N+1];
+
 			st = new StringTokenizer(br.readLine());
 			for(int j = 1; j <= N; j++) {
 				prevRank[j] = Integer.parseInt(st.nextToken());
-				result[j] = prevRank[j];
 			}
-			int rank = prevRank[1];
-			for(int j = 2; j <= N; j++) {
-				graph.get(rank).add(prevRank[j]);
-				rank = prevRank[j];
+			
+			for(int j = 1; j <= N; j++) {
+				for(int k = j+1; k <= N; k++) {
+					gra[prevRank[j]][prevRank[k]] = 1;
+					inDegree[prevRank[k]]++;
+				}
 			}
 			
 			
@@ -106,23 +105,32 @@ public class 최종순위_3665 {
 				st = new StringTokenizer(br.readLine());
 				int a = Integer.parseInt(st.nextToken());
 				int b = Integer.parseInt(st.nextToken());
-				
-				graph.remove(b);
-				graph.get(a).add(b);
-				inDegree[b]++;
+
+				if(gra[a][b] == 1) {
+					gra[a][b] = 0;
+					gra[b][a] = 1;
+					inDegree[b]--;
+					inDegree[a]++;
+				}else {
+					gra[b][a] = 0;
+					gra[a][b] = 1;
+					inDegree[a]--;
+					inDegree[b]++;
+				}
 			}
 			
 			topologySort();
 			print();
 		}
 		
+		System.out.println(sb.toString());
 		
 		br.close();
 	}
 	
 	private static void topologySort() {
 		Queue<Integer> q = new LinkedList<Integer>();
-		
+		result.clear();
 		for(int i = 1; i <= N; i++) {
 			if(inDegree[i] == 0) {
 				q.add(i);
@@ -133,25 +141,27 @@ public class 최종순위_3665 {
 			if(q.isEmpty()) return;
 			
 			int now = q.poll();
-			System.out.println(now);
-			for(int next : graph.get(now)) {
-//				System.out.println("next : " + next);
+			result.add(now);
+			for(int next = 1; next <= N; next++) {
+				if(gra[now][next] == 0) continue;
 				inDegree[next]--;
-				
 				if(inDegree[next] == 0) {
 					q.add(next);
-					result[next] = result[now] + 1;
 				}
 			}
 			
-//			System.out.println("now : " + now);
 		}
 	}
 	
 	private static void print() {
-		System.out.println();
-		for(int i = 1; i <= N; i++) {
-			System.out.print(result[i] + " ");
+		if(result.size() == N) {
+			for(int i : result) {
+				sb.append(i + " ");
+			}
+			sb.append("\n");
+		}else {
+			sb.append("IMPOSSIBLE\n");
 		}
+		
 	}
 }

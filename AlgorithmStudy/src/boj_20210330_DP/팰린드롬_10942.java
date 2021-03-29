@@ -94,10 +94,6 @@ public class 팰린드롬_10942 {
 	private static void bruteForce(int S, int E) {
 		boolean flag = false;
 		for(int j = S; j <= E; j++) {
-			if(j == E) {
-				flag = true;
-				break;
-			}
 			if(arr[j] == arr[E]) {
 				E--;
 				flag = true;

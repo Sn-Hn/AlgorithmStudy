@@ -77,12 +77,10 @@ public class 가장큰정사각형_1915 {
 		
 		System.out.println(answer * answer);
 		
-		print();
+//		print();
 		
 		br.close();
 	}
-	
-	
 	
 	private static void print() {
 		for(int i = 1; i <= N; i++ ) {

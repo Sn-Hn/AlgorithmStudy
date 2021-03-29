@@ -62,14 +62,20 @@ S = 5, E = 7인 경우 1, 2, 1은 팰린드롬이다.
 public class 팰린드롬_10942 {
 	private static int N, M;
 	private static int arr[];
+	private static boolean dp[][];
 	private static StringBuilder sb = new StringBuilder();
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		arr = new int[N+1];
+		dp = new boolean[N+1][N+1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i = 1; i <= N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
+			dp[i][i] = true;
+			if(arr[i] == arr[i-1]) {
+				dp[i-1][i] = true;
+			}
 		}
 		
 		M = Integer.parseInt(br.readLine());
@@ -79,7 +85,9 @@ public class 팰린드롬_10942 {
 			st = new StringTokenizer(br.readLine());
 			S = Integer.parseInt(st.nextToken());
 			E = Integer.parseInt(st.nextToken());
-			bruteForce(S, E);
+//			bruteForce(S, E);
+			if(dp(S, E)) sb.append("1\n");
+			else sb.append("0\n");
 		}
 		
 		System.out.println(sb.toString());
@@ -87,8 +95,21 @@ public class 팰린드롬_10942 {
 		br.close();
 	}
 	
-	private static void dp(int S, int E) {
+	private static boolean dp(int S, int E) {
+		if(dp[S][E]) return true;
+		int end = E;
+		for(int j = S; j <= end; j++) {
+			if(dp[j][end]) return true;
+			if(arr[j] == arr[end]) {
+				end--;
+				dp[S][E] = true;
+			}else {
+				dp[S][E] = false;
+				break;
+			}
+		}
 		
+		return dp[S][E];
 	}
 	
 	private static void bruteForce(int S, int E) {
@@ -97,7 +118,6 @@ public class 팰린드롬_10942 {
 			if(arr[j] == arr[E]) {
 				E--;
 				flag = true;
-				continue;
 			}else {
 				flag = false;
 				break;

@@ -31,6 +31,16 @@ N과 M이 주어졌을 때, 규완이의 사전에서 K번째 문자열이 무�
 예제 출력 1 
 azaz
 
+3
+aazz
+azaz
+azza
+
+3
+zaaz
+zaza
+zzaa
+
 */
 
 public class 사전_1256 {

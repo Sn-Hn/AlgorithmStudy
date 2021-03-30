@@ -57,7 +57,7 @@ S = 5, E = 7인 경우 1, 2, 1은 팰린드롬이다.
 // N 최대 2000, M 최대 100000
 // 최대 200000000으로 0.5초 안에 들어올 수 있음.
 
-// 그러나 시간이 오래 걸린다.
+// -> 시간이 오래 걸린다.
 
 public class 팰린드롬_10942 {
 	private static int N, M;
@@ -70,6 +70,7 @@ public class 팰린드롬_10942 {
 		arr = new int[N+1];
 		dp = new boolean[N+1][N+1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		
 		for(int i = 1; i <= N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 			dp[i][i] = true;

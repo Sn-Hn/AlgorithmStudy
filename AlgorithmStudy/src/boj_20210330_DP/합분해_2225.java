@@ -3,7 +3,6 @@ package boj_20210330_DP;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.util.StringTokenizer;
 
 /*
@@ -27,6 +26,8 @@ import java.util.StringTokenizer;
 예제 출력 1 
 21
 
+
+
 */
 
 public class 합분해_2225 {
@@ -48,12 +49,12 @@ public class 합분해_2225 {
 			dp[i][0] = 1;
 		}
 		
-		
 		for(int i = 2; i <= K; i++) {
 			for(int j = 1; j <= N; j++) {
 				dp[i][j] = (dp[i-1][j] + dp[i][j-1])%MAX_VALUE;
 			}
 		}
+		
 		print();
 		
 		System.out.println(dp[K][N]);

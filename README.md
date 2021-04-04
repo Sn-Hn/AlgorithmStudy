@@ -1,6 +1,7 @@
 # AlgorithmStudy
 
-- 참여자 : 신 한(Sn-Hn), 이 윤수(yssy3135), 최 운식(choiwoonsik), 김 무(kimsutto) (4명)  
+- 참여자 : 신 한(Sn-Hn), 이 윤수(yssy3135), 최 운식(choiwoonsik), 신 지호(jhhj424) (4명)  
+- 취업자 : 김 무(kimsutto)
 - 참여자 Git  
 1. 신 한 [Sn-Hn](https://github.com/Sn-Hn)  
 2. 이 윤수 [yssy3135](https://github.com/yssy3135)
@@ -26,7 +27,7 @@
 
 # 작성 방법  
 1. 백준 BOJ  
-- 폴더명 : boj_날짜 ex) boj_20210126  
+- 폴더명 : boj_날짜_ ex) boj_20210126_DP
 - 파일명 : 문제제목_문제번호 ex) 주사위윷놀이_17825  
 
 # 스터디 형식

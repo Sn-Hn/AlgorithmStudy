@@ -51,11 +51,9 @@ public class 수묶기_1744 {
 		N = Integer.parseInt(br.readLine());
 		arr = new Integer[N];
 		int positiveCount = 0;
-		boolean isZero = false;
 		for(int i = 0; i < N; i++) {
 			int a = Integer.parseInt(br.readLine());
 			if(a > 0) positiveCount++;
-			if(a == 0) isZero = true;
 			arr[i] = a;
 		}
 		

@@ -77,15 +77,20 @@ public class 카드섞기_21315 {
 			LinkedList<Integer> result = new LinkedList<Integer>();
 			copy.addAll(list);
 			result.addAll(shuffle(copy, i));
+//			System.out.println(i + " : result : " + result.toString());
 			for(int j = 1; j <= k; j++) {
+				copy.clear();
+				copy.addAll(result);
 				LinkedList<Integer> answer = new LinkedList<Integer>();
-				answer.addAll(shuffle(result, j));
+				answer.addAll(shuffle(copy, j));
+//				System.out.println("변경 result : " + result.toString());
 				boolean isChecked = true;
 				for(int a = 0; a < N; a++) {
 					if(arr[a] != answer.get(a)) {
 						isChecked = false;
 					}
 				}
+//				System.out.println("answer : " + answer.toString());
 				if(isChecked) {
 					System.out.println(i + " " + j);
 					break LOOP;

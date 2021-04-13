@@ -131,7 +131,6 @@ public class 야구_17281 {
 		}
 		
 		setHitterOrder(1);
-//		game();
 		
 		System.out.println(maxScore);
 		br.close();
@@ -149,7 +148,6 @@ public class 야구_17281 {
 				if(hitter == 10) {
 					hitter = 1;
 				}
-//				System.out.println(sc);
 				if(out == 3) {
 					out = 0;
 					break;
@@ -157,13 +155,6 @@ public class 야구_17281 {
 			}
 		}
 		maxScore = Math.max(maxScore, sc);
-		
-//		if(sc >= 47) {
-//			for(int i : order) {
-//				System.out.print(i + ", ");
-//			}
-//			System.out.println();
-//		}
 	}
 	
 	private static int score(int hit, int score) {
@@ -173,12 +164,14 @@ public class 야구_17281 {
 		}
 		
 		field[0] = 1;
+		// 안된 이유 1) 0 ~ 3까지 도는데 185에서 field[i+hit] = 1에서 다음수에 영향을 주기 때문
 		for(int i = 3; i >= 0; i--) {
 			if(field[i] == 1) {
 				if(i + hit >= 4) {
 					field[i] = 0;
 					score += 1;
 				}else {
+					// 안된 이유 2) 타자가 출발했으면 그 자리는 0이 되어야 한다.
 					field[i] = 0;
 					field[i+hit] = 1;					
 				}

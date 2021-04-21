@@ -65,6 +65,7 @@ public class 백조의호수_3197 {
 	private static char copyMap[][];
 	private static boolean visit[][];
 	private static List<Pair> swan = new ArrayList<Pair>();
+	private static Queue<Pair> s = new LinkedList<Pair>();
 	private static Queue<Pair> water = new LinkedList<Pair>();
 	
 	private static int dx[] = {1, -1, 0, 0};
@@ -112,7 +113,7 @@ public class 백조의호수_3197 {
 //			}
 			
 			
-			if(meet()) {
+			if(isMeet()) {
 				break;
 			}
 			
@@ -149,14 +150,14 @@ public class 백조의호수_3197 {
 		}
 	}
 	
-	private static boolean meet() {
+	private static boolean isMeet() {
 		Queue<Pair> q = new LinkedList<Pair>();
-		q.add(new Pair(swan.get(0).x, swan.get(0).y));
+		s.add(new Pair(swan.get(0).x, swan.get(0).y));
 		boolean visited[][] = new boolean[R][C];
 		visited[swan.get(0).x][swan.get(0).y] = true;
 
-		while(!q.isEmpty()) {
-			Pair p = q.poll();
+		while(!s.isEmpty()) {
+			Pair p = s.poll();
 			
 			if(p.x == swan.get(1).x && p.y == swan.get(1).y) {
 				return true;
@@ -165,12 +166,21 @@ public class 백조의호수_3197 {
 				int X = p.x + dx[i];
 				int Y = p.y + dy[i];
 				
-				if(X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y] && copyMap[X][Y] != 'X') {
-					visited[X][Y] = true;
-					q.add(new Pair(X, Y));
+				if(X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
+					if(copyMap[X][Y] == 'X') {
+						q.add(p);
+						visited[X][Y] = true;
+					}
+					
+					if(copyMap[X][Y] != 'X') {
+						visited[X][Y] = true;
+						s.add(new Pair(X, Y));
+					}
 				}
 			}
 		}
+		
+		s = q;
 		
 		return false;
 	}

@@ -220,17 +220,9 @@ public class 통나무옮기기_1938 {
 			}
 			
 			if(checked) {
-//				for(int i = 0; i < 3; i++) {
-//					System.out.println("x" + i + " : " + l.list.get(i).x + ", y" + i + " : " + l.list.get(i).y);
-//				}
-				
 				System.out.println(l.cnt);
 				break;
 			}
-			
-//			printLogPosition(l.list, l.log);
-//			System.out.println("cnt : " + l.cnt);
-//			System.out.println();
 			
 			for(int i = 0; i < 5; i++) {
 				List<Log> list = new ArrayList<Log>();

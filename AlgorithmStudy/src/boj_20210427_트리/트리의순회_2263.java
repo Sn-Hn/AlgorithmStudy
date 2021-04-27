@@ -29,9 +29,10 @@ n개의 정점을 갖는 이진 트리의 정점에 1부터 n까지의 번호가
 2 1 3
 
 ex)
+
 7
-4 2 7 5 1 3 6
-4 7 5 2 6 3 1
+4 2 7 5 1 3 6  -  InOrder    왼쪽 자식 - 부모 - 오른쪽 자식
+4 7 5 2 6 3 1  -  PostOrder  왼쪽 자식 - 오른쪽 자식 - 부모
 
 */
 
@@ -56,6 +57,7 @@ public class 트리의순회_2263 {
 		for(int i = 0; i < N; i++) {
 			postOrder[i] = Integer.parseInt(st.nextToken());
 		}
+		
 		for(int i = 0; i < N; i++) {
 			index[inOrder[i]] = i;
 		}
@@ -77,8 +79,24 @@ public class 트리의순회_2263 {
 		// 현재 부모에서 왼쪽 자식의 수
 		int left = index[root] - inOrderStart;
 		
-		// left
+//		7
+//		4 2 7 5 1 3 6  -  InOrder    왼쪽 자식 - 부모 - 오른쪽 자식/*
+//		4 7 5 2 6 3 1  -  PostOrder  왼쪽 자식 - 오른쪽 자식 - 부모*/
+		
+//		postOrder
+//		21
+//		16 8 17 4 18 9 2 19 10 5 11 20 1 12 21 6 13 3 14 7 15
+//		16 17 8 18 9 4 19 10 20 11 5 2 21 12 13 6 14 15 7 3 1
+//		 
+		
+		System.out.println("index : " + (index[root] - 1) + ", pOS : " + (postOrderStart + left - 1));
+		System.out.println("start : " + postOrderStart + ", end : " + postOrderEnd + ", root : " + root);
+		
+		
+		
+		// left													postOrderEnd
 		preOrder(inOrderStart, index[root] - 1, postOrderStart, postOrderStart + left - 1);
+		
 		
 		// right
 		preOrder(index[root] + 1, inOrderEnd, postOrderStart + left, postOrderEnd - 1);

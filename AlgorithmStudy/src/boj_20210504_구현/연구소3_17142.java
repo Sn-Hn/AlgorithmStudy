@@ -3,7 +3,9 @@ package boj_20210504_구현;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
@@ -145,8 +147,14 @@ M = 3이고, 바이러스를 아래와 같이 활성 상태로 변경한 경우 
 public class 연구소3_17142 {
 	private static int N, M;
 	private static int[][] map;
-	private static Pair[] virus;
+	private static List<Pair> virusList = new ArrayList<Pair>();
+	private static boolean[] virusVisited;
+	private static int[] virusCombi;
 	private static int min = Integer.MAX_VALUE;
+	
+	// 이 maxCount가 KeyPoint!!
+	// 이걸 몰라서 진짜 한참 걸림
+	private static int maxCount = 0;
 	
 	private static int dx[] = {1, -1, 0, 0};
 	private static int dy[] = {0, 0, 1, -1};
@@ -157,91 +165,93 @@ public class 연구소3_17142 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new int[N][N];
-		virus = new Pair[M];
+		virusCombi = new int[M];
 
-		for (int i = 0; i <  N; i++) {
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
+				if(map[i][j] == 0) {
+					maxCount++;					
+				}else if(map[i][j] == 2) {
+					virusList.add(new Pair(i, j, 0));
+				}
 			}
 		}
-
-		selectVirus(0);
 		
-		System.out.println(min);
-
+		virusVisited = new boolean[virusList.size()];
+		
+		if(maxCount == 0) {
+			System.out.println(0);
+		}else {
+			selectVirus(0, 0);
+			if(min == Integer.MAX_VALUE) {
+				min = -1;
+			}			
+			System.out.println(min);
+		}
+		
 		br.close();
 	}
 
-	private static int spreadVirus() {
+	private static void spreadVirus(int maxCnt) {
 		Queue<Pair> q = new LinkedList<Pair>();
 		boolean[][] visited = new boolean[N][N];
-		int max = -1;
-		int x = 0;
-		int y = 0;
-		for(Pair pair : virus) {
-			q.add(new Pair(pair.x, pair.y, pair.time));
+		for(int i = 0; i < M; i++) {
+			q.add(virusList.get(virusCombi[i]));
+			int x = virusList.get(virusCombi[i]).x;
+			int y = virusList.get(virusCombi[i]).y;
+			visited[x][y] = true;
 		}
 		
 		while(!q.isEmpty()) {
 			Pair p = q.poll();
 			
-			if(max <= p.time) {
-				max = p.time;
-				x = p.x;
-				y = p.y;
-			}
-			
 			for(int i = 0; i < 4; i++) {
 				int X = p.x + dx[i];
 				int Y = p.y + dy[i];
 				
-				if(X >= 0 && X < N && Y >= 0 && Y < N && !visited[X][Y]) {
-					if(map[X][Y] == 0) {
-						visited[X][Y] = true;
-						q.add(new Pair(X, Y, p.time+1));
+				if(!isInvalid(X, Y) && !visited[X][Y]) {
+					if(map[X][Y] == 1) {
 						continue;
 					}
-					
-					if(map[X][Y] == 2 || map[X][Y] == 9) {
-						visited[X][Y] = true;
-						q.add(new Pair(X, Y, p.time));
+					if(map[X][Y] == 0) {
+						maxCnt--;						
 					}
+					
+					if(maxCnt == 0) {
+						min = Math.min(min, p.time+1);
+						return;
+					}
+					visited[X][Y] = true;
+					q.add(new Pair(X, Y, p.time+1));
 				}
 			}
 		}
+	}
+	
+	private static boolean isInvalid(int X, int Y) {
+		if(X < 0 || X >= N || Y < 0 || Y >= N) {
+			return true;
+		}
 		
-//		if(map[x][y] == 2 || map[x][y] == 9) {
-//			max -= 1;
-//		}
-		
-		return max;
-		
+		return false;
 	}
 
-	private static void selectVirus(int depth) {
+	private static void selectVirus(int index, int depth) {
 		if (depth == M) {
-			int time = spreadVirus();
-			min = Math.min(min, time);
+			spreadVirus(maxCount);
 
 			return;
 		}
 
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				if (map[i][j] == 2) {
-					map[i][j] = 9;
-					virus[depth] = new Pair(i, j, 0);
-					selectVirus(depth + 1);
-					map[i][j] = 2;
-				}
+		for (int i = index; i < virusList.size(); i++) {
+			if(!virusVisited[i]) {
+				virusVisited[i] = true;
+				virusCombi[depth] = i;
+				selectVirus(i+1, depth+1);
+				virusVisited[i] = false;
 			}
-		}
-	}
-
-	private static void print() {
-		for (Pair pair : virus) {
-			System.out.println("x : " + pair.x + ", y : " + pair.y + ", time : " + pair.time);
 		}
 	}
 

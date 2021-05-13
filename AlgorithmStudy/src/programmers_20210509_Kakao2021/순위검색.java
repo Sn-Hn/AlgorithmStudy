@@ -53,8 +53,8 @@ public class 순위검색 {
         int[] answer = {};
         Map<String, List<Integer>> infoMap = initMap(info);
         String[][] splitQuery = initQuery(query);
-        mapPrint(infoMap);
-        answer = new int[info.length];
+//        mapPrint(infoMap);
+        answer = new int[query.length];
         for(int i = 0; i < splitQuery.length; i++) {
             if(infoMap.containsKey(splitQuery[i][0])) {
                 answer[i] = findScore(infoMap.get(splitQuery[i][0]), Integer.parseInt(splitQuery[i][1]));
@@ -131,9 +131,6 @@ public class 순위검색 {
         setInfo(infoMap, infoSplit, depth + 1, resultInfo+infoSplit[depth]);
         setInfo(infoMap, infoSplit, depth + 1, resultInfo+"-");
 
-    }
-
-    private static void binarySearch() {
     }
 
     private static void mapPrint(Map<String, List<Integer>> map) {

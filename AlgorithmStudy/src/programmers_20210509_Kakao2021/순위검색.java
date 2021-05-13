@@ -42,6 +42,7 @@ pizza chicken -
 
 // https://programmers.co.kr/learn/courses/30/lessons/72412
 public class 순위검색 {
+	private static Map<String, List<Integer>> infoMap = new HashMap<String, List<Integer>>();
     public static void main(String[] args) {
         String[] info = {"java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"};
         String[] query = {"java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"};
@@ -51,10 +52,15 @@ public class 순위검색 {
 
     public static int[] solution(String[] info, String[] query) {
         int[] answer = {};
-        Map<String, List<Integer>> infoMap = initMap(info);
+        initMap(info);
         String[][] splitQuery = initQuery(query);
 //        mapPrint(infoMap);
         answer = new int[query.length];
+        
+        for(Map.Entry<String, List<Integer>> entry : infoMap.entrySet()) {
+        	Collections.sort(entry.getValue());
+        }
+        
         for(int i = 0; i < splitQuery.length; i++) {
             if(infoMap.containsKey(splitQuery[i][0])) {
                 answer[i] = findScore(infoMap.get(splitQuery[i][0]), Integer.parseInt(splitQuery[i][1]));
@@ -94,42 +100,31 @@ public class 순위검색 {
         return querySplit;
     }
 
-    private static Map<String, List<Integer>> initMap(String[] info) {
-        Map<String, List<Integer>> infoMap = new HashMap<>();
+    private static void initMap(String[] info) {
         String[] infoSplit;
-        String strInfo = "";
         for(int i = 0; i < info.length; i++) {
-            String infoStr = "";
             infoSplit = info[i].split(" ");
-            setInfo(infoMap, infoSplit, 0, "");
+            setInfo(infoSplit, 0, "");
         }
-
-        return infoMap;
     }
 
 
-    private static void setInfo(Map<String, List<Integer>> infoMap, String[] infoSplit, int depth, String resultInfo) {
+    private static void setInfo(String[] infoSplit, int depth, String resultInfo) {
         if(depth == 4) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("resultInfo : ").append(resultInfo);
-
-//            System.out.println(sb.toString());
-
             if(infoMap.containsKey(resultInfo)) {
                 infoMap.get(resultInfo).add(Integer.parseInt(infoSplit[4]));
-                Collections.sort(infoMap.get(resultInfo));
                 return;
             }
 
-            List<Integer> scoreList = new ArrayList<>();
+            List<Integer> scoreList = new ArrayList<Integer>();
             scoreList.add(Integer.parseInt(infoSplit[4]));
 
             infoMap.put(resultInfo, scoreList);
             return;
         }
 
-        setInfo(infoMap, infoSplit, depth + 1, resultInfo+infoSplit[depth]);
-        setInfo(infoMap, infoSplit, depth + 1, resultInfo+"-");
+        setInfo(infoSplit, depth + 1, resultInfo+infoSplit[depth]);
+        setInfo(infoSplit, depth + 1, resultInfo+"-");
 
     }
 

@@ -79,24 +79,42 @@ public class 공항_10775 {
     private static int N;
     private static int M;
     private static int[] gates;
+    private static int[] parent;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
         gates = new int[N + 1];
+        parent = new int[N + 1];
 
+        initParent();
+        int cnt = 0;
 
         for (int i = 1; i <= M; i++) {
             int gate = Integer.parseInt(br.readLine());
+            /* solution 1
+            
             if(!isDocking(gate)) {
+            	break;
+            }
+            
+            */
+            
+            int gateParent = find(gate);
+            if(gateParent != 0) {
+            	union(gateParent, gateParent - 1);
+            	cnt ++;
+            }else {
             	break;
             }
         }
         
-        System.out.println(getMaxCountAirplane());
+//        System.out.println(getMaxCountAirplane());
+        System.out.println(cnt);
 
         br.close();
     }
+    
 
     private static boolean isDocking(int gate) {
     	for (int i = gate; i > 0; i--) {
@@ -118,4 +136,26 @@ public class 공항_10775 {
     	return cnt;
     }
 
+    private static int find(int x) {
+        if(parent[x] == x) {
+            return x;
+        }
+
+        return parent[x] = find(parent[x]);
+    }
+    
+    private static void union(int a, int b) {
+    	a = find(a);
+    	b = find(b);
+    	
+    	if (a != b) {
+    		parent[a] = b;
+    	}
+    }
+    
+    private static void initParent() {
+    	for (int i = 1; i <= N; i++) {
+    		parent[i] = i;
+    	}
+    }
 }

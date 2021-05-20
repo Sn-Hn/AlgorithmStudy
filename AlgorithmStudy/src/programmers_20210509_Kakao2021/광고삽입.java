@@ -31,110 +31,111 @@ return 값의 형식
 */
 
 public class 광고삽입 {
-    private static int play_time_sec = 0;
-    private static int adv_time_sec = 0;
-    private static int[] logs_start_sec;
-    private static int[] logs_end_sec;
-    public static String solution(String play_time, String adv_time, String[] logs) {
-        String answer = "";
+	private static int play_time_sec = 0;
+	private static int adv_time_sec = 0;
+	private static int[] logs_start_sec;
+	private static int[] logs_end_sec;
 
-        answer = initTime(play_time, adv_time, logs);
+	public static String solution(String play_time, String adv_time, String[] logs) {
+		String answer = "";
 
-        System.out.println(answer);
+		answer = initTime(play_time, adv_time, logs);
 
-        return answer;
-    }
+		System.out.println(answer);
 
-    private static long getCount() {
-        long[] total_time = new long[play_time_sec+1];
-        for (int i = 0; i < logs_start_sec.length; i++) {
-            total_time[logs_start_sec[i]] += 1;
-            total_time[logs_end_sec[i]] -= 1;
-        }
+		return answer;
+	}
 
-        for (int i = 1; i < play_time_sec; i++) {
-            total_time[i] = total_time[i - 1] + total_time[i];
-        }
+	private static long getCount() {
+		long[] total_time = new long[play_time_sec + 1];
+		for (int i = 0; i < logs_start_sec.length; i++) {
+			total_time[logs_start_sec[i]] += 1;
+			total_time[logs_end_sec[i]] -= 1;
+		}
 
-        for (int i = 1; i < play_time_sec; i++) {
-            total_time[i] = total_time[i-1] + total_time[i];
-        }
+		for (int i = 1; i < play_time_sec; i++) {
+			total_time[i] = total_time[i - 1] + total_time[i];
+		}
 
-        long maxTime = total_time[adv_time_sec - 1];
-        long maxStartTime = 0;
-        for (int i = 0; i < play_time_sec - adv_time_sec; i++) {
-            long temp = total_time[i + adv_time_sec] - total_time[i];
+		for (int i = 1; i < play_time_sec; i++) {
+			total_time[i] = total_time[i - 1] + total_time[i];
+		}
 
-            if(temp > maxTime) {
-                maxTime = temp;
-                maxStartTime = i + 1;
-            }
-        }
+		long maxTime = total_time[adv_time_sec - 1];
+		long maxStartTime = 0;
+		for (int i = 0; i < play_time_sec - adv_time_sec; i++) {
+			long temp = total_time[i + adv_time_sec] - total_time[i];
 
-        return maxStartTime;
-    }
+			if (temp > maxTime) {
+				maxTime = temp;
+				maxStartTime = i + 1;
+			}
+		}
 
-    private static String initTime(String play_time, String adv_time, String[] logs) {
-        play_time_sec = getSecTime(play_time);
-        adv_time_sec = getSecTime(adv_time);
-        logs_start_sec = new int[logs.length];
-        logs_end_sec = new int[logs.length];
-        String[] logsTime = new String[2];
+		return maxStartTime;
+	}
 
-        for (int i = 0; i < logs.length; i++) {
-            logsTime = logs[i].split("-");
-            logs_start_sec[i] = getSecTime(logsTime[0]);
-            logs_end_sec[i] = getSecTime(logsTime[1]);
-        }
+	private static String initTime(String play_time, String adv_time, String[] logs) {
+		play_time_sec = getSecTime(play_time);
+		adv_time_sec = getSecTime(adv_time);
+		logs_start_sec = new int[logs.length];
+		logs_end_sec = new int[logs.length];
+		String[] logsTime = new String[2];
 
-        return parseDateString(getCount());
-    }
+		for (int i = 0; i < logs.length; i++) {
+			logsTime = logs[i].split("-");
+			logs_start_sec[i] = getSecTime(logsTime[0]);
+			logs_end_sec[i] = getSecTime(logsTime[1]);
+		}
 
-    private static int getSecTime(String time) {
-        String[] times = time.split(":");
-        int sec = 0;
-        int stdTime = 3600;
-        for (int i = 0; i < times.length; i++) {
-            sec += Integer.parseInt(times[i]) * stdTime;
-            stdTime /= 60;
-        }
-        return sec;
-    }
+		return parseDateString(getCount());
+	}
 
-    private static String parseDateString(long time) {
-        String timeStr = "";
-        if(time / 3600 < 10) {
-        	timeStr += "0";
-        }
-        timeStr += time / 3600 + ":";
-        time %= 3600;
-        
-        if(time / 60 < 10) {
-        	timeStr += "0";
-        }
-        timeStr += time / 60 + ":";
-        time %= 60;
-        
-        if(time < 10) {
-        	timeStr += "0";
-        }
-        timeStr += time;
+	private static int getSecTime(String time) {
+		String[] times = time.split(":");
+		int sec = 0;
+		int stdTime = 3600;
+		for (int i = 0; i < times.length; i++) {
+			sec += Integer.parseInt(times[i]) * stdTime;
+			stdTime /= 60;
+		}
+		return sec;
+	}
 
-        return timeStr;
-    }
+	private static String parseDateString(long time) {
+		String timeStr = "";
+		if (time / 3600 < 10) {
+			timeStr += "0";
+		}
+		timeStr += time / 3600 + ":";
+		time %= 3600;
 
-    public static void main(String[] args) {
-        String[] play_time = {"02:03:55", "99:59:59", "50:00:00"};
-        String[] adv_time = {"00:14:15", "25:00:00", "50:00:00"};
-        String[][] logs = {
-                {"01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29", "01:37:44-02:02:30"},
-                {"69:59:59-89:59:59", "01:00:00-21:00:00", "79:59:59-99:59:59", "11:00:00-31:00:00"},
-                {"15:36:51-38:21:49", "10:14:18-15:36:51", "38:21:49-42:51:45"}
+		if (time / 60 < 10) {
+			timeStr += "0";
+		}
+		timeStr += time / 60 + ":";
+		time %= 60;
 
-        };
+		if (time < 10) {
+			timeStr += "0";
+		}
+		timeStr += time;
 
-        for (int i = 0; i < 3; i++) {
-            solution(play_time[i], adv_time[i], logs[i]);
-        }
-    }
+		return timeStr;
+	}
+
+	public static void main(String[] args) {
+		String[] play_time = { "02:03:55", "99:59:59", "50:00:00" };
+		String[] adv_time = { "00:14:15", "25:00:00", "50:00:00" };
+		String[][] logs = {
+				{ "01:20:15-01:45:14", "00:40:31-01:00:00", "00:25:50-00:48:29", "01:30:59-01:53:29", "01:37:44-02:02:30" },
+				{ "69:59:59-89:59:59", "01:00:00-21:00:00", "79:59:59-99:59:59", "11:00:00-31:00:00" },
+				{ "15:36:51-38:21:49", "10:14:18-15:36:51", "38:21:49-42:51:45" }
+
+		};
+
+		for (int i = 0; i < 3; i++) {
+			solution(play_time[i], adv_time[i], logs[i]);
+		}
+	}
 }

@@ -54,59 +54,61 @@ public class 신기한소수_2023_Test1 {
 	private static int N;
 	private static int result[];
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		result = new int[N];
-		
+
 		permutation(0);
-		
+
 		System.out.println(sb);
-		
+
 		br.close();
 	}
-	
+
 	private static void permutation(int depth) {
-		if(depth == N) {
-			if(isChecked(result)) {
-				for(int i : result) {
+		if (depth == N) {
+			if (isChecked(result)) {
+				for (int i : result) {
 					sb.append(i);
 				}
 				sb.append("\n");
 			}
 			return;
 		}
-		
-		for(int i = 0; i < 9; i++) {
-			result[depth] = i+1;
-			permutation(depth+1);
+
+		for (int i = 0; i < 9; i++) {
+			result[depth] = i + 1;
+			permutation(depth + 1);
 		}
 	}
-	
+
 	private static boolean isChecked(int[] arr) {
 		int ans = 0;
-		for(int i : arr) {
+		for (int i : arr) {
 			ans += i;
-			if(!findFrimeNumber(ans)) {
+			if (!findFrimeNumber(ans)) {
 				return false;
 			}
 			ans *= 10;
 		}
-		
-		
+
 		return true;
 	}
-	
+
 	private static boolean findFrimeNumber(int a) {
-		if(a == 1) return false;
-		if(a == 2) return true;
-		
-		for(int i = 2; i <= Math.sqrt(a); i++) {
-			if(a%i == 0) {
+		if (a == 1)
+			return false;
+		if (a == 2)
+			return true;
+
+		for (int i = 2; i <= Math.sqrt(a); i++) {
+			if (a % i == 0) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }

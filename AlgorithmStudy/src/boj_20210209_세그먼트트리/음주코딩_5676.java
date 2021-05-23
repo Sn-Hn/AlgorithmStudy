@@ -83,90 +83,90 @@ public class 음주코딩_5676 {
 	private static int arr[];
 	private static int tree[];
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String input = "";
-		
-		while((input = br.readLine()) != null) {
+
+		while ((input = br.readLine()) != null) {
 			StringTokenizer st = new StringTokenizer(input);
 			N = Integer.parseInt(st.nextToken());
 			K = Integer.parseInt(st.nextToken());
-			
-			arr = new int[N+1];
-			tree = new int[N*4];
-			
+
+			arr = new int[N + 1];
+			tree = new int[N * 4];
+
 			st = new StringTokenizer(br.readLine());
-			for(int i = 1; i <= N; i++) {
+			for (int i = 1; i <= N; i++) {
 				int temp = Integer.parseInt(st.nextToken());
-				
+
 				arr[i] = (temp == 0) ? 0 : (temp > 0) ? 1 : -1;
 			}
 			init(1, N, 1);
-			
-			for(int i = 0; i < K; i++) {
+
+			for (int i = 0; i < K; i++) {
 				st = new StringTokenizer(br.readLine());
 				char c = st.nextToken().charAt(0);
 				int idx1 = Integer.parseInt(st.nextToken());
 				int idx2 = Integer.parseInt(st.nextToken());
-				if(c == 'C') {
+				if (c == 'C') {
 					idx2 = (idx2 == 0) ? 0 : (idx2 > 0) ? 1 : -1;
-					
+
 					update(idx1, idx2, 1, N, 1);
-				}else if(c == 'P'){
+				} else if (c == 'P') {
 					int result = mul(1, N, 1, idx1, idx2);
 					sb.append((result == 0) ? 0 : (result > 0) ? "+" : "-");
 				}
 			}
 			sb.append("\n");
-			
+
 		}
-		
+
 		System.out.println(sb.toString());
 		System.out.println(123);
-		
-		
+
 		br.close();
 	}
-	
+
 	// 트리를 쪼개면서 맨 아래까지 내려가면서 tree에 저장시킨다.
 	private static int init(int start, int end, int node) {
-		if(start == end) {
+		if (start == end) {
 			return tree[node] = arr[start];
 		}
 		int mid = (start + end) / 2;
-		return tree[node] = init(start, mid, node*2) * init(mid+1, end, node*2+1);
+		return tree[node] = init(start, mid, node * 2) * init(mid + 1, end, node * 2 + 1);
 	}
-	
+
 	// 변경시키고 싶은 값이 있을때
 	private static int update(int idx, int val, int node, int start, int end) {
 		// 변경시키고 싶은 위치가 start보다 작거나 end보다 작으면 tree[node]를 반환
 		// 변경을 시켜도 값에 상관이 없으므로
-		if(idx < start || end < idx) {
+		if (idx < start || end < idx) {
 			return tree[node];
 		}
-		if(start == end) {
+		if (start == end) {
 			return tree[node] = val;
 		}
 		int mid = (start + end) / 2;
-		
-		return tree[node] = update(idx, val, node*2, start, mid) * update(idx, val, node*2+1, mid+1, end);
+
+		return tree[node] = update(idx, val, node * 2, start, mid) * update(idx, val, node * 2 + 1, mid + 1, end);
 	}
-	
+
 	// left와 right는 값을 구하고 싶은 구간
 	private static int mul(int start, int end, int node, int left, int right) {
 		// 값을 구하고 싶은 구간의 left값 즉, 작은 값이 end 보다 크다면
 		// 값을 구하고 싶은 구간의 right값 즉, 큰 값이 start 보다 작다면
-		if(left > end || right < start) {
+		if (left > end || right < start) {
 			return 1;
 		}
-		// 값을 구하고 싶은 구간의  left값 즉, 작은 값이 start 보다 작다면
-		// 값을 구하고 싶은 구간의 right값 즉, 큰 값이 end보다 크다면 
+		// 값을 구하고 싶은 구간의 left값 즉, 작은 값이 start 보다 작다면
+		// 값을 구하고 싶은 구간의 right값 즉, 큰 값이 end보다 크다면
 		// 구하고 싶은 구간이 아니므로 저장되어있는 tree[node]를 반환
-		if(left <= start && end <= right) {
+		if (left <= start && end <= right) {
 			return tree[node];
 		}
-		
+
 		int mid = (start + end) / 2;
-		return mul(start, mid, node*2, left, right) * mul(mid+1, end, node*2+1, left, right);
+		return mul(start, mid, node * 2, left, right) * mul(mid + 1, end, node * 2 + 1, left, right);
 	}
 }

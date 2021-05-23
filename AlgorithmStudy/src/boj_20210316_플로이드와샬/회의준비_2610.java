@@ -80,110 +80,117 @@ public class 회의준비_2610 {
 	private static int rep[];
 	private static int INF = 100000000;
 	private static StringBuilder sb = new StringBuilder();
-	
+
 	private static List<Integer> list = new ArrayList<Integer>();
 	private static List<Integer> result = new ArrayList<Integer>();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		M = Integer.parseInt(br.readLine());
-		
-		fw = new int[N+1][N+1];
-		parent = new int[N+1];
-		rep = new int[N+1];
-		
-		for(int i = 1; i <= N; i++) {
+
+		fw = new int[N + 1][N + 1];
+		parent = new int[N + 1];
+		rep = new int[N + 1];
+
+		for (int i = 1; i <= N; i++) {
 			Arrays.fill(fw[i], INF);
 			parent[i] = i;
 		}
-		
+
 		StringTokenizer st;
-		
-		for(int i = 1; i <= M; i++) {
+
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			
+
 			union(a, b);
-			
+
 			fw[a][b] = fw[b][a] = 1;
 		}
 		floydWarshall();
-		
+
 		br.close();
 	}
-	
+
 	private static void floydWarshall() {
-		for(int k = 1; k <= N; k++) {
-			for(int i = 1; i <= N; i++) {
-				for(int j = i+1; j <= N; j++) {
-					if(i == j || i == k || j == k) continue;
-					if(fw[i][j] > fw[i][k] + fw[k][j]) {
+		for (int k = 1; k <= N; k++) {
+			for (int i = 1; i <= N; i++) {
+				for (int j = i + 1; j <= N; j++) {
+					if (i == j || i == k || j == k)
+						continue;
+					if (fw[i][j] > fw[i][k] + fw[k][j]) {
 						fw[i][j] = fw[j][i] = fw[i][k] + fw[k][j];
 					}
 				}
 			}
 		}
-		
+
 		minCommunication();
 	}
-	
+
 	private static int find(int x) {
-		if(parent[x] == x) return x;
+		if (parent[x] == x)
+			return x;
 		return parent[x] = find(parent[x]);
 	}
-	
+
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a < b) parent[b] = a;
-		else parent[a] = b;
+
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
 	}
-	
+
 	private static void findRep() {
 		int answer = 0;
-		for(int i : list) {
+		for (int i : list) {
 			int min = Integer.MAX_VALUE;
-			for(int j = 1; j <= N; j++) {
-				if(i == parent[j]) {
-					if(min >= rep[j]) {
+			for (int j = 1; j <= N; j++) {
+				if (i == parent[j]) {
+					if (min >= rep[j]) {
 						min = rep[j];
 						answer = j;
 					}
 				}
 			}
-			
+
 			result.add(answer);
 		}
-		
+
 		Collections.sort(result);
-		
-		for(int i : result) sb.append(i + "\n");
-		
+
+		for (int i : result)
+			sb.append(i + "\n");
+
 		System.out.println(sb.toString());
 	}
-	
+
 	private static void findParent() {
-		for(int i = 1; i <= N; i++) {
-			if(parent[i] == i) list.add(i);
+		for (int i = 1; i <= N; i++) {
+			if (parent[i] == i)
+				list.add(i);
 		}
 		sb.append(list.size() + "\n");
-		
+
 		findRep();
 	}
-	
+
 	private static void minCommunication() {
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			int max = -1;
-			for(int j = 1; j <= N; j++) {
-				if(fw[i][j] != INF) {
+			for (int j = 1; j <= N; j++) {
+				if (fw[i][j] != INF) {
 					max = Math.max(max, fw[i][j]);
 				}
 			}
 			rep[i] = max;
 		}
-		
+
 		findParent();
 	}
 }

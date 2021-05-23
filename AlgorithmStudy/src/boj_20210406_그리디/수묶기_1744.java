@@ -46,42 +46,43 @@ import java.util.Collections;
 public class 수묶기_1744 {
 	private static int N;
 	private static Integer arr[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		arr = new Integer[N];
 		int positiveCount = 0;
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			int a = Integer.parseInt(br.readLine());
-			if(a > 0) positiveCount++;
+			if (a > 0)
+				positiveCount++;
 			arr[i] = a;
 		}
-		
+
 		Arrays.sort(arr, Collections.reverseOrder());
-		
+
 		int sum = 0;
-		
+
 		// 양수들의 합
-		for(int i = 0; i < positiveCount-1; i+=2) {
-			if(arr[i+1] == 1) {
-				sum += arr[i] + arr[i+1];
+		for (int i = 0; i < positiveCount - 1; i += 2) {
+			if (arr[i + 1] == 1) {
+				sum += arr[i] + arr[i + 1];
 				continue;
 			}
-			sum += arr[i]*arr[i+1];
+			sum += arr[i] * arr[i + 1];
 		}
-		if(positiveCount%2 == 1) 
-			sum += arr[positiveCount-1];
-		
-		
+		if (positiveCount % 2 == 1)
+			sum += arr[positiveCount - 1];
+
 		// 음수들의 합
 		int negativeCount = N - positiveCount;
-		for(int i = N-1; i >= positiveCount+1; i-=2) {
-			sum += arr[i]*arr[i-1];
+		for (int i = N - 1; i >= positiveCount + 1; i -= 2) {
+			sum += arr[i] * arr[i - 1];
 		}
 
-		if(negativeCount%2 == 1)
+		if (negativeCount % 2 == 1)
 			sum += arr[positiveCount];
-		
+
 //		for(int i : arr) System.out.print(i + " ");
 		System.out.println(sum);
 		br.close();

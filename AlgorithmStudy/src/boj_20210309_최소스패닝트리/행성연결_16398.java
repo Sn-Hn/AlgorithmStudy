@@ -55,56 +55,58 @@ public class 행성연결_16398 {
 	private static int N;
 	private static int map[][];
 	private static int parent[];
-	
-	private static class Node implements Comparable<Node>{
+
+	private static class Node implements Comparable<Node> {
 		int x, y, cost;
+
 		public Node(int x, int y, int cost) {
 			this.x = x;
 			this.y = y;
 			this.cost = cost;
 		}
-		
+
 		@Override
 		public int compareTo(Node o) {
 			// TODO Auto-generated method stub
 			return cost - o.cost;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		map = new int[N+1][N+1];
-		parent = new int[N+1];
-		
+		map = new int[N + 1][N + 1];
+		parent = new int[N + 1];
+
 		PriorityQueue<Node> q = new PriorityQueue<Node>();
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			parent[i] = i;
 		}
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int j = 1; j <= N; j++) {
+			for (int j = 1; j <= N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
-		for(int i = 1; i < N; i++) {
-			for(int j = i+1; j <= N; j++) {
+
+		for (int i = 1; i < N; i++) {
+			for (int j = i + 1; j <= N; j++) {
 				q.add(new Node(i, j, map[i][j]));
 			}
 		}
 		solve(q);
-		
+
 		br.close();
 	}
-	
+
 	private static void solve(PriorityQueue<Node> q) {
 		long cost = 0;
 		int count = 0;
-		while(!q.isEmpty() && count < N-1) {
+		while (!q.isEmpty() && count < N - 1) {
 			Node node = q.poll();
-			
-			if(!findCycle(node.x, node.y)) {
+
+			if (!findCycle(node.x, node.y)) {
 				union(node.x, node.y);
 				cost += node.cost;
 				count++;
@@ -112,25 +114,29 @@ public class 행성연결_16398 {
 		}
 		System.out.println(cost);
 	}
-	
-	private static int find(int x) { 
-		if(parent[x] == x) return x;
+
+	private static int find(int x) {
+		if (parent[x] == x)
+			return x;
 		return parent[x] = find(parent[x]);
 	}
-	
+
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a < b) parent[b] = a;
-		else parent[a] = b;
+
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
 	}
-	
+
 	private static boolean findCycle(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a == b) return true;
+
+		if (a == b)
+			return true;
 		return false;
 	}
 }

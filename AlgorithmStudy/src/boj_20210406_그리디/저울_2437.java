@@ -41,26 +41,26 @@ N은 1 이상 1,000 이하이다.
 public class 저울_2437 {
 	private static int N;
 	private static int arr[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		arr = new int[N+1];
+		arr = new int[N + 1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
 		Arrays.sort(arr);
 		int sum = 0;
-		for(int i = 1; i <= N; i++) {
-			if(sum + 1 >= arr[i])
+		for (int i = 1; i <= N; i++) {
+			if (sum + 1 >= arr[i])
 				sum += arr[i];
-			else 
+			else
 				break;
 		}
-		
-		System.out.println(sum+1);
-		
-		
+
+		System.out.println(sum + 1);
+
 		br.close();
 	}
 }

@@ -53,25 +53,25 @@ public class 히스토그램_1725_Test {
 	private static int arr[];
 	private static int area[];
 	private static int tree[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+
 		N = Integer.parseInt(br.readLine());
-		
-		arr = new int[N+1];
-		tree = new int[N*4];
-		area = new int[N*4];
-		
-		for(int i = 1; i <= N; i++) {
+
+		arr = new int[N + 1];
+		tree = new int[N * 4];
+		area = new int[N * 4];
+
+		for (int i = 1; i <= N; i++) {
 			arr[i] = Integer.parseInt(br.readLine());
 		}
-		
-		
+
 		br.close();
 	}
-	
+
 	private static void maxArea() {
 		Stack<Integer> st = new Stack<Integer>();
-		
+
 	}
 }

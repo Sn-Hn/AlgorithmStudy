@@ -47,71 +47,73 @@ public class 사전_1256 {
 	private static int N, M, K;
 	private static long dp[][] = new long[101][101];
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
-		
+
 		dp[0][0] = 0;
-		for(int i = 1; i <= 100; i++) {
+		for (int i = 1; i <= 100; i++) {
 			dp[i][0] = 1;
 			dp[0][i] = 1;
 		}
-		
-		for(int i = 1; i <= 100; i++) {
-			for(int j = 1; j <= 100; j++) {
-				dp[i][j] = dp[i-1][j] + dp[i][j-1];
-				if(dp[i][j] > 1000000000) dp[i][j] = 1000000001;
+
+		for (int i = 1; i <= 100; i++) {
+			for (int j = 1; j <= 100; j++) {
+				dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+				if (dp[i][j] > 1000000000)
+					dp[i][j] = 1000000001;
 			}
 		}
-		
-		if(dp[N][M] < K) {
+
+		if (dp[N][M] < K) {
 			System.out.println(-1);
 			return;
 		}
-		
+
 		int aCnt = N;
 		int zCnt = M;
-		
+
 		long k = K;
-		
-		while(true) {
-			if(aCnt == 0) {
-				for(int j = 1; j <= zCnt; j++) {
+
+		while (true) {
+			if (aCnt == 0) {
+				for (int j = 1; j <= zCnt; j++) {
 					sb.append("z");
 				}
 				break;
-			}else if(zCnt == 0) {
-				for(int j = 1; j <= aCnt; j++) {
-					sb.append("a");					
+			} else if (zCnt == 0) {
+				for (int j = 1; j <= aCnt; j++) {
+					sb.append("a");
 				}
 				break;
 			}
-			
-			long aStart = dp[aCnt-1][zCnt];
-			
-			if(k > aStart) {
+
+			long aStart = dp[aCnt - 1][zCnt];
+
+			if (k > aStart) {
 				k -= aStart;
 				zCnt--;
 				sb.append("z");
-			}else {
+			} else {
 				aCnt--;
 				sb.append("a");
 			}
-			
+
 		}
-		
+
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= 100; i++) {
-			for(int j = 1; j <= 100; j++) {
+		for (int i = 1; i <= 100; i++) {
+			for (int j = 1; j <= 100; j++) {
 				System.out.print(dp[i][j] + " ");
 			}
 			System.out.println();

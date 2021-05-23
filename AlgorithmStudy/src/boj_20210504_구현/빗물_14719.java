@@ -50,24 +50,25 @@ import java.util.StringTokenizer;
 public class 빗물_14719 {
 	private static int H, W;
 	private static int height[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		H = Integer.parseInt(st.nextToken());
 		W = Integer.parseInt(st.nextToken());
-		
+
 		height = new int[W];
-		
+
 		st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < W; i++) {
+		for (int i = 0; i < W; i++) {
 			height[i] = Integer.parseInt(st.nextToken());
 		}
-		
+
 		solve();
-		
+
 		br.close();
 	}
-	
+
 	// 핵심은 각 인덱스마다 고이는 물을 계산해야 한다.
 	// 즉, 완전 탐색
 	private static void solve() {
@@ -76,27 +77,27 @@ public class 빗물_14719 {
 		int right = 0;
 		// 처음과 마지막은 물이 고일 수 없다.
 		// 각 인덱스를 한 바퀴 돈다.
-		for(int i = 1; i < W-1; i++) {
+		for (int i = 1; i < W - 1; i++) {
 			left = 0;
 			right = 0;
 			// 위에서 세운 인덱스를 기준으로 왼쪽, 오른쪽을 탐색하며 가장 큰 블록을 찾는다.
-			for(int j = 0; j < i; j++) {
+			for (int j = 0; j < i; j++) {
 				left = Math.max(height[j], left);
 			}
-			
-			for(int j = i+1; j < W; j++) {
+
+			for (int j = i + 1; j < W; j++) {
 				right = Math.max(height[j], right);
 			}
 			left = Math.min(left, right);
-			if(left > height[i]) {
+			if (left > height[i]) {
 				sum += left - height[i];
-			} 
+			}
 		}
-		if(sum < 0) {
+		if (sum < 0) {
 			sum = 0;
 		}
 		System.out.println(sum);
-		
+
 	}
-	
+
 }

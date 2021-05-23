@@ -46,25 +46,26 @@ YYN
 public class 도로_1045 {
 	private static int N, M;
 	private static char road[][];
-	
+
 	private static class Node {
 		int x, y;
+
 		public Node(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			road[i] = br.readLine().toCharArray();
 		}
-		
-		
+
 		br.close();
 	}
 }

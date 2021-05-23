@@ -66,67 +66,68 @@ public class 배_1092 {
 	private static List<Integer> crane;
 	private static List<Integer> box;
 	private static int cnt[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		crane = new ArrayList<>();
 		cnt = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			crane.add(Integer.parseInt(st.nextToken()));
 		}
-		
+
 		M = Integer.parseInt(br.readLine());
 		box = new ArrayList<Integer>();
 		st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < M; i++) {
+		for (int i = 0; i < M; i++) {
 			box.add(Integer.parseInt(st.nextToken()));
 		}
-		
+
 		Collections.sort(crane, Collections.reverseOrder());
 		Collections.sort(box, Collections.reverseOrder());
-		
-		if(crane.get(0) < box.get(0)) {
+
+		if (crane.get(0) < box.get(0)) {
 			System.out.println(-1);
 			return;
 		}
 		int count = 0;
 		int boxIndex;
-		while(!box.isEmpty()) {
+		while (!box.isEmpty()) {
 			boxIndex = 0;
-			for(int i = 0; i < N; i++) {
-				if(boxIndex == box.size()) {
+			for (int i = 0; i < N; i++) {
+				if (boxIndex == box.size()) {
 					break;
 				}
 				System.out.println(boxIndex + ", " + i + " : " + box.get(boxIndex) + " , " + crane.get(i));
-				if(box.get(boxIndex) <= crane.get(i)) {
+				if (box.get(boxIndex) <= crane.get(i)) {
 					cnt[i]++;
 					box.remove(boxIndex);
-				}else {
+				} else {
 					boxIndex++;
 					i--;
 				}
 			}
 			count++;
 		}
-		
+
 		System.out.println(count);
-		
+
 		print();
 		br.close();
 	}
-	
+
 	private static void solve() {
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= M; j++) {
-				
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= M; j++) {
+
 			}
 		}
 	}
-	
+
 	private static void print() {
-		for(int i = 0; i < N; i++) {
-			System.out.print(cnt[i]	+ " ");
+		for (int i = 0; i < N; i++) {
+			System.out.print(cnt[i] + " ");
 		}
 	}
 }

@@ -127,15 +127,14 @@ i번 세로선의 결과가 i번이 나오도록 사다리 게임을 조작하�
 public class 사다리조작_15684 {
 	private static int N, M, H;
 	private static int arr[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		H = Integer.parseInt(st.nextToken());
-		
-		
-		
+
 		br.close();
 	}
 }

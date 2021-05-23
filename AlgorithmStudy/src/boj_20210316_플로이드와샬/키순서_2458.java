@@ -59,54 +59,55 @@ public class 키순서_2458 {
 	private static int N, M;
 	private static int fw[][];
 	private static int INF = 10000000;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		fw = new int[N+1][N+1];
-		
-		for(int i = 1; i <= N; i++) {
+		fw = new int[N + 1][N + 1];
+
+		for (int i = 1; i <= N; i++) {
 			Arrays.fill(fw[i], INF);
 		}
-		
-		for(int i = 1; i <= M; i++) {
+
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			
+
 			fw[a][b] = 1;
 		}
-		
+
 		floydWarshall();
-		
+
 		br.close();
 	}
-	
+
 	private static void floydWarshall() {
-		for(int k = 1; k <= N; k++) {
-			for(int i = 1; i <= N; i++) {
-				for(int j = 1; j <= N; j++) {
-					if(fw[i][k] == 1 && fw[k][j] == 1) {
+		for (int k = 1; k <= N; k++) {
+			for (int i = 1; i <= N; i++) {
+				for (int j = 1; j <= N; j++) {
+					if (fw[i][k] == 1 && fw[k][j] == 1) {
 						fw[i][j] = 1;
 					}
 				}
 			}
 		}
-		
+
 		findRank();
 	}
-	
+
 	private static void findRank() {
 		int answer = 0;
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			int count = 0;
-			for(int j = 1; j <= N; j++) {
-				if(fw[i][j] == 1 || fw[j][i] == 1) {
-					count ++;
+			for (int j = 1; j <= N; j++) {
+				if (fw[i][j] == 1 || fw[j][i] == 1) {
+					count++;
 				}
 			}
-			if(count == N-1) {
+			if (count == N - 1) {
 				answer++;
 			}
 		}

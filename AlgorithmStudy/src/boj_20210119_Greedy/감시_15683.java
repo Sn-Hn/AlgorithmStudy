@@ -185,17 +185,16 @@ public class 감시_15683 {
 	private static int min = 1000000000;
 	private static List<Point> cctv = new ArrayList<>();
 
-	// 					오른(R), 아래(B), 왼(L), 위(U)
+	// 오른(R), 아래(B), 왼(L), 위(U)
 	private static int[] dx = { 0, 1, 0, -1 };
 	private static int[] dy = { 1, 0, -1, 0 };
 
-	private static int[][] direction = { 
-			{}, 			// cctvNum
-			{ 0 }, 			// 1
-			{ 0, 2 },		// 2
-			{ 0, 1 }, 		// 3
-			{ 0, 1, 2 }, 	// 4
-			{ 0, 1, 2, 3 } 	// 5
+	private static int[][] direction = { {}, // cctvNum
+			{ 0 }, // 1
+			{ 0, 2 }, // 2
+			{ 0, 1 }, // 3
+			{ 0, 1, 2 }, // 4
+			{ 0, 1, 2, 3 } // 5
 	};
 
 	static class Point {

@@ -67,17 +67,19 @@ public class 백조의호수_3197 {
 	private static List<Pair> swan = new ArrayList<Pair>();
 	private static Queue<Pair> s = new LinkedList<Pair>();
 	private static Queue<Pair> water = new LinkedList<Pair>();
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
-	
+
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	private static class Pair {
 		int x, y;
+
 		public Pair(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -85,25 +87,25 @@ public class 백조의호수_3197 {
 		C = Integer.parseInt(st.nextToken());
 		map = new char[R][C];
 		copyMap = new char[R][C];
-		
-		for(int i = 0; i < R; i++) {
+
+		for (int i = 0; i < R; i++) {
 			map[i] = br.readLine().toCharArray();
-			for(int j = 0; j < C; j++) {
+			for (int j = 0; j < C; j++) {
 				copyMap[i][j] = map[i][j];
-				if(map[i][j] == 'L') {
+				if (map[i][j] == 'L') {
 					swan.add(new Pair(i, j));
-				}else if(map[i][j] == '.') {
+				} else if (map[i][j] == '.') {
 					water.add(new Pair(i, j));
 				}
 			}
 		}
 		int count = 0;
-		
-		while(true) {
+
+		while (true) {
 			count++;
-			
+
 			melting();
-			
+
 //			for(int i = 0; i < R; i++) {
 //				for(int j = 0; j < C; j++) {
 //					if(map[i][j] == '.') {
@@ -111,91 +113,91 @@ public class 백조의호수_3197 {
 //					}
 //				}
 //			}
-			
-			
-			if(isMeet()) {
+
+			if (isMeet()) {
 				break;
 			}
-			
+
 			copyMap();
 		}
-		
+
 		System.out.println(count);
-		
+
 		br.close();
 	}
+
 	private static void melting() {
 		int size = water.size();
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			Pair p = water.poll();
-			
-			for(int j = 0; j < 4; j++) {
+
+			for (int j = 0; j < 4; j++) {
 				int X = p.x + dx[j];
 				int Y = p.y + dy[j];
-				if(X >= 0 && X < R && Y >= 0 && Y < C && map[X][Y] == 'X') {
+				if (X >= 0 && X < R && Y >= 0 && Y < C && map[X][Y] == 'X') {
 					copyMap[X][Y] = '.';
 					water.add(new Pair(X, Y));
 				}
 			}
 		}
 	}
-	
+
 	private static void melt(int x, int y) {
-		for(int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			if(X >= 0 && X < R && Y >= 0 && Y < C && map[X][Y] == 'X') {
+			if (X >= 0 && X < R && Y >= 0 && Y < C && map[X][Y] == 'X') {
 				copyMap[X][Y] = '.';
 			}
 		}
 	}
-	
+
 	private static boolean isMeet() {
 		Queue<Pair> q = new LinkedList<Pair>();
 		s.add(new Pair(swan.get(0).x, swan.get(0).y));
 		boolean visited[][] = new boolean[R][C];
 		visited[swan.get(0).x][swan.get(0).y] = true;
 
-		while(!s.isEmpty()) {
+		while (!s.isEmpty()) {
 			Pair p = s.poll();
-			
-			if(p.x == swan.get(1).x && p.y == swan.get(1).y) {
+
+			if (p.x == swan.get(1).x && p.y == swan.get(1).y) {
 				return true;
 			}
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				int X = p.x + dx[i];
 				int Y = p.y + dy[i];
-				
-				if(X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
-					if(copyMap[X][Y] == 'X') {
+
+				if (X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
+					if (copyMap[X][Y] == 'X') {
 						q.add(p);
 						visited[X][Y] = true;
 					}
-					
-					if(copyMap[X][Y] != 'X') {
+
+					if (copyMap[X][Y] != 'X') {
 						visited[X][Y] = true;
 						s.add(new Pair(X, Y));
 					}
 				}
 			}
 		}
-		
+
 		s = q;
-		
+
 		return false;
 	}
-	
+
 	private static void copyMap() {
-		for(int i = 0; i < R; i++) {
-			for(int j = 0; j < C; j++) {
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
 				map[i][j] = copyMap[i][j];
 			}
 		}
 	}
-	
+
 	private static void print() {
-		for(int i = 0; i < R; i++) {
-			for(int j = 0; j < C; j++) {
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
 				System.out.print(map[i][j]);
 			}
 			System.out.println();

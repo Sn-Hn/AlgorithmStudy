@@ -84,99 +84,101 @@ public class 특정한최단경로_1504 {
 	private static int INF = Integer.MAX_VALUE;
 	private static boolean visited[][];
 	private static int v1, v2;
-	
+
 	private static class Pair implements Comparable<Pair> {
 		int index, distance;
+
 		public Pair(int index, int distance) {
 			this.index = index;
 			this.distance = distance;
 		}
-		
+
 		@Override
 		public int compareTo(Pair o) {
 			// TODO Auto-generated method stub
 			return distance - o.distance;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		E = Integer.parseInt(st.nextToken());
-		
-		distance = new int[N+1][N+1];
-		visited = new boolean[N+1][N+1];
+
+		distance = new int[N + 1][N + 1];
+		visited = new boolean[N + 1][N + 1];
 		list = new ArrayList<List<Pair>>();
-		
-		for(int i = 0; i <= N; i++) {
+
+		for (int i = 0; i <= N; i++) {
 			list.add(new ArrayList<Pair>());
-			Arrays.fill(distance[i], INF); 
+			Arrays.fill(distance[i], INF);
 		}
-		
-		for(int i = 1; i <= E; i++) {
+
+		for (int i = 1; i <= E; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			int c = Integer.parseInt(st.nextToken());
-			
+
 			list.get(a).add(new Pair(b, c));
 			list.get(b).add(new Pair(a, c));
 		}
-		
+
 		st = new StringTokenizer(br.readLine());
 		v1 = Integer.parseInt(st.nextToken());
 		v2 = Integer.parseInt(st.nextToken());
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			distance[i][i] = 0;
-			if(i == 1 || i == v1 || i == v2) {
-				solve(i);				
+			if (i == 1 || i == v1 || i == v2) {
+				solve(i);
 			}
 		}
-		
+
 		int m = Math.min(distance[v1][v2], distance[v2][v1]);
 		int a = distance[1][v1] + m + distance[v2][N];
 		int b = distance[1][v2] + m + distance[v1][N];
-		
-		if(m == INF || (a == INF && b == INF) || (a < 0 && b < 0)) {
+
+		if (m == INF || (a == INF && b == INF) || (a < 0 && b < 0)) {
 			System.out.println(-1);
-		}else {
-			System.out.println(Math.min(a, b));		
+		} else {
+			System.out.println(Math.min(a, b));
 		}
-		
+
 		print();
 		System.out.println(a + " " + b + " " + m);
-		
+
 		br.close();
 	}
-	
+
 	private static void solve(int s) {
 		PriorityQueue<Pair> q = new PriorityQueue<Pair>();
-		
+
 		q.add(new Pair(s, 0));
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair p = q.poll();
 			int now = p.index;
-			
-			if(visited[s][now]) continue;
+
+			if (visited[s][now])
+				continue;
 			visited[s][now] = true;
-			
-			for(Pair pair : list.get(now)) {
-				if(distance[s][pair.index] > distance[s][now] + pair.distance) {
+
+			for (Pair pair : list.get(now)) {
+				if (distance[s][pair.index] > distance[s][now] + pair.distance) {
 					distance[s][pair.index] = distance[s][now] + pair.distance;
 					q.add(new Pair(pair.index, distance[s][pair.index]));
 				}
 			}
-			
+
 		}
-		
+
 	}
 
-	
 	private static void print() {
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= N; j++) {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
 				System.out.print(distance[i][j] + " ");
 			}
 			System.out.println();

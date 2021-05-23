@@ -50,7 +50,8 @@ public class 빵집_3109 {
 	private static int map[][];
 	private static int count = 0;
 	private static boolean visited[][];
-	private static int dx[] = {-1, 0, -1};
+	private static int dx[] = { -1, 0, -1 };
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -59,52 +60,52 @@ public class 빵집_3109 {
 		map = new int[R][C];
 		visited = new boolean[R][C];
 		String input = "";
-		for(int i = 0; i < R; i++) {
+		for (int i = 0; i < R; i++) {
 			input = br.readLine();
-			for(int j = 0; j < C; j++) {
-				if(input.charAt(j) == '.') {
+			for (int j = 0; j < C; j++) {
+				if (input.charAt(j) == '.') {
 					map[i][j] = 0;
-				}else {
+				} else {
 					map[i][j] = 1;
 				}
 			}
 		}
-		
-		for(int i = 0; i < R; i++) {
+
+		for (int i = 0; i < R; i++) {
 			dfs(i, 0);
 		}
-		
+
 		print();
-		
+
 		System.out.println(count);
 		br.close();
 	}
-	
+
 	private static boolean dfs(int x, int y) {
-		
-		for(int i = 0; i < 3; i++) {
+
+		for (int i = 0; i < 3; i++) {
 			int X = x + dx[i];
 			int Y = y + 1;
-			
-			if(X >= 0 && X < R && Y >= 0 && Y < C && map[X][Y] == 0) {
+
+			if (X >= 0 && X < R && Y >= 0 && Y < C && map[X][Y] == 0) {
 				map[X][Y] = 2;
-				if(Y == C-1) {
+				if (Y == C - 1) {
 					count++;
 					return true;
 				}
 
-				if(dfs(X, Y)) {
+				if (dfs(X, Y)) {
 					return true;
 				}
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	private static void print() {
-		for(int i = 0; i < R; i++) {
-			for(int j = 0; j < C; j++) {
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
 				System.out.print(map[i][j] + " ");
 			}
 			System.out.println();

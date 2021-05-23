@@ -49,42 +49,43 @@ public class 가장큰정사각형_1915 {
 	private static int map[][];
 	private static int dp[][];
 	private static int answer = 0;
-	public static void main(String[] args) throws IOException{
+
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		map = new int[N+1][M+1];
-		dp = new int[N+1][M+1];
-		
+		map = new int[N + 1][M + 1];
+		dp = new int[N + 1][M + 1];
+
 		String inputStr = "";
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			inputStr = br.readLine();
-			for(int j = 1; j <= M; j++) {
-				map[i][j] = inputStr.charAt(j-1) - '0';
+			for (int j = 1; j <= M; j++) {
+				map[i][j] = inputStr.charAt(j - 1) - '0';
 				dp[i][j] = map[i][j];
 			}
 		}
-		
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= M; j++) {
-				if(map[i][j] == 1) {
-					dp[i][j] = Math.min(dp[i][j-1], Math.min(dp[i-1][j], dp[i-1][j-1])) + 1;
+
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= M; j++) {
+				if (map[i][j] == 1) {
+					dp[i][j] = Math.min(dp[i][j - 1], Math.min(dp[i - 1][j], dp[i - 1][j - 1])) + 1;
 					answer = Math.max(answer, dp[i][j]);
 				}
 			}
 		}
-		
+
 		System.out.println(answer * answer);
-		
+
 		print();
-		
+
 		br.close();
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= N; i++ ) {
-			for(int j = 1; j <= M; j++) {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= M; j++) {
 				System.out.print(dp[i][j] + " ");
 			}
 			System.out.println();

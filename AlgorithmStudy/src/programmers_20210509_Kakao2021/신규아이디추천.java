@@ -55,24 +55,24 @@ public class 신규아이디추천 {
 		if ("".equals(new_id)) {
 			new_id += "a";
 		}
-		
+
 		return new_id;
 	}
-	
+
 	private static String level6(String new_id) {
 		String pattern = "[.]$";
-		if(new_id.length() >= 16) {
+		if (new_id.length() >= 16) {
 			return new_id.substring(0, 15).replaceAll(pattern, "");
 		}
-		
+
 		return new_id;
 	}
-	
+
 	private static String level7(String new_id) {
-		while(new_id.length() <= 2) {
-			new_id += new_id.charAt(new_id.length()-1);
+		while (new_id.length() <= 2) {
+			new_id += new_id.charAt(new_id.length() - 1);
 		}
-		
+
 		return new_id;
 	}
 }

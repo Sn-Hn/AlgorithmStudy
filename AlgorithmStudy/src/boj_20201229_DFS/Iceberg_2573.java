@@ -61,149 +61,149 @@ N과 M은 3 이상 300 이하이다.
 */
 
 public class Iceberg_2573 {
-	private static int N, M;				// 배열의 행과 열
-	private static int[][] map;				// 빙산
-	private static int[][] copyMap;			// 빙산 복사
-	private static boolean visited[][];		// 방문처리
-	private static List<Pair> list = new ArrayList<Pair>();		// 빙산이 담겨 있는 List (0이상)
-	
+	private static int N, M; // 배열의 행과 열
+	private static int[][] map; // 빙산
+	private static int[][] copyMap; // 빙산 복사
+	private static boolean visited[][]; // 방문처리
+	private static List<Pair> list = new ArrayList<Pair>(); // 빙산이 담겨 있는 List (0이상)
+
 	// 해당 빙산의 동서남북을 찾아야 하므로 dx, dy를 선언
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
-	
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	// 빙산의 위치만 BFS를 돌리기 위하여 빙산의 위치를 담아줄 Pair 클래스 선언
 	private static class Pair {
 		int x, y;
+
 		public Pair(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		int count = 0;	// 빙산의 수
-		int time = 0;	// N년 후
-		
+		int count = 0; // 빙산의 수
+		int time = 0; // N년 후
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
+
 		map = new int[N][M];
 		copyMap = new int[N][M];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < M; j++) {
+			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 				copyMap[i][j] = map[i][j];
 				// 바다 이외의 빙산에 해당되는 칸을 list에 저장
-				if(map[i][j] > 0) {
+				if (map[i][j] > 0) {
 					list.add(new Pair(i, j));
 				}
 			}
 		}
-		
+
 		// 빙산의 수가 2개 이상이 될 때 시간을 구하기 위해 무한루프 구현
-		while(true) {
+		while (true) {
 			// 매 년마다 방문처리를 위해 visited 초기화
 			visited = new boolean[N][M];
-			time++;			// 1년 후
-			meltIce();		// 빙산이 녹고 난 후
-			copyMap();		// 빙산이 녹고 난 후를 map에 복사
-			count = countOfIceberg();		// 녹고 난 후 빙산의 개수를 세어줌
-			if(count == 0) {
+			time++; // 1년 후
+			meltIce(); // 빙산이 녹고 난 후
+			copyMap(); // 빙산이 녹고 난 후를 map에 복사
+			count = countOfIceberg(); // 녹고 난 후 빙산의 개수를 세어줌
+			if (count == 0) {
 				// 빙산이 전부 녹을 때까지 두 덩어리 이상으로 분리되지 않으면 0을 출력
 				System.out.println(0);
 				break;
-			}else if(count >= 2) {
+			} else if (count >= 2) {
 				System.out.println(time);
 				break;
 			}
 		}
-		
-		
+
 		br.close();
 	}
-	
+
 	// 빙산의 수를 세기 위한 메소드
 	private static int countOfIceberg() {
 		int cnt = 0;
-		for(Pair p : list) {
+		for (Pair p : list) {
 			cnt += icebergDFS(p.x, p.y);
 		}
-		
-		return cnt;		
+
+		return cnt;
 	}
-	
+
 	// 빙산이 녹는 메소드 BFS
-	private static void meltIce() {	
+	private static void meltIce() {
 		Queue<Pair> q = new LinkedList<Pair>();
-		for(Pair p : list) {
+		for (Pair p : list) {
 			q.add(p);
 		}
-		
+
 		// 빙산의 한 위치에 대해 동서남북을 조사하는 것이므로 큐에 추가하지 않았다.
-		while(!q.isEmpty()) {
+		while (!q.isEmpty()) {
 			Pair pair = q.poll();
-			
-			for(int i = 0; i < 4; i++) {
+
+			for (int i = 0; i < 4; i++) {
 				int X = pair.x + dx[i];
 				int Y = pair.y + dy[i];
-				
-				if(X >= 0 && X < N && Y >= 0 && Y < M) {
-					if(map[X][Y] == 0 && copyMap[pair.x][pair.y] > 0) {
+
+				if (X >= 0 && X < N && Y >= 0 && Y < M) {
+					if (map[X][Y] == 0 && copyMap[pair.x][pair.y] > 0) {
 						copyMap[pair.x][pair.y]--;
 					}
 				}
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	// 빙산의 수를 세기 위한 dfs
 	private static int icebergDFS(int x, int y) {
 		// 방문했다면 return 0
-		if(visited[x][y]) {
+		if (visited[x][y]) {
 			return 0;
 		}
-		
+
 		visited[x][y] = true;
-		
-		for(int i = 0; i < 4; i++) {
+
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			
-			if(X >= 0 && X < N && Y >= 0 && Y < M) {
-				if(map[X][Y] > 0 && !visited[X][Y]) {
+
+			if (X >= 0 && X < N && Y >= 0 && Y < M) {
+				if (map[X][Y] > 0 && !visited[X][Y]) {
 					icebergDFS(X, Y);
 				}
 			}
 		}
-		
+
 		return 1;
 	}
-	
+
 	// 빙산 복사
 	private static void copyMap() {
 		list.clear();
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
 				// 1년 후 빙산을 복사 한 후
 				map[i][j] = copyMap[i][j];
 				// 1년 후 남아 있는 빙산을 list에 추가
-				if(copyMap[i][j] > 0) {
+				if (copyMap[i][j] > 0) {
 					list.add(new Pair(i, j));
 				}
 			}
 		}
 	}
-	
+
 	// 빙산 출력
 	private static void printMap() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
 				System.out.print(map[i][j]);
 			}
 			System.out.println();

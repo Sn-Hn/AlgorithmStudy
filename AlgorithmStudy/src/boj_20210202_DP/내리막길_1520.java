@@ -52,63 +52,64 @@ public class 내리막길_1520 {
 	private static int map[][];
 	private static int dp[][];
 	private static boolean visited[][];
-	
-	private static int dx[] = {0, 0, 1, -1};
-	private static int dy[] = {1, -1, 0, 0};
+
+	private static int dx[] = { 0, 0, 1, -1 };
+	private static int dy[] = { 1, -1, 0, 0 };
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new int[N][M];
 		dp = new int[N][M];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < M; j++) {
+			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			Arrays.fill(dp[i], -1);
 		}
-		
+
 		// 0, 0에서 출발해 끝에 도착한 경우들 => dp[0][0]
 		System.out.println(dfs(0, 0));
-		
+
 		br.close();
 	}
-	
+
 	private static int dfs(int x, int y) {
 		// 끝까지 도착 했다면 경로 수 한 개를 찾음
-		if(x == N-1 && y == M-1) {
+		if (x == N - 1 && y == M - 1) {
 			return 1;
 		}
-		
+
 		// dp 배열에 저장되어 있다면 dp 리턴 (메모이제이션)
 		// dp 배열을 -1로 초기화 하지 않으면 36%에서 시간 초과
-		if(dp[x][y] != -1) {
+		if (dp[x][y] != -1) {
 			return dp[x][y];
 		}
-		
+
 		// dp배열을 -1로 초기화시켰으므로
 		// 현재까지의 개수를 다시 0으로 초기화
 		dp[x][y] = 0;
-		
-		for(int i = 0; i < 4; i++) {
+
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			
+
 			// 끝에 도착하지 않았다면 0
 			// 도착했다면 1이 리턴되므로
 			// 끝에 도착한 경우만 1개씩 dp[x][y]에 더해진다.
-			if(X >= 0 && X < N && Y >= 0 && Y < M && map[x][y] > map[X][Y]) {
+			if (X >= 0 && X < N && Y >= 0 && Y < M && map[x][y] > map[X][Y]) {
 				dp[x][y] += dfs(X, Y);
 			}
 		}
-		
+
 		return dp[x][y];
 	}
 }

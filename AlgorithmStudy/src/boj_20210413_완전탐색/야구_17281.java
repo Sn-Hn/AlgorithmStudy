@@ -116,39 +116,40 @@ public class 야구_17281 {
 	private static int out = 0;
 	private static boolean visited[];
 	private static int maxScore = 0;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		hit = new int[N+1][10];
+		hit = new int[N + 1][10];
 		order = new int[10];
 		visited = new boolean[10];
 		StringTokenizer st;
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 1; j < 10; j++) {
+			for (int j = 1; j < 10; j++) {
 				hit[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
+
 		setHitterOrder(1);
-		
+
 		System.out.println(maxScore);
 		br.close();
 	}
-	
+
 	private static void game() {
 		int sc = 0;
 		int hitter = 1;
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			field = new int[4];
-			while(true) {
+			while (true) {
 				sc = score(hit[i][order[hitter]], sc);
 //				System.out.println(i + " 이닝, 타자 : " + order[hitter] + ", score : " + sc + ", hit : " + hit[i][order[hitter]]);
-				hitter ++;
-				if(hitter == 10) {
+				hitter++;
+				if (hitter == 10) {
 					hitter = 1;
 				}
-				if(out == 3) {
+				if (out == 3) {
 					out = 0;
 					break;
 				}
@@ -156,42 +157,42 @@ public class 야구_17281 {
 		}
 		maxScore = Math.max(maxScore, sc);
 	}
-	
+
 	private static int score(int hit, int score) {
-		if(hit == 0) {
+		if (hit == 0) {
 			out++;
 			return score;
 		}
-		
+
 		field[0] = 1;
 		// 안된 이유 1) 0 ~ 3까지 도는데 185에서 field[i+hit] = 1에서 다음수에 영향을 주기 때문
-		for(int i = 3; i >= 0; i--) {
-			if(field[i] == 1) {
-				if(i + hit >= 4) {
+		for (int i = 3; i >= 0; i--) {
+			if (field[i] == 1) {
+				if (i + hit >= 4) {
 					field[i] = 0;
 					score += 1;
-				}else {
+				} else {
 					// 안된 이유 2) 타자가 출발했으면 그 자리는 0이 되어야 한다.
 					field[i] = 0;
-					field[i+hit] = 1;					
+					field[i + hit] = 1;
 				}
 			}
 		}
-		
+
 		return score;
 	}
-	
+
 	private static void setHitterOrder(int depth) {
-		if(depth == 10 && order[4] == 1) {
+		if (depth == 10 && order[4] == 1) {
 			game();
 			return;
 		}
-		
-		for(int i = 1; i <= 9; i++) {
-			if(!visited[i]) {
+
+		for (int i = 1; i <= 9; i++) {
+			if (!visited[i]) {
 				visited[i] = true;
 				order[depth] = i;
-				setHitterOrder(depth+1);
+				setHitterOrder(depth + 1);
 				visited[i] = false;
 			}
 		}

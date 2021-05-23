@@ -50,46 +50,47 @@ public class 두용액_2470 {
 	private static int arr[];
 	private static int min = Integer.MAX_VALUE;
 	private static int a, b;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		
+
 		arr = new int[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		
+
 		Arrays.sort(arr);
-		
+
 		twoPointer();
-		
+
 		System.out.println(a + " " + b);
-		
+
 		br.close();
 	}
-	
+
 	private static void twoPointer() {
 		int start = 0;
-		int end = N-1;
+		int end = N - 1;
 		int sum = 0;
 		int m = 0;
-		
-		while(start < end) {
+
+		while (start < end) {
 			sum = arr[start] + arr[end];
 			m = Math.min(min, Math.abs(sum));
-			if(min != m) {
+			if (min != m) {
 				min = m;
 				a = arr[start];
 				b = arr[end];
 			}
-			
-			if(sum > 0) {
-				end --;
-			}else if(sum < 0) {
-				start ++;
-			}else {
+
+			if (sum > 0) {
+				end--;
+			} else if (sum < 0) {
+				start++;
+			} else {
 				a = arr[start];
 				b = arr[end];
 				return;

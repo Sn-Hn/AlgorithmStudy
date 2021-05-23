@@ -69,40 +69,40 @@ public class 트리의부모찾기_11725 {
 	private static List<Integer> tree[];
 	private static int[] parentArr;
 	private static StringBuilder sb = new StringBuilder();
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		tree = new ArrayList[N+1];
-		parentArr = new int[N+1];
-		
-		for(int i = 0; i <= N; i++) {
+		tree = new ArrayList[N + 1];
+		parentArr = new int[N + 1];
+
+		for (int i = 0; i <= N; i++) {
 			tree[i] = new ArrayList<>();
 		}
-		
+
 		StringTokenizer st;
-		for(int i = 1; i < N; i++) {
+		for (int i = 1; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			int parent = Integer.parseInt(st.nextToken());
 			int child = Integer.parseInt(st.nextToken());
-			
+
 			tree[parent].add(child);
 			tree[child].add(parent);
 		}
 		search(1, -1);
-		
-		for(int i = 2; i <= N; i++) {
+
+		for (int i = 2; i <= N; i++) {
 			sb.append(parentArr[i] + "\n");
 		}
-		
+
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
-	
+
 	private static void search(int cur, int parent) {
-		for(int child : tree[cur]) {
-			if(child != parent) {
+		for (int child : tree[cur]) {
+			if (child != parent) {
 				search(child, cur);
 				parentArr[child] = cur;
 			}

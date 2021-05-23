@@ -124,170 +124,172 @@ import java.util.StringTokenizer;
 
 // 궁수는 무조건 성에 놓는 것이 좋다.
 public class 캐슬디펜스_17135 {
-    private static int N, M, D;
-    private static int map[][];
-    private static int copyMap[][];
-    private static int copyMap2[][];
-    private static boolean[] visited;
-    private static int max = -1;
-    private static int result[] = new int[3];
+	private static int N, M, D;
+	private static int map[][];
+	private static int copyMap[][];
+	private static int copyMap2[][];
+	private static boolean[] visited;
+	private static int max = -1;
+	private static int result[] = new int[3];
 
-    private static Pair[] archersList;
+	private static Pair[] archersList;
 
-    private static int dx[] = {0, 0, -1};
-    private static int dy[] = {-1, 1, 0};
+	private static int dx[] = { 0, 0, -1 };
+	private static int dy[] = { -1, 1, 0 };
 
-    private static class Pair {
-        int x, y, index;
-        public Pair(int x, int y, int index) {
-            this.x = x;
-            this.y = y;
-            this.index = index;
-        }
-    }
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
-        D = Integer.parseInt(st.nextToken());
-        map = new int[N+1][M];
-        copyMap = new int[N+1][M];
-        copyMap2 = new int[N+1][M];
-        visited = new boolean[M];
-        archersList = new Pair[3];
+	private static class Pair {
+		int x, y, index;
 
-        for(int i = 0; i < N; i++ ) {
-            st = new StringTokenizer(br.readLine());
-            for(int j = 0; j < M; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-                copyMap[i][j] = map[i][j];
-            }
-        }
+		public Pair(int x, int y, int index) {
+			this.x = x;
+			this.y = y;
+			this.index = index;
+		}
+	}
 
-        archerPosition(0);
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		D = Integer.parseInt(st.nextToken());
+		map = new int[N + 1][M];
+		copyMap = new int[N + 1][M];
+		copyMap2 = new int[N + 1][M];
+		visited = new boolean[M];
+		archersList = new Pair[3];
 
-        System.out.println(max);
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < M; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+				copyMap[i][j] = map[i][j];
+			}
+		}
 
-        for(int i : result) System.out.print(i + " ");
-        System.out.println();
+		archerPosition(0);
 
-        br.close();
-    }
+		System.out.println(max);
 
-    private static int attack() {
-        Pair[] attackEnemy = new Pair[3];
+		for (int i : result)
+			System.out.print(i + " ");
+		System.out.println();
 
-        Queue<Pair> q = new LinkedList<Pair>();
-        for(Pair pair : archersList) {
-            q.add(pair);
-        }
+		br.close();
+	}
 
-        int index = N-1;
-        int sum = 0;
-        Pair samePair = null;
-        int cnt = 0;
+	private static int attack() {
+		Pair[] attackEnemy = new Pair[3];
 
-        while(!q.isEmpty()) {
-            Pair p = q.poll();
+		Queue<Pair> q = new LinkedList<Pair>();
+		for (Pair pair : archersList) {
+			q.add(pair);
+		}
 
-            if(isEnd()) {
-                break;
-            }
+		int index = N - 1;
+		int sum = 0;
+		Pair samePair = null;
+		int cnt = 0;
 
-            if(p.x == 0 || p.index == -1) break;
+		while (!q.isEmpty()) {
+			Pair p = q.poll();
 
+			if (isEnd()) {
+				break;
+			}
 
-            Pair pair = null;
-            int dis = 0;
-            int min = 10000;
+			if (p.x == 0 || p.index == -1)
+				break;
 
-            LOOP:
-            for(int j = M-1; j >= 0; j--) {
-                for(int i = p.index; i >= 0; i--) {
-                    if(p.x - i > D) break;
-                    if(copyMap[i][j] != 0) {
-                        dis = Math.abs(i - p.x) + Math.abs(j - p.y);
-                        if(dis <= min && dis <= D) {
-                            min = dis;
-                            pair = new Pair(i, j, i);
-                        }
-                    }
-                }
-            }
+			Pair pair = null;
+			int dis = 0;
+			int min = 10000;
 
-            if(min <= D) {
-                attackEnemy[cnt] = pair;
-            }
-            cnt++;
-            if(cnt == 3) {
-                cnt = 0;
-                for(int i = 0; i < attackEnemy.length; i++) {
-                    if(attackEnemy[i] != null && copyMap[attackEnemy[i].x][attackEnemy[i].y] == 1) {
-                        copyMap[attackEnemy[i].x][attackEnemy[i].y] = 0;
-                        sum ++;
-                    }
-                }
+			LOOP: for (int j = M - 1; j >= 0; j--) {
+				for (int i = p.index; i >= 0; i--) {
+					if (p.x - i > D)
+						break;
+					if (copyMap[i][j] != 0) {
+						dis = Math.abs(i - p.x) + Math.abs(j - p.y);
+						if (dis <= min && dis <= D) {
+							min = dis;
+							pair = new Pair(i, j, i);
+						}
+					}
+				}
+			}
 
-            }
+			if (min <= D) {
+				attackEnemy[cnt] = pair;
+			}
+			cnt++;
+			if (cnt == 3) {
+				cnt = 0;
+				for (int i = 0; i < attackEnemy.length; i++) {
+					if (attackEnemy[i] != null && copyMap[attackEnemy[i].x][attackEnemy[i].y] == 1) {
+						copyMap[attackEnemy[i].x][attackEnemy[i].y] = 0;
+						sum++;
+					}
+				}
 
-            q.add(new Pair(p.x-1, p.y, p.index-1));
-        }
+			}
 
+			q.add(new Pair(p.x - 1, p.y, p.index - 1));
+		}
 
-        return sum;
-    }
+		return sum;
+	}
 
-    private static void archerPosition(int depth) {
-        if(depth == 3) {
-            copyMap();
+	private static void archerPosition(int depth) {
+		if (depth == 3) {
+			copyMap();
 //            max = Math.max(max, attack());
-            int attack = attack();
-            if(max < attack) {
-                max = attack;
-                for(int i = 0; i < 3; i++) {
-                    result[i] = archersList[i].y;
-                }
-            }
-            return;
-        }
+			int attack = attack();
+			if (max < attack) {
+				max = attack;
+				for (int i = 0; i < 3; i++) {
+					result[i] = archersList[i].y;
+				}
+			}
+			return;
+		}
 
-        for(int i = 0; i < M; i++) {
-            if(!visited[i]) {
-                visited[i] = true;
-                archersList[depth] = new Pair(N, i, N-1);
-                archerPosition(depth+1);
-                visited[i] = false;
-            }
-        }
-    }
+		for (int i = 0; i < M; i++) {
+			if (!visited[i]) {
+				visited[i] = true;
+				archersList[depth] = new Pair(N, i, N - 1);
+				archerPosition(depth + 1);
+				visited[i] = false;
+			}
+		}
+	}
 
-    private static boolean isEnd() {
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < M; j++) {
-                if(copyMap[i][j] == 1) {
-                    return false;
-                }
-            }
-        }
+	private static boolean isEnd() {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (copyMap[i][j] == 1) {
+					return false;
+				}
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    private static void copyMap() {
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < M; j++) {
-                copyMap[i][j] = map[i][j];
-                copyMap2[i][j] = map[i][j];
-            }
-        }
-    }
+	private static void copyMap() {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				copyMap[i][j] = map[i][j];
+				copyMap2[i][j] = map[i][j];
+			}
+		}
+	}
 
-    private static void copyMap2(){
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < M; j++) {
-                copyMap[i][j] = copyMap2[i][j];
-            }
-        }
-    }
+	private static void copyMap2() {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				copyMap[i][j] = copyMap2[i][j];
+			}
+		}
+	}
 }

@@ -71,116 +71,114 @@ public class 전국시대_15809 {
 	private static int N, M;
 	private static int military[];
 	private static int parent[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
-		military = new int[N+1];
-		parent = new int[N+1];
-		
+
+		military = new int[N + 1];
+		parent = new int[N + 1];
+
 		// 병력 배열과 부모 배열 초기화
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			military[i] = Integer.parseInt(br.readLine());
 			parent[i] = i;
 		}
-		
+
 		int a, b, c;
-		
-		
-		for(int i = 0; i < M; i++) {
+
+		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			a = Integer.parseInt(st.nextToken());
 			b = Integer.parseInt(st.nextToken());
 			c = Integer.parseInt(st.nextToken());
-			
+
 			// a가 1이면 동맹
-			if(a == 1) {
+			if (a == 1) {
 				union(b, c);
-			// 전쟁
-			}else {
+				// 전쟁
+			} else {
 				war(b, c);
 			}
-			
+
 		}
-		
+
 		List<Integer> list = new ArrayList<Integer>();
-		
+
 		// 병력이 0이상이면 남아 있는 나라
-		for(int i = 1; i <= N; i++) {
-			if(military[i] > 0) {
+		for (int i = 1; i <= N; i++) {
+			if (military[i] > 0) {
 				list.add(military[i]);
 			}
 		}
-		
+
 		Collections.sort(list);
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			System.out.println(parent[i]);
 		}
-		
-		
+
 		bw.write(list.size() + "\n");
-		for(int i : list) {
+		for (int i : list) {
 			bw.write(i + " ");
 		}
-		
+
 		br.close();
 		bw.close();
 	}
-	
+
 	// 전쟁
 	private static void war(int a, int b) {
 		// a와 b의 부모를 찾는다
 		a = find(a);
 		b = find(b);
-		
+
 		// a의 병력이 b의 병력보다 많다면
-		if(military[a] > military[b]) {
-			military[a] -= military[b];		// a 병력 - b 병력 = 남은 병력을 a병력에 넣음
-			military[b] = 0;				// a의 승리
+		if (military[a] > military[b]) {
+			military[a] -= military[b]; // a 병력 - b 병력 = 남은 병력을 a병력에 넣음
+			military[b] = 0; // a의 승리
 			// 이 조건이 들어가지 않으면 25%에서 틀림
 			// 이유는 ?
 			// b는 a의 속국이 된다
 			parent[b] = a;
-		
-		// 위 if문과 반대 경우
-		}else if(military[a] < military[b]) {
+
+			// 위 if문과 반대 경우
+		} else if (military[a] < military[b]) {
 			military[b] -= military[a];
 			military[a] = 0;
 			parent[a] = b;
-		
-		// 두 나라의 병력이 같다면 둘다 멸망
-		}else {
+
+			// 두 나라의 병력이 같다면 둘다 멸망
+		} else {
 			military[a] = 0;
 			military[b] = 0;
 		}
 	}
-	
+
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(military[a] > military[b]) {
+
+		if (military[a] > military[b]) {
 			parent[b] = a;
 			military[a] += military[b];
 			military[b] = 0;
-		}
-		else {
+		} else {
 			parent[a] = b;
 			military[b] += military[a];
 			military[a] = 0;
 		}
 	}
-	
+
 	private static int find(int x) {
-		if(parent[x] == x) {
+		if (parent[x] == x) {
 			return x;
 		}
-		
+
 		return find(parent[x]);
 	}
-	
+
 }

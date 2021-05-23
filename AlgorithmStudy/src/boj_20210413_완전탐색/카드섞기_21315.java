@@ -56,42 +56,42 @@ public class 카드섞기_21315 {
 	private static int N;
 	private static int arr[];
 	private static LinkedList<Integer> list = new LinkedList<Integer>();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		arr = new int[N+1];
+		arr = new int[N + 1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i = 1; i <= N; i++) {
-			arr[i-1] = Integer.parseInt(st.nextToken());
+		for (int i = 1; i <= N; i++) {
+			arr[i - 1] = Integer.parseInt(st.nextToken());
 			list.add(i);
 		}
 		int k = 0;
-		for(int i = 1; i <= 9; i++) {
-			if(Math.pow(2, i) < N) {
+		for (int i = 1; i <= 9; i++) {
+			if (Math.pow(2, i) < N) {
 				k = i;
 			}
 		}
-		LOOP :
-		for(int i = 1; i <= k; i++) {
+		LOOP: for (int i = 1; i <= k; i++) {
 			LinkedList<Integer> copy = new LinkedList<Integer>();
 			LinkedList<Integer> result = new LinkedList<Integer>();
 			copy.addAll(list);
 			result.addAll(shuffle(copy, i));
 //			System.out.println(i + " : result : " + result.toString());
-			for(int j = 1; j <= k; j++) {
+			for (int j = 1; j <= k; j++) {
 				copy.clear();
 				copy.addAll(result);
 				LinkedList<Integer> answer = new LinkedList<Integer>();
 				answer.addAll(shuffle(copy, j));
 //				System.out.println("변경 result : " + result.toString());
 				boolean isChecked = true;
-				for(int a = 0; a < N; a++) {
-					if(arr[a] != answer.get(a)) {
+				for (int a = 0; a < N; a++) {
+					if (arr[a] != answer.get(a)) {
 						isChecked = false;
 					}
 				}
 //				System.out.println("answer : " + answer.toString());
-				if(isChecked) {
+				if (isChecked) {
 					System.out.println(i + " " + j);
 					break LOOP;
 				}
@@ -99,21 +99,20 @@ public class 카드섞기_21315 {
 		}
 		br.close();
 	}
-	
+
 	private static LinkedList<Integer> shuffle(LinkedList<Integer> list, int k) {
-		int pow = (int)Math.pow(2, k);
-		for(int i = 1; i <= pow; i++) {
+		int pow = (int) Math.pow(2, k);
+		for (int i = 1; i <= pow; i++) {
 			list.addFirst(list.removeLast());
 		}
-		
-		for(int i = k-1; i >= 0; i--) {
-			for(int j = 1; j <= pow/2; j++) {
-				list.addFirst(list.remove(pow-1));
+
+		for (int i = k - 1; i >= 0; i--) {
+			for (int j = 1; j <= pow / 2; j++) {
+				list.addFirst(list.remove(pow - 1));
 			}
-			pow = (int)Math.pow(2, i);
+			pow = (int) Math.pow(2, i);
 		}
-		
-		
+
 		return list;
 	}
 }

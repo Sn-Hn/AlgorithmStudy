@@ -50,86 +50,91 @@ public class 불우이웃돕기_1414 {
 	private static int parent[];
 	private static int maxLen = 0;
 	private static int max = 0;
-	private static class Node implements Comparable<Node>{
+
+	private static class Node implements Comparable<Node> {
 		int x, y, len;
+
 		public Node(int x, int y, int len) {
 			this.x = x;
 			this.y = y;
 			this.len = len;
 		}
-		
+
 		@Override
 		public int compareTo(Node o) {
 			// TODO Auto-generated method stub
 			return len - o.len;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		len = new char[N][N];
 		parent = new int[N];
 		PriorityQueue<Node> q = new PriorityQueue<Node>();
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			len[i] = br.readLine().toCharArray();
 			parent[i] = i;
 		}
-		
-		
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				int num = 0;
-				if(len[i][j] >= 'a' && len[i][j] <= 'z') {
+				if (len[i][j] >= 'a' && len[i][j] <= 'z') {
 					num = len[i][j] - 96;
-				}else if(len[i][j] == '0'){
+				} else if (len[i][j] == '0') {
 					num = 0;
-				}else {
+				} else {
 					num = len[i][j] - 38;
 				}
 				max += num;
-				if(i != j && len[i][j] != '0') {
+				if (i != j && len[i][j] != '0') {
 					q.add(new Node(i, j, num));
 				}
 			}
 		}
-		
+
 		solve(q);
-		
+
 		br.close();
 	}
-	
+
 	private static void solve(PriorityQueue<Node> q) {
 		int count = 0;
-		while(!q.isEmpty() && count < N - 1) {
+		while (!q.isEmpty() && count < N - 1) {
 			Node node = q.poll();
-			
-			if(!findCycle(node.x, node.y)) {
+
+			if (!findCycle(node.x, node.y)) {
 				union(node.x, node.y);
 				maxLen += node.len;
 				count++;
 			}
 		}
-		
-		if(count == N-1) {
+
+		if (count == N - 1) {
 			System.out.println(max - maxLen);
-		}else {
+		} else {
 			System.out.println(-1);
 		}
 	}
-	
+
 	private static int find(int x) {
-		if(parent[x] == x) return x;
+		if (parent[x] == x)
+			return x;
 		return parent[x] = find(parent[x]);
 	}
-	
+
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a < b) parent[b] = a;
-		else parent[a] = b;
+
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
 	}
-	
+
 	private static boolean findCycle(int a, int b) {
 		return find(a) == find(b);
 	}

@@ -66,29 +66,30 @@ public class 줄세우기_2631_Test {
 	private static int dp[];
 	private static int line[];
 	private static int max = Integer.MIN_VALUE;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		dp = new int[N+1];
-		line = new int[N+1];
-		for(int i = 1; i <= N; i++) {
+		dp = new int[N + 1];
+		line = new int[N + 1];
+		for (int i = 1; i <= N; i++) {
 			line[i] = Integer.parseInt(br.readLine());
 		}
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			// 자기 자신
 			dp[i] = 1;
-			for(int j = 1; j <= i; j++) {
-				if(line[j] < line[i]) {
-					dp[i] = Math.max(dp[j]+1, dp[i]);
+			for (int j = 1; j <= i; j++) {
+				if (line[j] < line[i]) {
+					dp[i] = Math.max(dp[j] + 1, dp[i]);
 				}
 			}
 			max = Math.max(max, dp[i]);
 		}
-		
-		System.out.println(N-max);
-		
+
+		System.out.println(N - max);
+
 		br.close();
 	}
-	
+
 }

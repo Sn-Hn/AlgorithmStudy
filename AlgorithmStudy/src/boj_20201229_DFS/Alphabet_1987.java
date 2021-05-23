@@ -55,57 +55,58 @@ public class Alphabet_1987 {
 	private static boolean visited[][];
 	private static List<Character> alphabet = new ArrayList<Character>();
 	private static int max = Integer.MIN_VALUE;
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
+
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		String str = "";
-		
+
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
-		map = new char[R+1][C+1];
+		map = new char[R + 1][C + 1];
 		visited = new boolean[R][C];
-		
-		for(int i = 0; i < R; i++) {
+
+		for (int i = 0; i < R; i++) {
 			str = br.readLine();
-			for(int j = 0; j < C; j++) {
+			for (int j = 0; j < C; j++) {
 				map[i][j] = str.charAt(j);
 			}
 		}
 		visited[0][0] = true;
 		alphabet.add(map[0][0]);
 		move(0, 0);
-		
+
 		System.out.println(max);
-		
+
 		br.close();
 	}
-	
+
 	// dfs
 	private static void move(int x, int y) {
 		max = Math.max(max, alphabet.size());
-		
-		for(int i = 0; i < 4; i++) {
+
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			
-			if(X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
-				if(!alphabet.contains(map[X][Y])) {
+
+			if (X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
+				if (!alphabet.contains(map[X][Y])) {
 					visited[X][Y] = true;
-					alphabet.add(map[X][Y]);					
+					alphabet.add(map[X][Y]);
 					move(X, Y);
 					visited[X][Y] = false;
-					alphabet.remove(alphabet.size()-1);
+					alphabet.remove(alphabet.size() - 1);
 				}
 			}
 		}
 	}
-	
+
 	private static void printMap() {
-		for(int i = 0; i < R; i++) {
-			for(int j = 0; j < C; j++) {
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
 				System.out.print(map[i][j]);
 			}
 			System.out.println();

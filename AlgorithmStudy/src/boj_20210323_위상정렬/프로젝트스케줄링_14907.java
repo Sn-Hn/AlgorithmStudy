@@ -54,62 +54,64 @@ public class 프로젝트스케줄링_14907 {
 	private static int result[] = new int[27];
 	private static String[] strArr = new String[3];
 	private static List<List<Integer>> graph = new ArrayList<List<Integer>>();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String input = "";
-		for(int i = 0; i <= 26; i++) {
+		for (int i = 0; i <= 26; i++) {
 			graph.add(new ArrayList<Integer>());
 		}
 		char ch;
-		while((input = br.readLine()).length() != 0) {
+		while ((input = br.readLine()).length() != 0) {
 			strArr = input.split(" ");
 			ch = strArr[0].charAt(0);
-			work[ch-64] = Integer.parseInt(strArr[1]);
-			result[ch-64] = work[ch-64];
+			work[ch - 64] = Integer.parseInt(strArr[1]);
+			result[ch - 64] = work[ch - 64];
 			String str = "";
-			if(strArr.length > 2) {
+			if (strArr.length > 2) {
 				str = strArr[2];
 			}
-			for(int i = 0; i < str.length(); i++) {			
-				graph.get(str.charAt(i)-64).add(ch-64);				
+			for (int i = 0; i < str.length(); i++) {
+				graph.get(str.charAt(i) - 64).add(ch - 64);
 			}
-			inDegree[ch-64] = str.length();
-			
+			inDegree[ch - 64] = str.length();
+
 		}
-		
+
 		topologySort();
-		
+
 		br.close();
 	}
-	
+
 	private static void topologySort() {
 		Queue<Integer> q = new LinkedList<Integer>();
-		
-		for(int i = 1; i <= 26; i++) {
-			if(inDegree[i] == 0) q.add(i);
+
+		for (int i = 1; i <= 26; i++) {
+			if (inDegree[i] == 0)
+				q.add(i);
 		}
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			int now = q.poll();
-			
-			
-			for(int next : graph.get(now)) {
+
+			for (int next : graph.get(now)) {
 				inDegree[next]--;
-				if(result[next] < result[now] + work[next]) {
+				if (result[next] < result[now] + work[next]) {
 					result[next] = result[now] + work[next];
 				}
-				
-				if(inDegree[next] == 0) {
+
+				if (inDegree[next] == 0) {
 					q.add(next);
 				}
 			}
 		}
 		int max = 0;
-		
-		for(int i : result) {
-			if(max < i) max = i;
+
+		for (int i : result) {
+			if (max < i)
+				max = i;
 		}
-		
+
 		System.out.println(max);
 	}
 }

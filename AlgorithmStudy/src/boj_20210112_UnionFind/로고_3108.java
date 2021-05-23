@@ -54,21 +54,21 @@ N개의 직사각형을 그리는 필요한 PU명령의 최솟값을 출력한�
 public class 로고_3108 {
 	private static int N;
 	private static int coordinate[][];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		
+
 		coordinate = new int[N][4];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			coordinate[i][0] = Integer.parseInt(st.nextToken());
 			coordinate[i][1] = Integer.parseInt(st.nextToken());
 			coordinate[i][2] = Integer.parseInt(st.nextToken());
 			coordinate[i][3] = Integer.parseInt(st.nextToken());
 		}
-		
-		
+
 		br.close();
 	}
 }

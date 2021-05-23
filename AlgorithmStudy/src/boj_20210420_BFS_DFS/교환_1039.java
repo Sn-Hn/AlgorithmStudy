@@ -45,14 +45,16 @@ import java.io.BufferedReader;
 public class 교환_1039 {
 	private static int N, K;
 	private static int inputLen = 0;
-	
+
 	private static class Point {
 		int digit, cnt;
+
 		public Point(int digit, int cnt) {
 			this.digit = digit;
 			this.cnt = cnt;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -60,62 +62,62 @@ public class 교환_1039 {
 		inputLen = input.length();
 		N = Integer.parseInt(input);
 		K = Integer.parseInt(st.nextToken());
-		
+
 		changeDigits();
-		
+
 		br.close();
 	}
-	
+
 	private static void changeDigits() {
-		boolean visited[][] = new boolean[K+1][1000001];
+		boolean visited[][] = new boolean[K + 1][1000001];
 		int result = -1;
-		
+
 		Queue<Point> q = new LinkedList<Point>();
 		q.add(new Point(N, 0));
 		visited[0][N] = true;
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Point p = q.poll();
-			
-			if(p.cnt == K) {
-				if(result < p.digit) {
+
+			if (p.cnt == K) {
+				if (result < p.digit) {
 					result = p.digit;
 				}
 				continue;
 			}
-			
-			for(int i = 0; i < inputLen-1; i++) {
-				for(int j = i+1; j < inputLen; j++) {
+
+			for (int i = 0; i < inputLen - 1; i++) {
+				for (int j = i + 1; j < inputLen; j++) {
 					int next = parseInt(p.digit, i, j);
-					if(next != -1 && !visited[p.cnt+1][next]) {
-						visited[p.cnt+1][next] = true;
-						q.add(new Point(next, p.cnt+1));
+					if (next != -1 && !visited[p.cnt + 1][next]) {
+						visited[p.cnt + 1][next] = true;
+						q.add(new Point(next, p.cnt + 1));
 					}
 				}
 			}
 		}
-		
+
 		System.out.println(result);
 	}
-	
+
 	private static int parseInt(int num, int a, int b) {
 		char[] arr = (num + "").toCharArray();
-		
-		if(a == 0 && arr[b] == '0') {
+
+		if (a == 0 && arr[b] == '0') {
 			return -1;
 		}
-		
+
 		char temp = arr[a];
 		arr[a] = arr[b];
 		arr[b] = temp;
-		
+
 		int ret = 0;
-		for(int i = 0; i < arr.length; i++) {
+		for (int i = 0; i < arr.length; i++) {
 			ret *= 10;
 			ret += arr[i] - '0';
 		}
-		
+
 		return ret;
 	}
-	
+
 }

@@ -146,91 +146,93 @@ import java.util.StringTokenizer;
 // 4. 맵의 끝까지 왔다면 색종이의 최소 값을 갱신
 public class 색종이붙이기_17136 {
 	private static int map[][] = new int[10][10];
-	private static int paper[] = {0, 5, 5, 5, 5, 5};
+	private static int paper[] = { 0, 5, 5, 5, 5, 5 };
 	private static int min = Integer.MAX_VALUE;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		for(int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < 10; j++) {
+			for (int j = 0; j < 10; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 		dfs(0);
-		if(min <= 25) {
-			System.out.println(min);			
-		}else {
+		if (min <= 25) {
+			System.out.println(min);
+		} else {
 			System.out.println(-1);
 		}
-		
+
 		br.close();
 	}
-	
+
 	private static void dfs(int x) {
-		
-		for(int i = x; i < 10; i++) {
+
+		for (int i = x; i < 10; i++) {
 			// dfs(int x, int y)
 			// j = y로 주었다가 틀림
 			// j가 다시 0으로 돌아가야 하는 이유
 			// 해당 row가 끝났다면 다시 0번쨰 열부터 탐색을 해야하므로
 			// j = y로 준다면 row가 바뀌어도 y부터 탐색하므로 X
-			for(int j = 0; j < 10; j++) {
+			for (int j = 0; j < 10; j++) {
 				// 색종이를 붙여야한다.
-				if(map[i][j] == 1) {
+				if (map[i][j] == 1) {
 					// 무조건 큰 색종이부터 덮어야 하는 건 아니지만
 					// 큰 색종이부터 덮어야 일찍 끝날 확률이 크다.
-					for(int k = 5; k >= 1; k--) {
-						if(isAttachChecked(i, j, k) && paper[k] > 0) {
+					for (int k = 5; k >= 1; k--) {
+						if (isAttachChecked(i, j, k) && paper[k] > 0) {
 							attachAndDetach(i, j, k);
 							paper[k]--;
-							dfs(i+k);
+							dfs(i + k);
 							paper[k]++;
 							attachAndDetach(i, j, k);
 						}
 					}
-					if(map[i][j] == 1) return;
+					if (map[i][j] == 1)
+						return;
 				}
 			}
 		}
-		
+
 		min = Math.min(min, cntPaper());
-		
+
 	}
-	
+
 	// 색종이를 붙이고 떼는 메소드
 	private static void attachAndDetach(int x, int y, int index) {
-		for(int i = x; i < x+index; i++) {
-			for(int j = y; j < y+index; j++) {
+		for (int i = x; i < x + index; i++) {
+			for (int j = y; j < y + index; j++) {
 				map[i][j] *= -1;
 			}
 		}
 	}
-	
+
 	private static boolean isAttachChecked(int x, int y, int index) {
-		// 맵의 크기를 넘어간다면 false 
-		if(x+index > 10 || y+index > 10) {
+		// 맵의 크기를 넘어간다면 false
+		if (x + index > 10 || y + index > 10) {
 			return false;
 		}
-		
+
 		// 색종이를 붙일 위치에 1이 아니라면 false
-		for(int i = x; i < x+index; i++) {
-			for(int j = y; j < y+index; j++) {
-				if(map[i][j] != 1) {
+		for (int i = x; i < x + index; i++) {
+			for (int j = y; j < y + index; j++) {
+				if (map[i][j] != 1) {
 					return false;
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	// 주어진 색종이의 개수는 총 25개
 	private static int cntPaper() {
 		int cnt = 25;
-		for(int i = 1; i <= 5; i++) {
+		for (int i = 1; i <= 5; i++) {
 			cnt -= paper[i];
 		}
 		return cnt;
 	}
-	
+
 }

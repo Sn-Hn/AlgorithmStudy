@@ -131,13 +131,14 @@ public class Robot_1726 {
 	private static boolean visited[][][];
 	private static int location[][] = new int[2][3];
 	private static int min = Integer.MAX_VALUE;
-	
+
 	// dx, dy는 0, 1, 2, 3 -> 동 서 남 북 순이다
-	private static int dx[] = {0, 0, 1, -1};
-	private static int dy[] = {1, -1, 0, 0};
-	
+	private static int dx[] = { 0, 0, 1, -1 };
+	private static int dy[] = { 1, -1, 0, 0 };
+
 	private static class Pair {
 		int x, y, direction, count;
+
 		public Pair(int x, int y, int direction, int count) {
 			this.x = x;
 			this.y = y;
@@ -145,83 +146,83 @@ public class Robot_1726 {
 			this.count = count;
 		}
 	}
-	
+
 	// 동 : 1, 서 : 2, 남 : 3, 북 : 4
 	// -> 동 : 0, 서 : 1, 남 : 2, 북 : 3 (변경)
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new int[N][M];
 		visited = new boolean[N][M][4];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < M; j++) {
+			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
-		for(int i = 0; i < 2; i++) {
+
+		for (int i = 0; i < 2; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < 3; j++) {
+			for (int j = 0; j < 3; j++) {
 				// location[0] : 시작 위치와 방향
 				// location[1] : 끝 위치와 방향
-				location[i][j] = Integer.parseInt(st.nextToken())-1;
+				location[i][j] = Integer.parseInt(st.nextToken()) - 1;
 			}
 		}
-		
+
 		moveRobot();
-		
+
 		System.out.println(min);
-		
+
 		br.close();
 	}
-	
+
 	// 로봇이 움직이는 메소드 bfs
 	// dfs -> 시간초과
 	// 1, 2 또는 3칸을 한 번의 명령으로 직진할 수 있다. -> straight으로 판단
 	// x, y 는 좌표, direction : 방향, count : 명령의 개수
 	private static void moveRobot() {
 		Queue<Pair> q = new LinkedList<Pair>();
-		
+
 		q.add(new Pair(location[0][0], location[0][1], location[0][2], 0));
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair p = q.poll();
 			visited[p.x][p.y][p.direction] = true;
-			
-			if(p.x == location[1][0] && p.y == location[1][1] && p.direction == location[1][2]) {
+
+			if (p.x == location[1][0] && p.y == location[1][1] && p.direction == location[1][2]) {
 				min = Math.min(min, p.count);
 			}
-			
+
 			// 내 방향으로 전진
-			for(int i = 1; i <= 3; i++) {
+			for (int i = 1; i <= 3; i++) {
 				int X = p.x + dx[p.direction] * i;
 				int Y = p.y + dy[p.direction] * i;
-				
-				if(X >= 0 && X < N && Y >= 0 && Y < M && map[X][Y] == 0) {
-					if(!visited[X][Y][p.direction]) {
+
+				if (X >= 0 && X < N && Y >= 0 && Y < M && map[X][Y] == 0) {
+					if (!visited[X][Y][p.direction]) {
 						visited[X][Y][p.direction] = true;
-						q.add(new Pair(X, Y, p.direction, p.count+1));											
+						q.add(new Pair(X, Y, p.direction, p.count + 1));
 					}
-				}else {
+				} else {
 					break;
 				}
 			}
-			
+
 			// 회전
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				// 180도 회전
-				if(p.direction != i && !visited[p.x][p.y][i]) {
+				if (p.direction != i && !visited[p.x][p.y][i]) {
 					visited[p.x][p.y][i] = true;
-					if((p.direction+i)%4 == 1) {
-						q.add(new Pair(p.x, p.y, i, p.count+2));
-					}else if(p.direction != i) {
-						q.add(new Pair(p.x, p.y, i, p.count+1));
-					}					
+					if ((p.direction + i) % 4 == 1) {
+						q.add(new Pair(p.x, p.y, i, p.count + 2));
+					} else if (p.direction != i) {
+						q.add(new Pair(p.x, p.y, i, p.count + 1));
+					}
 				}
 			}
 		}

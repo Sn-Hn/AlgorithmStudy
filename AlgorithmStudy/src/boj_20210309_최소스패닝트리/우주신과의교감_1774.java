@@ -49,107 +49,114 @@ public class 우주신과의교감_1774 {
 	private static int parent[];
 	private static List<Node> list = new ArrayList<Node>();
 	private static PriorityQueue<Node> q = new PriorityQueue<Node>();
-	
-	private static class Node implements Comparable<Node>{
+
+	private static class Node implements Comparable<Node> {
 		int x, y;
 		double distance;
+
 		public Node(int x, int y, double distance) {
 			this.x = x;
 			this.y = y;
 			this.distance = distance;
 		}
-		
+
 		@Override
 		public int compareTo(Node o) {
 			// TODO Auto-generated method stub
-			if(distance > o.distance) return 1;
-			else return -1;
+			if (distance > o.distance)
+				return 1;
+			else
+				return -1;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		list.add(new Node(0, 0, 0));
-		parent = new int[N+1];
-		for(int i = 1; i <= N; i++) {
+		parent = new int[N + 1];
+		for (int i = 1; i <= N; i++) {
 			parent[i] = i;
 		}
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			
+
 			list.add(new Node(a, b, 0));
 		}
-		
-		for(int i = 0; i < M; i++) {
+
+		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			union(a, b);
 		}
-		
+
 		allLines();
-		
+
 		solve();
-		
+
 		br.close();
 	}
-	
+
 	private static void solve() {
 		double cost = 0;
 		int count = 0;
-		while(!q.isEmpty() && count < N-1) {
+		while (!q.isEmpty() && count < N - 1) {
 			Node node = q.poll();
-			
-			if(!findCycle(node.x, node.y)) {
+
+			if (!findCycle(node.x, node.y)) {
 				union(node.x, node.y);
 				count++;
 				cost += node.distance;
 			}
 		}
-		
+
 		System.out.println(String.format("%.2f", cost));
 	}
-	
+
 	private static void allLines() {
-		for(int i = 1; i < N; i++) {
-			for(int j = i+1; j <= N; j++) {
+		for (int i = 1; i < N; i++) {
+			for (int j = i + 1; j <= N; j++) {
 				Node nodeA = list.get(i);
 				Node nodeB = list.get(j);
-				
+
 				int w = nodeA.x - nodeB.x;
 				int h = nodeA.y - nodeB.y;
-				
+
 				double distance = Math.sqrt(Math.pow(w, 2) + Math.pow(h, 2));
 				q.add(new Node(i, j, distance));
 			}
 		}
 	}
-	
+
 	private static int find(int x) {
-		if(parent[x] == x) {
+		if (parent[x] == x) {
 			return x;
 		}
 		return parent[x] = find(parent[x]);
 	}
-	
+
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a < b) parent[b] = a;
-		else parent[a] = b;
+
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
 	}
-	
+
 	private static boolean findCycle(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a == b) return true;
+
+		if (a == b)
+			return true;
 		return false;
 	}
 }

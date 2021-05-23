@@ -46,70 +46,71 @@ public class AB_12970 {
 	private static String str[];
 	private static int A_Index[];
 	private static boolean flag = false;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
-		
+
 		str = new String[N];
-		
+
 		Arrays.fill(str, "B");
-		
+
 		findString();
-		
+
 		br.close();
 	}
-	
+
 	private static void findString() {
 		int a = 0;
 		int b = 0;
 		int sub = 0;
-		for(int i = 1; i < N; i++) {
-			if(i * (N-i) >= K) {
+		for (int i = 1; i < N; i++) {
+			if (i * (N - i) >= K) {
 				// 조건을 만족
 				flag = true;
 				a = i;
-				b = N-i;
+				b = N - i;
 				break;
 			}
 		}
-		
-		sub = a*b - K;
-		
+
+		sub = a * b - K;
+
 		// A의 위치들이 들어갈 배열
 		A_Index = new int[a];
-		
+
 		// A의 위치를 구하는 반복문
-		for(int i = a-1; i >= 0; i--) {
+		for (int i = a - 1; i >= 0; i--) {
 			// AB 쌍의 최대 개수에서 K를 뺸값이 b보다 크다면
 			// b보다 크다는 것은 마지막A의 인덱스가 N을 넘어선다는 뜻이므로
 			// 마지막 A가 배열의 끝에 올 수 있도록 구현
 			// 그런 후 sub에서 b를 뺸다
-			if(sub > b) {
-				A_Index[i] = b+i;
+			if (sub > b) {
+				A_Index[i] = b + i;
 				sub -= b;
-			
-			// sub가 b보다 작다면 마지막 A만 움직여서 K를 만들 수 있다는 뜻
-			}else {
-				A_Index[i] = sub+i;
+
+				// sub가 b보다 작다면 마지막 A만 움직여서 K를 만들 수 있다는 뜻
+			} else {
+				A_Index[i] = sub + i;
 				sub = 0;
 			}
 		}
-		
+
 		// A의 위치를 구했으니 str배열에 A를 넣음
-		for(int i = 0; i < a; i++) {
+		for (int i = 0; i < a; i++) {
 			str[A_Index[i]] = "A";
 		}
-		
-		if(flag) {
-			for(int i = 0; i < N; i++) {
+
+		if (flag) {
+			for (int i = 0; i < N; i++) {
 				System.out.print(str[i]);
-			}			
-		// !flag -> 조건을 만족하는 문자열이 없다는 뜻
-		}else {
+			}
+			// !flag -> 조건을 만족하는 문자열이 없다는 뜻
+		} else {
 			System.out.println(-1);
 		}
-		
+
 	}
 }

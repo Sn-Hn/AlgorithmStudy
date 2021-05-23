@@ -42,11 +42,10 @@ BC를 먼저 곱하고 A를 곱하는 경우 A(BC)에 필요한 곱셈 연산의
 
 public class 행렬곱셈순서_11049 {
 	private static int N;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		
-		
+
 		br.close();
 	}
 }

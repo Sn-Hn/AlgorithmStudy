@@ -55,94 +55,102 @@ public class 나만안되는연애_14621 {
 	private static int M;
 	private static int parent[];
 	private static char sexCollege[];
-	
+
 	private static class Node implements Comparable<Node> {
 		int x, y, distance;
+
 		public Node(int x, int y, int distance) {
 			this.x = x;
 			this.y = y;
 			this.distance = distance;
 		}
-		
+
 		@Override
 		public int compareTo(Node o) {
 			// TODO Auto-generated method stub
 			return distance - o.distance;
 		}
 	}
+
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
-		parent = new int[N+1];
-		sexCollege = new char[N+1];
-		
-		for(int i = 1; i <= N; i++) {
+
+		parent = new int[N + 1];
+		sexCollege = new char[N + 1];
+
+		for (int i = 1; i <= N; i++) {
 			parent[i] = i;
 		}
 		st = new StringTokenizer(br.readLine());
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			sexCollege[i] = st.nextToken().charAt(0);
 		}
 		PriorityQueue<Node> q = new PriorityQueue<Node>();
-		for(int i = 1; i <= M; i++) {
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			int d = Integer.parseInt(st.nextToken());
-			
+
 			q.add(new Node(a, b, d));
 		}
-		
+
 		solve(q);
 		br.close();
 	}
-	
+
 	private static void solve(PriorityQueue<Node> q) {
 		int cost = 0;
 		int count = 0;
-		while(!q.isEmpty() && count < N-1) {
+		while (!q.isEmpty() && count < N - 1) {
 			Node node = q.poll();
-			
-			if(!findCycle(node.x, node.y) && findSex(node.x, node.y)) {
+
+			if (!findCycle(node.x, node.y) && findSex(node.x, node.y)) {
 				union(node.x, node.y);
 				count++;
 				cost += node.distance;
 			}
 		}
-		if(count == N-1) {
-			System.out.println(cost);			
-		}else {
+		if (count == N - 1) {
+			System.out.println(cost);
+		} else {
 			System.out.println(-1);
 		}
 	}
-	
+
 	private static boolean findSex(int a, int b) {
-		if(sexCollege[a] == 'W' && sexCollege[b] == 'M') return true;
-		if(sexCollege[a] == 'M' && sexCollege[b] == 'W') return true;
+		if (sexCollege[a] == 'W' && sexCollege[b] == 'M')
+			return true;
+		if (sexCollege[a] == 'M' && sexCollege[b] == 'W')
+			return true;
 		return false;
 	}
-	
+
 	private static int find(int x) {
-		if(parent[x] == x) return x;
+		if (parent[x] == x)
+			return x;
 		return parent[x] = find(parent[x]);
 	}
-	
+
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a < b) parent[b] = a;
-		else parent[a] = b;
+
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
 	}
-	
+
 	private static boolean findCycle(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a == b) return true;
+
+		if (a == b)
+			return true;
 		return false;
 	}
 }

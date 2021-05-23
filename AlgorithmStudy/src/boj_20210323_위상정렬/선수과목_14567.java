@@ -55,74 +55,74 @@ public class 선수과목_14567 {
 	private static int N, M;
 	private static int inDegree[];
 	private static int result[];
-	
+
 	private static List<List<Integer>> graph = new ArrayList<List<Integer>>();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
-		inDegree = new int[N+1];
-		result = new int[N+1];
-		
-		for(int i = 0; i <= N; i++) {
+
+		inDegree = new int[N + 1];
+		result = new int[N + 1];
+
+		for (int i = 0; i <= N; i++) {
 			graph.add(new ArrayList<Integer>());
 		}
-		
-		
-		for(int i = 1; i <= M; i++) {
+
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			
+
 			graph.get(a).add(b);
 			inDegree[b]++;
 		}
-		
+
 		topologySort();
-		
+
 		br.close();
 	}
-	
+
 	private static void topologySort() {
 		Queue<Integer> q = new LinkedList<Integer>();
-		
-		for(int i = 1; i <= N; i++) {
-			if(inDegree[i] == 0) {
+
+		for (int i = 1; i <= N; i++) {
+			if (inDegree[i] == 0) {
 				q.add(i);
 			}
 			result[i]++;
 		}
-		
-		for(int i = 1; i <= N; i++) {
-			
-			if(q.isEmpty()) {
+
+		for (int i = 1; i <= N; i++) {
+
+			if (q.isEmpty()) {
 				return;
 			}
-			
+
 			int now = q.poll();
-			
+
 			// 순서
 			// result[i] = now;
-			
-			for(int next : graph.get(now)) {
+
+			for (int next : graph.get(now)) {
 				inDegree[next]--;
-				
-				if(inDegree[next] == 0) {
+
+				if (inDegree[next] == 0) {
 					q.add(next);
 					// 이전 선수과목에 +1
 					result[next] = result[now] + 1;
 				}
 			}
 		}
-		
+
 		print();
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			System.out.print(result[i] + " ");
 		}
 	}

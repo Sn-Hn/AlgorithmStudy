@@ -60,63 +60,65 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class 트리의지름_1967 {
-    private static int N;
-    private static int max = 0;
-    private static boolean visited[];
-    private static int max_index = 0;
-    private static List<Node> tree[];
+	private static int N;
+	private static int max = 0;
+	private static boolean visited[];
+	private static int max_index = 0;
+	private static List<Node> tree[];
 
-    private static class Node {
-        int index, weight;
-        public Node(int index, int weight) {
-            this.index = index;
-            this.weight = weight;
-        }
-    }
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        tree = new ArrayList[N+1];
-        visited = new boolean[N+1];
-        for(int i = 0; i <= N; i++) {
-            tree[i] = new ArrayList<>();
-        }
-        StringTokenizer st;
-        for(int i = 0; i < N - 1; i++) {
-            st = new StringTokenizer(br.readLine());
-            int parent = Integer.parseInt(st.nextToken());
-            int child = Integer.parseInt(st.nextToken());
-            int weight = Integer.parseInt(st.nextToken());
+	private static class Node {
+		int index, weight;
 
-            tree[parent].add(new Node(child, weight));
-            tree[child].add(new Node(parent, weight));
-        }
-        
-        // 트리에서 가중치가 가장 큰 노드를 구하기 위함
-        visited[1] = true;
-        dfs(1, 0);
+		public Node(int index, int weight) {
+			this.index = index;
+			this.weight = weight;
+		}
+	}
 
-        // 위에서 구한 가중치가 가장 큰 노드에서 시작하여
-        // 가장 먼 노드를 구한다.
-        visited = new boolean[N+1];
-        visited[max_index] = true;
-        dfs(max_index, 0);
-        System.out.println(max);
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		tree = new ArrayList[N + 1];
+		visited = new boolean[N + 1];
+		for (int i = 0; i <= N; i++) {
+			tree[i] = new ArrayList<>();
+		}
+		StringTokenizer st;
+		for (int i = 0; i < N - 1; i++) {
+			st = new StringTokenizer(br.readLine());
+			int parent = Integer.parseInt(st.nextToken());
+			int child = Integer.parseInt(st.nextToken());
+			int weight = Integer.parseInt(st.nextToken());
 
-        br.close();
-    }
+			tree[parent].add(new Node(child, weight));
+			tree[child].add(new Node(parent, weight));
+		}
 
-    private static void dfs(int index, int weight){
-        if(max < weight) {
-            max = weight;
-            max_index = index;
-        }
+		// 트리에서 가중치가 가장 큰 노드를 구하기 위함
+		visited[1] = true;
+		dfs(1, 0);
 
-        for(Node node : tree[index]) {
-            if(!visited[node.index]) {
-                visited[node.index] = true;
-                dfs(node.index, weight + node.weight);
-            }
-        }
-    }
+		// 위에서 구한 가중치가 가장 큰 노드에서 시작하여
+		// 가장 먼 노드를 구한다.
+		visited = new boolean[N + 1];
+		visited[max_index] = true;
+		dfs(max_index, 0);
+		System.out.println(max);
+
+		br.close();
+	}
+
+	private static void dfs(int index, int weight) {
+		if (max < weight) {
+			max = weight;
+			max_index = index;
+		}
+
+		for (Node node : tree[index]) {
+			if (!visited[node.index]) {
+				visited[node.index] = true;
+				dfs(node.index, weight + node.weight);
+			}
+		}
+	}
 }

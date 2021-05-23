@@ -61,89 +61,90 @@ public class 내선물을받아줘_15559 {
 	private static int visited[][];
 	private static int level = 0;
 	private static int count = 0;
-	
-	//						    N, S, W, E
-	private static int dx[] = {-1, 1, 0, 0};
-	private static int dy[] = {0, 0, -1, 1};
-	
+
+	// N, S, W, E
+	private static int dx[] = { -1, 1, 0, 0 };
+	private static int dy[] = { 0, 0, -1, 1 };
+
 	private static class Pair {
 		int x, y;
 		char direction;
+
 		public Pair(int x, int y, char direction) {
 			this.x = x;
 			this.y = y;
 			this.direction = direction;
 		}
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
+
 		map = new char[N][M];
 		visited = new int[N][M];
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			map[i] = br.readLine().toCharArray();
 		}
-		
+
 		// 구사과의 처음 위치를 모르기 때문에 전체를 돌려본다.
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
-				if(visited[i][j] == 0) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (visited[i][j] == 0) {
 					level++;
 					bfs(i, j, map[i][j]);
 				}
 			}
 		}
-		
+
 		System.out.println(count);
-		
+
 		print();
-		
+
 		br.close();
 	}
-	
+
 	private static void bfs(int x, int y, char direction) {
 		Queue<Pair> q = new LinkedList<Pair>();
 		q.add(new Pair(x, y, direction));
 		visited[x][y] = level;
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair p = q.poll();
-			
+
 			int index = direction(p.direction);
-			
+
 			int X = p.x + dx[index];
 			int Y = p.y + dy[index];
-			if(visited[X][Y] == 0) {
+			if (visited[X][Y] == 0) {
 				visited[X][Y] = level;
 				q.add(new Pair(X, Y, map[X][Y]));
-			}else if(visited[X][Y] == level) {
+			} else if (visited[X][Y] == level) {
 				count++;
 			}
 		}
-		
+
 	}
-	
+
 	private static int direction(int direction) {
-		if(direction == 'N') {
+		if (direction == 'N') {
 			return 0;
-		}else if(direction == 'S') {
+		} else if (direction == 'S') {
 			return 1;
-		}else if(direction == 'W') {
+		} else if (direction == 'W') {
 			return 2;
-		}else if(direction == 'E'){
+		} else if (direction == 'E') {
 			return 3;
 		}
-		
+
 		return -1;
 	}
-	
+
 	private static void print() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
 				System.out.print(visited[i][j] + " ");
 			}
 			System.out.println();

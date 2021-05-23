@@ -43,95 +43,98 @@ pizza chicken -
 // https://programmers.co.kr/learn/courses/30/lessons/72412
 public class 순위검색 {
 	private static Map<String, List<Integer>> infoMap = new HashMap<String, List<Integer>>();
-    public static void main(String[] args) {
-        String[] info = {"java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"};
-        String[] query = {"java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"};
 
-        solution(info, query);
-    }
+	public static void main(String[] args) {
+		String[] info = { "java backend junior pizza 150", "python frontend senior chicken 210",
+				"python frontend senior chicken 150", "cpp backend senior pizza 260", "java backend junior chicken 80",
+				"python backend senior chicken 50" };
+		String[] query = { "java and backend and junior and pizza 100",
+				"python and frontend and senior and chicken 200", "cpp and - and senior and pizza 250",
+				"- and backend and senior and - 150", "- and - and - and chicken 100", "- and - and - and - 150" };
 
-    public static int[] solution(String[] info, String[] query) {
-        int[] answer = {};
-        initMap(info);
-        String[][] splitQuery = initQuery(query);
+		solution(info, query);
+	}
+
+	public static int[] solution(String[] info, String[] query) {
+		int[] answer = {};
+		initMap(info);
+		String[][] splitQuery = initQuery(query);
 //        mapPrint(infoMap);
-        answer = new int[query.length];
-        
-        for(Map.Entry<String, List<Integer>> entry : infoMap.entrySet()) {
-        	Collections.sort(entry.getValue());
-        }
-        
-        for(int i = 0; i < splitQuery.length; i++) {
-            if(infoMap.containsKey(splitQuery[i][0])) {
-                answer[i] = findScore(infoMap.get(splitQuery[i][0]), Integer.parseInt(splitQuery[i][1]));
-            }
-        }
+		answer = new int[query.length];
 
-        System.out.println(Arrays.toString(answer));
+		for (Map.Entry<String, List<Integer>> entry : infoMap.entrySet()) {
+			Collections.sort(entry.getValue());
+		}
 
-        return answer;
-    }
+		for (int i = 0; i < splitQuery.length; i++) {
+			if (infoMap.containsKey(splitQuery[i][0])) {
+				answer[i] = findScore(infoMap.get(splitQuery[i][0]), Integer.parseInt(splitQuery[i][1]));
+			}
+		}
 
+		System.out.println(Arrays.toString(answer));
 
-    private static int findScore(List<Integer> score, int minScore) {
-    	int start = 0;
-    	int end = score.size() - 1;
-    	int mid = 0;
-    	
-    	while(start <= end) {
-    		mid = (start + end) / 2;
-    		
-    		if(minScore > score.get(mid)) {
-    			start = mid + 1;
-    		}else {
-    			end = mid - 1;
-    		}
-    	}
-    	
-    	return score.size() - start;
-    }
+		return answer;
+	}
 
-    private static String[][] initQuery(String[] query) {
-        String[][] querySplit = new String[query.length][2];
-        for(int i = 0; i < query.length; i++) {
-            querySplit[i] = query[i].replaceAll(" and ", "").split(" ");
-        }
+	private static int findScore(List<Integer> score, int minScore) {
+		int start = 0;
+		int end = score.size() - 1;
+		int mid = 0;
 
-        return querySplit;
-    }
+		while (start <= end) {
+			mid = (start + end) / 2;
 
-    private static void initMap(String[] info) {
-        String[] infoSplit;
-        for(int i = 0; i < info.length; i++) {
-            infoSplit = info[i].split(" ");
-            setInfo(infoSplit, 0, "");
-        }
-    }
+			if (minScore > score.get(mid)) {
+				start = mid + 1;
+			} else {
+				end = mid - 1;
+			}
+		}
 
+		return score.size() - start;
+	}
 
-    private static void setInfo(String[] infoSplit, int depth, String resultInfo) {
-        if(depth == 4) {
-            if(infoMap.containsKey(resultInfo)) {
-                infoMap.get(resultInfo).add(Integer.parseInt(infoSplit[4]));
-                return;
-            }
+	private static String[][] initQuery(String[] query) {
+		String[][] querySplit = new String[query.length][2];
+		for (int i = 0; i < query.length; i++) {
+			querySplit[i] = query[i].replaceAll(" and ", "").split(" ");
+		}
 
-            List<Integer> scoreList = new ArrayList<Integer>();
-            scoreList.add(Integer.parseInt(infoSplit[4]));
+		return querySplit;
+	}
 
-            infoMap.put(resultInfo, scoreList);
-            return;
-        }
+	private static void initMap(String[] info) {
+		String[] infoSplit;
+		for (int i = 0; i < info.length; i++) {
+			infoSplit = info[i].split(" ");
+			setInfo(infoSplit, 0, "");
+		}
+	}
 
-        setInfo(infoSplit, depth + 1, resultInfo+infoSplit[depth]);
-        setInfo(infoSplit, depth + 1, resultInfo+"-");
+	private static void setInfo(String[] infoSplit, int depth, String resultInfo) {
+		if (depth == 4) {
+			if (infoMap.containsKey(resultInfo)) {
+				infoMap.get(resultInfo).add(Integer.parseInt(infoSplit[4]));
+				return;
+			}
 
-    }
+			List<Integer> scoreList = new ArrayList<Integer>();
+			scoreList.add(Integer.parseInt(infoSplit[4]));
 
-    private static void mapPrint(Map<String, List<Integer>> map) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("key : ").append(map.keySet()).append("\n");
-        sb.append("value : ").append(map.values()).append("\n");
-        System.out.println(sb.toString());
-    }
+			infoMap.put(resultInfo, scoreList);
+			return;
+		}
+
+		setInfo(infoSplit, depth + 1, resultInfo + infoSplit[depth]);
+		setInfo(infoSplit, depth + 1, resultInfo + "-");
+
+	}
+
+	private static void mapPrint(Map<String, List<Integer>> map) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("key : ").append(map.keySet()).append("\n");
+		sb.append("value : ").append(map.values()).append("\n");
+		System.out.println(sb.toString());
+	}
 }

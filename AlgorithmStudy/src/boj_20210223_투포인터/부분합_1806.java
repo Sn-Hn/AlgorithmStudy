@@ -34,39 +34,41 @@ public class 부분합_1806 {
 	private static int N, S;
 	private static int arr[];
 	private static int min = Integer.MAX_VALUE;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		S = Integer.parseInt(st.nextToken());
-		
-		arr = new int[N+1];
-		
+
+		arr = new int[N + 1];
+
 		st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		
+
 		solution();
-		if(min == Integer.MAX_VALUE) min = 0;
-		
+		if (min == Integer.MAX_VALUE)
+			min = 0;
+
 		System.out.println(min);
-		
+
 		br.close();
 	}
-	
+
 	private static void solution() {
 		int start = 0;
 		int end = 0;
 		int sum = 0;
-		
-		while(end <= N && start <= N) {
-			if(sum < S) {
+
+		while (end <= N && start <= N) {
+			if (sum < S) {
 				sum += arr[end];
 				end++;
-			}else {
-				min = Math.min(min, end-start);
+			} else {
+				min = Math.min(min, end - start);
 				sum -= arr[start];
 				start++;
 			}

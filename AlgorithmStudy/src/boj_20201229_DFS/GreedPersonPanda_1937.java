@@ -51,60 +51,62 @@ public class GreedPersonPanda_1937 {
 	private static int dp[][];
 	private static int max = Integer.MIN_VALUE;
 	private static int indexMax = 0;
-	private static boolean visited[][]; 
+	private static boolean visited[][];
 	private static int count = 0;
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
+
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		map = new int[N][N];
 		dp = new int[N][N];
 		visited = new boolean[N][N];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < N; j++) {
+			for (int j = 0; j < N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				if(!visited[i][j]) {
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (!visited[i][j]) {
 //					indexMax = 0;
 					visited[i][j] = true;
 					max = Math.max(savePanda(i, j), max);
 //					dp[i][j] = indexMax;
 //					System.out.println("i : " + i + ", j : " + j + ", dp : " + dp[i][j]);
-					
+
 				}
 			}
 		}
 //		printDP();
 		System.out.println(max);
-		
+
 		br.close();
 	}
-	
+
 	private static int savePanda(int x, int y) {
-		if(dp[x][y] != 0) return dp[x][y];
-		
+		if (dp[x][y] != 0)
+			return dp[x][y];
+
 //		max = Math.max(max, cnt);
 //		indexMax = Math.max(indexMax, cnt);
 //		printDP();
 //		System.out.println();
 //		count = 0;
-		
+
 		dp[x][y] = 1;
-		
-		for(int i = 0; i < 4; i++) {
+
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			
-			if(X >= 0 && X < N && Y >= 0 && Y < N && map[X][Y] > map[x][y]) {
-				dp[x][y] = Math.max(savePanda(X, Y)+1, dp[x][y]);
+
+			if (X >= 0 && X < N && Y >= 0 && Y < N && map[X][Y] > map[x][y]) {
+				dp[x][y] = Math.max(savePanda(X, Y) + 1, dp[x][y]);
 				visited[X][Y] = true;
 //				if(dp[X][Y] != 0) {
 //					indexMax = Math.max(indexMax, cnt+dp[X][Y]);
@@ -118,11 +120,12 @@ public class GreedPersonPanda_1937 {
 			}
 		}
 		return dp[x][y];
-		
+
 	}
+
 	private static void printDP() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++ ) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				System.out.print(dp[i][j]);
 			}
 			System.out.println();

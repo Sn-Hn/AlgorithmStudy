@@ -57,59 +57,61 @@ public class 작업_2056 {
 	private static int inDegree[];
 	private static int result[];
 	private static List<List<Integer>> graph = new ArrayList<List<Integer>>();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		StringTokenizer st;
-		time = new int[N+1];
-		inDegree = new int[N+1];
-		result = new int[N+1];
-		
+		time = new int[N + 1];
+		inDegree = new int[N + 1];
+		result = new int[N + 1];
+
 		int cnt = 0;
-		
-		for(int i = 0; i <= N; i++) {
+
+		for (int i = 0; i <= N; i++) {
 			graph.add(new ArrayList<Integer>());
 		}
 		int arr[];
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine());
 			time[i] = Integer.parseInt(st.nextToken());
 			result[i] = time[i];
 			cnt = Integer.parseInt(st.nextToken());
 			inDegree[i] += cnt;
 			arr = new int[cnt];
-			for(int j = 0; j < cnt; j++) {
+			for (int j = 0; j < cnt; j++) {
 				arr[j] = Integer.parseInt(st.nextToken());
 				graph.get(arr[j]).add(i);
 			}
 		}
 		topologySort();
 		print();
-		
+
 		br.close();
 	}
-	
+
 	private static void topologySort() {
 		Queue<Integer> q = new LinkedList<Integer>();
-		
-		for(int i = 1; i <= N; i++) {
-			if(inDegree[i] == 0) {
+
+		for (int i = 1; i <= N; i++) {
+			if (inDegree[i] == 0) {
 				q.add(i);
 			}
 		}
-		
-		for(int i = 1; i <= N; i++) {
-			if(q.isEmpty()) return;
-			
+
+		for (int i = 1; i <= N; i++) {
+			if (q.isEmpty())
+				return;
+
 			int now = q.poll();
-			for(int next : graph.get(now)) {
+			for (int next : graph.get(now)) {
 				inDegree[next]--;
-				
-				if(result[next] < result[now] + time[next]) {
+
+				if (result[next] < result[now] + time[next]) {
 					result[next] = result[now] + time[next];
 				}
-				
-				if(inDegree[next] == 0) {
+
+				if (inDegree[next] == 0) {
 					q.add(next);
 //					time[next] += time[now];
 //					result[next] = result[now] + time[next];
@@ -117,17 +119,18 @@ public class 작업_2056 {
 			}
 		}
 		int max = 0;
-		
-		for(int i : result) {
-			if(max < i) max = i;
+
+		for (int i : result) {
+			if (max < i)
+				max = i;
 		}
-		
+
 		System.out.println(max);
-		
+
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			System.out.print(result[i] + " ");
 		}
 	}

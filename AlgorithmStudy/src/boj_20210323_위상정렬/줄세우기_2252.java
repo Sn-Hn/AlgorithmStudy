@@ -60,101 +60,105 @@ public class 줄세우기_2252 {
 	private static int answer[];
 	private static StringBuilder sb = new StringBuilder();
 	private static List<List<Integer>> graph = new ArrayList<List<Integer>>();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
-		inDegree = new int[N+1];
-		result = new int[N+1];
-		answer = new int[N+1];
-		
-		for(int i = 0; i <= N; i++) {
+
+		inDegree = new int[N + 1];
+		result = new int[N + 1];
+		answer = new int[N + 1];
+
+		for (int i = 0; i <= N; i++) {
 			graph.add(new ArrayList<Integer>());
 		}
-		
-		for(int i = 1; i <= M; i++) {
+
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			
+
 			graph.get(a).add(b);
 			inDegree[b]++;
 		}
-		
+
 		Arrays.fill(result, 1);
-		
+
 		topologySolve();
 //		print1();
-		
+
 		br.close();
 	}
-	
+
 	private static void topologySolve() {
 		Queue<Integer> q = new LinkedList<Integer>();
-		
-		for(int i = 1; i <= N; i++) {
-			if(inDegree[i] == 0) {
+
+		for (int i = 1; i <= N; i++) {
+			if (inDegree[i] == 0) {
 				q.add(i);
 			}
 		}
-		
-		for(int i = 1; i <= N; i++) {
-			if(q.isEmpty()) return;
+
+		for (int i = 1; i <= N; i++) {
+			if (q.isEmpty())
+				return;
 			int now = q.poll();
-			
-			for(int next : graph.get(now)) {
+
+			for (int next : graph.get(now)) {
 				inDegree[next]--;
-				
-				if(inDegree[next] == 0) {
+
+				if (inDegree[next] == 0) {
 					q.add(next);
-					
+
 					result[next] = result[now] + 1;
 				}
 			}
 			sb.append(now + " ");
 		}
-		
+
 		System.out.println(sb.toString());
 	}
-	
+
 	private static void print() {
 		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			map.put(i, result[i]);
 		}
-		
+
 		List<Integer> keySet = new ArrayList<Integer>(map.keySet());
-		
+
 		keySet.sort((o1, o2) -> map.get(o1) - map.get(o2));
-		
-		for(int i : keySet) sb.append(i + " ");
-		
+
+		for (int i : keySet)
+			sb.append(i + " ");
+
 		System.out.println(sb.toString());
 	}
-	
+
 	private static void print1() {
 		PriorityQueue<Pair> q = new PriorityQueue<Pair>();
-		
-		for(int i = 1; i <= N; i++) {
-			q.add(new Pair(i, result[i]));			
+
+		for (int i = 1; i <= N; i++) {
+			q.add(new Pair(i, result[i]));
 		}
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			sb.append(q.poll().index + " ");
 		}
-		
+
 		System.out.println(sb.toString());
 	}
-	
-	private static class Pair implements Comparable<Pair>{
+
+	private static class Pair implements Comparable<Pair> {
 		int index, rank;
+
 		public Pair(int index, int rank) {
 			this.index = index;
 			this.rank = rank;
 		}
-		
+
 		@Override
 		public int compareTo(Pair o) {
 			// TODO Auto-generated method stub

@@ -46,67 +46,68 @@ public class 운동_1956 {
 	private static int V, E;
 	private static int fw[][];
 	private static int INF = 100000000;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		V = Integer.parseInt(st.nextToken());
 		E = Integer.parseInt(st.nextToken());
-		fw = new int[V+1][V+1];
-		
-		for(int i = 1; i <= V; i++) {
+		fw = new int[V + 1][V + 1];
+
+		for (int i = 1; i <= V; i++) {
 			Arrays.fill(fw[i], INF);
 		}
-		
-		for(int i = 1; i <= E; i++) {
+
+		for (int i = 1; i <= E; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			int c = Integer.parseInt(st.nextToken());
-			
+
 			fw[a][b] = c;
 		}
-		
+
 		floydWarshall();
-		
+
 		print();
-		
+
 		br.close();
 	}
-	
+
 	private static void floydWarshall() {
-		for(int k = 1; k <= V; k++) {
-			for(int i = 1; i <= V; i++) {
-				for(int j = 1; j <= V; j++) {
-					if(fw[i][j] > fw[i][k] + fw[k][j]) {
+		for (int k = 1; k <= V; k++) {
+			for (int i = 1; i <= V; i++) {
+				for (int j = 1; j <= V; j++) {
+					if (fw[i][j] > fw[i][k] + fw[k][j]) {
 						fw[i][j] = fw[i][k] + fw[k][j];
 					}
 				}
 			}
 		}
-		
+
 		solve();
 	}
-	
+
 	private static void solve() {
 		int min = Integer.MAX_VALUE;
-		for(int i = 1; i <= V; i++) {
-			for(int j = i+1; j <= V; j++) {
-				if(fw[i][j] != INF && fw[j][i] != INF) {
+		for (int i = 1; i <= V; i++) {
+			for (int j = i + 1; j <= V; j++) {
+				if (fw[i][j] != INF && fw[j][i] != INF) {
 					min = Math.min(min, fw[i][j] + fw[j][i]);
 				}
 			}
 		}
-		if(min == Integer.MAX_VALUE || min == 0) {
+		if (min == Integer.MAX_VALUE || min == 0) {
 			System.out.println(-1);
-		}else {
-			System.out.println(min);			
+		} else {
+			System.out.println(min);
 		}
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= V; i++) {
-			for(int j = 1; j <= V; j++) {
+		for (int i = 1; i <= V; i++) {
+			for (int j = 1; j <= V; j++) {
 				System.out.print(fw[i][j] + " ");
 			}
 			System.out.println();

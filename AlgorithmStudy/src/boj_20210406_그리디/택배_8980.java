@@ -114,90 +114,91 @@ public class 택배_8980 {
 	private static int dp[][];
 	private static int deliver[][];
 	private static int delivery = 0;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
-		
+
 		M = Integer.parseInt(br.readLine());
 		box = new int[M][3];
-		deliver = new int[N+1][N+1];
-		dp = new int[N+1][N+1];
-		
-		for(int i = 0; i < M; i++) {
+		deliver = new int[N + 1][N + 1];
+		dp = new int[N + 1][N + 1];
+
+		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int from = Integer.parseInt(st.nextToken());
 			int to = Integer.parseInt(st.nextToken());
 			int boxCount = Integer.parseInt(st.nextToken());
-			
+
 			box[i][0] = from;
 			box[i][1] = to;
 			box[i][2] = boxCount;
-			
+
 			dp[from][to] = boxCount;
 		}
-		
+
 		Arrays.sort(box, new Comparator<int[]>() {
 			@Override
 			public int compare(int[] o1, int[] o2) {
 				// TODO Auto-generated method stub
-				if(o1[0] == o2[0]) {
-					
+				if (o1[0] == o2[0]) {
+
 					return o1[1] - o2[1];
 				}
 				return o1[0] - o2[0];
 			}
 		});
-		
+
 		solve();
 		System.out.println();
 		print();
-		
+
 		br.close();
 	}
-	
+
 	private static void delivery(int start) {
-		for(int i = 0; i < M; i++) {
+		for (int i = 0; i < M; i++) {
 			int from = box[i][0];
 			int to = box[i][1];
-			if(from >= start) {
+			if (from >= start) {
 				int weight = box[i][2];
-				if(delivery + weight <= C) {
-					delivery += box[i][2];				
+				if (delivery + weight <= C) {
+					delivery += box[i][2];
 					deliver[from][to] = weight;
-				}else {
-					deliver[from][to] = C-delivery;
+				} else {
+					deliver[from][to] = C - delivery;
 					delivery = C;
 					break;
-				}				
+				}
 			}
 		}
 	}
-	
+
 	private static void solve() {
 		int sum = 0;
 		// 도착
-		for(int i = 2; i <= N; i++) {
-			delivery(i-1);
-			for(int j = 1; j < i; j++) {
+		for (int i = 2; i <= N; i++) {
+			delivery(i - 1);
+			for (int j = 1; j < i; j++) {
 				sum += deliver[j][i];
 				delivery -= deliver[j][i];
 			}
 		}
 		System.out.println(sum);
 	}
-	
+
 	private static void print() {
-		for(int i = 0; i < M; i++) {
-			for(int j = 0; j < 3; j++) {				
+		for (int i = 0; i < M; i++) {
+			for (int j = 0; j < 3; j++) {
 				System.out.print(box[i][j] + " ");
 			}
 			System.out.println();
 		}
 		System.out.println();
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= N; j++) {				
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
 				System.out.print(deliver[i][j] + " ");
 			}
 			System.out.println();

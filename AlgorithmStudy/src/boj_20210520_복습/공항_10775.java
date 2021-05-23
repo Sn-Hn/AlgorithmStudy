@@ -1,6 +1,5 @@
 package boj_20210520_복습;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,86 +75,85 @@ import java.io.InputStreamReader;
 // 메모리 : 21900KB, 시간 : 2108ms
 
 public class 공항_10775 {
-    private static int N;
-    private static int M;
-    private static int[] gates;
-    private static int[] parent;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        M = Integer.parseInt(br.readLine());
-        gates = new int[N + 1];
-        parent = new int[N + 1];
+	private static int N;
+	private static int M;
+	private static int[] gates;
+	private static int[] parent;
 
-        initParent();
-        int cnt = 0;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		M = Integer.parseInt(br.readLine());
+		gates = new int[N + 1];
+		parent = new int[N + 1];
 
-        for (int i = 1; i <= M; i++) {
-            int gate = Integer.parseInt(br.readLine());
-            /* solution 1
-            
-            if(!isDocking(gate)) {
-            	break;
-            }
-            
-            */
-            
-            int gateParent = find(gate);
-            if(gateParent != 0) {
-            	union(gateParent, gateParent - 1);
-            	cnt ++;
-            }else {
-            	break;
-            }
-        }
-        
+		initParent();
+		int cnt = 0;
+
+		for (int i = 1; i <= M; i++) {
+			int gate = Integer.parseInt(br.readLine());
+			/*
+			 * solution 1
+			 * 
+			 * if(!isDocking(gate)) { break; }
+			 * 
+			 */
+
+			int gateParent = find(gate);
+			if (gateParent != 0) {
+				union(gateParent, gateParent - 1);
+				cnt++;
+			} else {
+				break;
+			}
+		}
+
 //        System.out.println(getMaxCountAirplane());
-        System.out.println(cnt);
+		System.out.println(cnt);
 
-        br.close();
-    }
-    
+		br.close();
+	}
 
-    private static boolean isDocking(int gate) {
-    	for (int i = gate; i > 0; i--) {
-    		if(gates[i] != 1) {
-    			gates[i] = 1;
-    			return true;
-    		}
-    	}
-    	
-    	return false;
-    }
-    
-    private static int getMaxCountAirplane() {
-    	int cnt = 0;
-    	for (int i = 1; i <= N; i++) {
-    		cnt += gates[i];
-    	}
-    	
-    	return cnt;
-    }
+	private static boolean isDocking(int gate) {
+		for (int i = gate; i > 0; i--) {
+			if (gates[i] != 1) {
+				gates[i] = 1;
+				return true;
+			}
+		}
 
-    private static int find(int x) {
-        if(parent[x] == x) {
-            return x;
-        }
+		return false;
+	}
 
-        return parent[x] = find(parent[x]);
-    }
-    
-    private static void union(int a, int b) {
-    	a = find(a);
-    	b = find(b);
-    	
-    	if (a != b) {
-    		parent[a] = b;
-    	}
-    }
-    
-    private static void initParent() {
-    	for (int i = 1; i <= N; i++) {
-    		parent[i] = i;
-    	}
-    }
+	private static int getMaxCountAirplane() {
+		int cnt = 0;
+		for (int i = 1; i <= N; i++) {
+			cnt += gates[i];
+		}
+
+		return cnt;
+	}
+
+	private static int find(int x) {
+		if (parent[x] == x) {
+			return x;
+		}
+
+		return parent[x] = find(parent[x]);
+	}
+
+	private static void union(int a, int b) {
+		a = find(a);
+		b = find(b);
+
+		if (a != b) {
+			parent[a] = b;
+		}
+	}
+
+	private static void initParent() {
+		for (int i = 1; i <= N; i++) {
+			parent[i] = i;
+		}
+	}
 }

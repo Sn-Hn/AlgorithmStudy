@@ -46,41 +46,42 @@ import java.io.InputStreamReader;
 // 하나의 값이 그 전의 값과 같다면 X
 public class 좋은수열_2661 {
 	private static int N;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		
+
 		permutation("");
-		
+
 		br.close();
 	}
-	
+
 	private static void permutation(String str) {
-		if(str.length() == N) {
+		if (str.length() == N) {
 			System.out.println(str);
 			System.exit(0);
 		}
-		
-		for(int i = 0; i < 3; i++) {
-			if(isCheck(str + (i+1))) {
-				permutation(str + (i+1));
+
+		for (int i = 0; i < 3; i++) {
+			if (isCheck(str + (i + 1))) {
+				permutation(str + (i + 1));
 			}
 		}
 	}
-	
+
 	private static boolean isCheck(String str) {
-		int len = str.length()/2;
+		int len = str.length() / 2;
 		// Str의 끝에서부터 하나씩 증가하여 절반까지 간 후 대칭을 비교
-		// i == 1 ) str의 맨 끝의 자리와 그 대칭 자리  검사
+		// i == 1 ) str의 맨 끝의 자리와 그 대칭 자리 검사
 		// i == 2 ) str의 맨 끝에서부터 2자리와 그 대칭 2자리 검사
 		// ...
 		// i == len ) str의 끝에서 절반 그 대칭 절반을 검사
-		for(int i = 1; i <= len; i++) {
-			String front = str.substring(str.length() - 2*i, str.length() - i);
+		for (int i = 1; i <= len; i++) {
+			String front = str.substring(str.length() - 2 * i, str.length() - i);
 			String back = str.substring(str.length() - i);
 			if (back.equals(front)) {
-                return false;
-            }
+				return false;
+			}
 		}
 		return true;
 	}

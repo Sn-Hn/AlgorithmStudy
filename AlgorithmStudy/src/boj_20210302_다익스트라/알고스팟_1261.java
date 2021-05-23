@@ -86,139 +86,137 @@ public class 알고스팟_1261 {
 	private static char ch[][];
 	private static int min = Integer.MAX_VALUE;
 
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
-	
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	private static int dp[][];
-	
+
 	private static boolean visited[][];
-	
-	private static class Pair implements Comparable<Pair>{
+
+	private static class Pair implements Comparable<Pair> {
 		int x, y, wall;
+
 		public Pair(int x, int y, int wall) {
 			this.x = x;
 			this.y = y;
 			this.wall = wall;
 		}
-		
+
 		@Override
 		public int compareTo(Pair p) {
 			// TODO Auto-generated method stub
 			return wall - p.wall;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		M = Integer.parseInt(st.nextToken());
 		N = Integer.parseInt(st.nextToken());
-		
-		map = new int[N+1][M+1];
-		ch = new char[N+1][M+1];
-		visited = new boolean[N+1][M+1];
-		
-		dp = new int[N+1][M+1];
-		
-		for(int i = 0; i <= N; i++) {
+
+		map = new int[N + 1][M + 1];
+		ch = new char[N + 1][M + 1];
+		visited = new boolean[N + 1][M + 1];
+
+		dp = new int[N + 1][M + 1];
+
+		for (int i = 0; i <= N; i++) {
 			Arrays.fill(dp[i], Integer.MAX_VALUE);
 		}
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			ch[i] = br.readLine().toCharArray();
-			for(int j = 0; j < M; j++) {
-				map[i][j+1] = Character.getNumericValue(ch[i][j]);
+			for (int j = 0; j < M; j++) {
+				map[i][j + 1] = Character.getNumericValue(ch[i][j]);
 			}
 		}
-		
+
 		solve();
-		
+
 		System.out.println(dp[N][M]);
-		
+
 //		for(int i = 1; i <= N; i++) {
 //			for(int j = 1; j <= M; j++) {
 //				System.out.print(dp[i][j]);
 //			}
 //			System.out.println();
 //		}
-		
+
 		br.close();
 	}
-	
+
 	private static void solve() {
 		PriorityQueue<Pair> q = new PriorityQueue<Pair>();
 		q.add(new Pair(1, 1, 0));
 		dp[1][1] = 0;
 		visited[1][1] = true;
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			int x = q.peek().x;
 			int y = q.peek().y;
 			int wall = q.peek().wall;
 			q.poll();
-			
-			if(x == N && y == M) {
+
+			if (x == N && y == M) {
 				break;
 			}
 
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				int X = x + dx[i];
 				int Y = y + dy[i];
-				
-				if(X > 0 && X <= N && Y > 0 && Y <= M && !visited[X][Y]) {
-					if(map[X][Y] == 0) {
+
+				if (X > 0 && X <= N && Y > 0 && Y <= M && !visited[X][Y]) {
+					if (map[X][Y] == 0) {
 						visited[X][Y] = true;
 						dp[X][Y] = Math.min(dp[X][Y], wall);
 						q.add(new Pair(X, Y, wall));
 						continue;
 					}
 					visited[X][Y] = true;
-					dp[X][Y] = Math.min(dp[X][Y], wall+1);
-					q.add(new Pair(X, Y, wall+1));
+					dp[X][Y] = Math.min(dp[X][Y], wall + 1);
+					q.add(new Pair(X, Y, wall + 1));
 				}
 			}
 		}
 	}
-	
-	
+
 	// 2. dp 틀렸습니다.
 	private static void dp() {
 		dp[0][1] = 0;
 		dp[1][1] = 0;
 		int m = 0;
-		
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= M; j++) {
-				dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) ;
-				if(map[i][j] == 1) {
+
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= M; j++) {
+				dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]);
+				if (map[i][j] == 1) {
 					dp[i][j] += 1;
 				}
 			}
 		}
 	}
-	
-	
-	
+
 	// 1. bfs 메모리 초과
 	private static void bfs() {
 		Queue<Pair> q = new LinkedList<Pair>();
 		q.add(new Pair(0, 0, 0));
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair p = q.poll();
-			
-			if(p.x == N-1 && p.y == M-1) {
+
+			if (p.x == N - 1 && p.y == M - 1) {
 				min = Math.min(min, p.wall);
 			}
-			
+
 			visited[p.x][p.y] = true;
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				int X = p.x + dx[i];
 				int Y = p.y + dy[i];
-				
-				if(X >= 0 && X < N && Y >= 0 && Y < M && !visited[X][Y]) {
-					if(map[X][Y] == 1) {
-						q.add(new Pair(X, Y, p.wall+1));
+
+				if (X >= 0 && X < N && Y >= 0 && Y < M && !visited[X][Y]) {
+					if (map[X][Y] == 1) {
+						q.add(new Pair(X, Y, p.wall + 1));
 						continue;
 					}
 					q.add(new Pair(X, Y, p.wall));

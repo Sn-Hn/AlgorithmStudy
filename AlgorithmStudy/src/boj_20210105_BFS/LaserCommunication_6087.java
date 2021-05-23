@@ -67,13 +67,13 @@ public class LaserCommunication_6087 {
 	private static int visited[][];
 	private static List<Pair> laserPosition = new ArrayList<Pair>();
 	private static int min = Integer.MAX_VALUE;
-	
-	private static int dx[] = {0, 0, 1, -1};
-	private static int dy[] = {1, -1, 0, 0};
-	
+
+	private static int dx[] = { 0, 0, 1, -1 };
+	private static int dy[] = { 1, -1, 0, 0 };
+
 	private static class Pair {
 		int x, y, mirrorCnt, direction;
-		
+
 		public Pair(int x, int y, int mirrorCnt, int direction) {
 			this.x = x;
 			this.y = y;
@@ -81,75 +81,76 @@ public class LaserCommunication_6087 {
 			this.direction = direction;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		W = Integer.parseInt(st.nextToken());
 		H = Integer.parseInt(st.nextToken());
 		map = new char[H][W];
 		visited = new int[H][W];
-		
-		for(int i = 0; i < H; i++) {
+
+		for (int i = 0; i < H; i++) {
 			Arrays.fill(visited[i], Integer.MAX_VALUE);
 		}
-		
-		for(int i = 0; i < H; i++) {
+
+		for (int i = 0; i < H; i++) {
 			String str = br.readLine();
-			for(int j = 0; j < W; j++) {
+			for (int j = 0; j < W; j++) {
 				map[i][j] = str.charAt(j);
 				// 레이저 위치 저장
-				if(map[i][j] == 'C') {
+				if (map[i][j] == 'C') {
 					laserPosition.add(new Pair(i, j, 0, -1));
 				}
 			}
 		}
-		
+
 		findMirror();
 		System.out.println(min);
-		
+
 		br.close();
 	}
-	
+
 	private static void findMirror() {
 		Queue<Pair> q = new LinkedList<Pair>();
 		// 전달방향을 모르니 초기 direction을 -1로 줌
 		q.add(new Pair(laserPosition.get(0).x, laserPosition.get(0).y, 0, -1));
 		visited[q.peek().x][q.peek().y] = 0;
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair p = q.poll();
-			
+
 			// 다른 레이저에게 도달했을 때 최소값 갱신
-			if(p.x == laserPosition.get(1).x && p.y == laserPosition.get(1).y) {
+			if (p.x == laserPosition.get(1).x && p.y == laserPosition.get(1).y) {
 				min = Math.min(min, p.mirrorCnt);
 			}
-			
-			for(int i = 0; i < 4; i++) {
+
+			for (int i = 0; i < 4; i++) {
 				int X = p.x + dx[i];
 				int Y = p.y + dy[i];
-				
-				if(X >= 0 && X < H && Y >= 0 && Y < W && map[X][Y] != '*') {
+
+				if (X >= 0 && X < H && Y >= 0 && Y < W && map[X][Y] != '*') {
 					// 초기 값이거나 전달방향이 같다면 거울의 수는 그대로
-					if(p.direction == -1 || p.direction == i) {
+					if (p.direction == -1 || p.direction == i) {
 						// X, Y까지의 거울의 수가 현재 거울의 수보다 크다면 갱신
-						if(visited[X][Y] >= p.mirrorCnt) {
+						if (visited[X][Y] >= p.mirrorCnt) {
 							visited[X][Y] = p.mirrorCnt;
 							q.add(new Pair(X, Y, p.mirrorCnt, i));
 						}
-					// 전달 방향이 달라졌다면 거울의 수는 하나 증가
-					}else {
+						// 전달 방향이 달라졌다면 거울의 수는 하나 증가
+					} else {
 						// X, Y까지의 거울의 수가 현재 거울의 수보다 크다면 갱신
-						if(visited[X][Y] >= p.mirrorCnt+1) {
-							visited[X][Y] = p.mirrorCnt+1;
-							q.add(new Pair(X, Y, p.mirrorCnt+1, i));
+						if (visited[X][Y] >= p.mirrorCnt + 1) {
+							visited[X][Y] = p.mirrorCnt + 1;
+							q.add(new Pair(X, Y, p.mirrorCnt + 1, i));
 						}
 					}
-					
+
 				}
-				
+
 			}
 		}
-		
+
 	}
 }

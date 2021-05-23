@@ -49,7 +49,7 @@ public class 피자굽기_1756 {
 	private static int oven[];
 	private static int pizza[];
 	private static int result = Integer.MAX_VALUE;
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -57,55 +57,56 @@ public class 피자굽기_1756 {
 		N = Integer.parseInt(st.nextToken());
 		oven = new int[D];
 		pizza = new int[N];
-		
+
 		st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < D; i++) {
+		for (int i = 0; i < D; i++) {
 			oven[i] = Integer.parseInt(st.nextToken());
-			if(i == 0) continue;
-			if(oven[i] > oven[i-1]) {
-				oven[i] = oven[i-1];
+			if (i == 0)
+				continue;
+			if (oven[i] > oven[i - 1]) {
+				oven[i] = oven[i - 1];
 			}
 		}
-		
+
 		st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			pizza[i] = Integer.parseInt(st.nextToken());
 		}
-		depth = D-1;
-		
+		depth = D - 1;
+
 		// 이분탐색
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			binary(pizza[i]);
 		}
-		
-		result ++;
-		
+
+		result++;
+
 		System.out.println(result);
-		
+
 		br.close();
 	}
-	
+
 	// 이분탐색
 	private static void binary(int find) {
 		int start = 0;
 		int end = depth;
 		int res = -1;
 		// start가 end 보다 커지면 종료
-		while(start <= end) {
+		while (start <= end) {
 			// 중간 값 계산
 			int mid = (start + end) / 2;
 			// oven의 중간값이 찾으려는 수보다 크거나 같다면
-			if(oven[mid] >= find) {
+			if (oven[mid] >= find) {
 				// 중간 값 + 1 -> 시작 위치
 				res = mid;
 				start = mid + 1;
-			}else {
+			} else {
 				end = mid - 1;
 			}
 		}
-		depth = res-1;
+		depth = res - 1;
 		result = Math.min(result, res);
-		
+
 	}
-	
+
 }

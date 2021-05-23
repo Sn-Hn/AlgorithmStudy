@@ -62,55 +62,56 @@ public class 플로이드_11404 {
 	private static int fw[][];
 	private static int INF = 10000000;
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		M = Integer.parseInt(br.readLine());
-		fw = new int[N+1][N+1];
-		
-		for(int i = 0; i <= N; i++) {
+		fw = new int[N + 1][N + 1];
+
+		for (int i = 0; i <= N; i++) {
 			Arrays.fill(fw[i], INF);
 			fw[i][i] = 0;
 		}
-		
-		for(int i = 0; i < M; i++) {
+
+		for (int i = 0; i < M; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			int c = Integer.parseInt(st.nextToken());
 			// 똑같은 노선이 있을 수 있다.
-			if(fw[a][b] > c) {
-				fw[a][b] = c;				
+			if (fw[a][b] > c) {
+				fw[a][b] = c;
 			}
 		}
-		
+
 		floydWarshall();
-		
+
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
-	
+
 	private static void floydWarshall() {
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= N; j++) {
-				for(int k = 1; k <= N; k++) {
-					if(fw[j][k] > fw[j][i] + fw[i][k]) {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				for (int k = 1; k <= N; k++) {
+					if (fw[j][k] > fw[j][i] + fw[i][k]) {
 						fw[j][k] = fw[j][i] + fw[i][k];
 					}
 				}
 			}
 		}
-		
+
 		print();
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= N ;i++) {
-			for(int j = 1; j <= N; j++) {
-				if(fw[i][j] != INF) {
-					sb.append(fw[i][j] + " ");					
-				}else {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				if (fw[i][j] != INF) {
+					sb.append(fw[i][j] + " ");
+				} else {
 					sb.append(0 + " ");
 				}
 			}

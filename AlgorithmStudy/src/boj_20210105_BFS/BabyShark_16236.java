@@ -116,25 +116,25 @@ public class BabyShark_16236 {
 	private static int N;
 	private static int map[][];
 	private static Shark shark;
-	private static Shark eatableFish = new Shark(0, 0, 0);		// 아기 상어가 먹을 물고기
+	private static Shark eatableFish = new Shark(0, 0, 0); // 아기 상어가 먹을 물고기
 	private static List<Shark> fishList = new ArrayList<Shark>();
 	private static boolean[][] visited;
 	private static boolean flag = true;
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
-	
+
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	private static class Shark implements Comparable<Shark> {
 		int x, y, depth;
 		int count = 0;
 		int size = 2;
-		
+
 		public Shark(int x, int y, int depth) {
 			this.x = x;
 			this.y = y;
 			this.depth = depth;
 		}
-		
+
 		public Shark(int x, int y, int depth, int size, int count) {
 			this.x = x;
 			this.y = y;
@@ -142,148 +142,147 @@ public class BabyShark_16236 {
 			this.size = size;
 			this.count = count;
 		}
-		
+
 		// 아기 상어가 물고기를 잡아먹는 메소드
 		public void eatFish(int count) {
 			this.count = count;
 			// 잡아먹은 물고기 수가 몸집과 같거나 크다면
-			if(count >= size) {
+			if (count >= size) {
 				size += 1;
 				this.count = 0;
 			}
 		}
-		
+
 		// Comparable을 통한 정렬
 		@Override
 		public int compareTo(Shark o) {
 			// TODO Auto-generated method stub
 			// depth가 작은것부터 정렬 (오름차순) -> 최소 경로인 것들이 맨 앞으로
-			if(this.depth > o.depth) {
+			if (this.depth > o.depth) {
 				return 1;
-				
-			// depth가 같을 때
-			}else if(this.depth == o.depth) {
+
+				// depth가 같을 때
+			} else if (this.depth == o.depth) {
 				// x가 작은 것 부터 정렬 (오름차순) -> 위쪽에 있는 것들이 맨 앞으로
-				if(this.x > o.x) {
+				if (this.x > o.x) {
 					return 1;
-				// x가 같을 때
-				}else if(this.x == o.x) {
+					// x가 같을 때
+				} else if (this.x == o.x) {
 					// y가 작은 것 부터 정렬 (오름차순) -> 왼쪽에 있는 것들이 맨 앞으로
-					if(this.y > o.y) {
+					if (this.y > o.y) {
 						return 1;
 					}
-				}				
+				}
 			}
 			return -1;
 		}
-		
-		
+
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+
 		N = Integer.parseInt(br.readLine());
 		map = new int[N][N];
-		
-		for(int i = 0; i < N; i++) { 
+
+		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < N; j++) {
+			for (int j = 0; j < N; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
-				if(map[i][j] == 9) {
+				if (map[i][j] == 9) {
 					shark = new Shark(i, j, 0);
 				}
 			}
 		}
 		int result = 0;
-		while(flag) {
+		while (flag) {
 			visited = new boolean[N][N];
 			result += bfs();
 		}
 		System.out.println(result);
-		
+
 		br.close();
 	}
-	
+
 	private static int bfs() {
 		Queue<Shark> q = new LinkedList<>();
 		int depth = 0;
 		q.add(shark);
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Shark s = q.poll();
 			visited[s.x][s.y] = true;
-			
-			for(int i = 0; i < 4; i++) {
+
+			for (int i = 0; i < 4; i++) {
 				int X = s.x + dx[i];
 				int Y = s.y + dy[i];
-				if(X >= 0 && X < N && Y >= 0 && Y < N) {
-					// 
-					if((map[X][Y] == 0 || map[X][Y] == s.size) && !visited[X][Y]) {
+				if (X >= 0 && X < N && Y >= 0 && Y < N) {
+					//
+					if ((map[X][Y] == 0 || map[X][Y] == s.size) && !visited[X][Y]) {
 						depth = s.depth + 1;
 						visited[X][Y] = true;
-						q.add(new Shark(X, Y, depth, s.size, s.count));						
-					// 아기 상어가 먹을 수 있는 물고기들을 fishList에 저장
-					}else if((map[X][Y] >= 1 && map[X][Y] < s.size) && !visited[X][Y]) {
+						q.add(new Shark(X, Y, depth, s.size, s.count));
+						// 아기 상어가 먹을 수 있는 물고기들을 fishList에 저장
+					} else if ((map[X][Y] >= 1 && map[X][Y] < s.size) && !visited[X][Y]) {
 						depth = s.depth + 1;
 						visited[X][Y] = true;
 						// 가장 가까운 물고기들
 						fishList.add(new Shark(X, Y, depth, s.size, s.count));
 					}
-					
+
 				}
 			}
 		}
-		
-		if(eatableFish()) {
+
+		if (eatableFish()) {
 			// 아기 상어가 먹을 수 있는 물고기의 자리로 감
 			map[shark.x][shark.y] = 0;
 			map[eatableFish.x][eatableFish.y] = 9;
-			shark.eatFish(shark.count+1);
+			shark.eatFish(shark.count + 1);
 			// 아기 상어가 물고기를 먹었으니 새로 초기화
 			shark = new Shark(eatableFish.x, eatableFish.y, 0, shark.size, shark.count);
 			depth = eatableFish.depth;
 			fishList.clear();
 			flag = true;
-		}else {
+		} else {
 			flag = false;
 			return 0;
 		}
-		
+
 		return depth;
 	}
-	
+
 	private static boolean eatableFish() {
 		// 먹을수 있는 물고기가 없다면 return false;
-		if(fishList.size() == 0) {
+		if (fishList.size() == 0) {
 			return false;
 		}
-		
+
 		// 조건에 맞게 정렬
 		Collections.sort(fishList);
-		
+
 		// depth가 가장 작은 것들을 제외하고 전부 제거
 		// 먹이가 기준보다 아래쪽인것들 제거
 		// 먹이가 기준보다 오른쪽인것들 제거
 		eatableFish = fishList.get(0);
-		
+
 		return true;
 	}
-	
+
 	private static boolean isEat(Shark s) {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
-				if(map[i][j] >= 1 && map[i][j] < s.size) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (map[i][j] >= 1 && map[i][j] < s.size) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
+
 	private static void printMap() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				System.out.print(map[i][j]);
 			}
 			System.out.println();

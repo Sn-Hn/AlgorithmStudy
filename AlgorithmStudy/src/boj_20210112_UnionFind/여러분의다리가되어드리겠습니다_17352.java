@@ -73,61 +73,63 @@ BFS로 풀다가 시간초과..
 public class 여러분의다리가되어드리겠습니다_17352 {
 	private static int N;
 	private static int parent[];
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		parent = new int[N+1];
-		
-		for(int i = 1; i <= N; i++) {
+		parent = new int[N + 1];
+
+		for (int i = 1; i <= N; i++) {
 			parent[i] = i;
 		}
-		
-		for(int i = 0; i < N-2; i++) {
+
+		for (int i = 0; i < N - 2; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			union(a, b);
 		}
-		
+
 		HashSet<Integer> hash = new HashSet<Integer>();
-		
+
 		printParent();
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			hash.add(find(i));
 		}
-		
-		for(int i : hash) {
+
+		for (int i : hash) {
 			System.out.print(i + " ");
 		}
-		
+
 		br.close();
 	}
-	
+
 	// 두 부모 노드를 합치는 함수
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
+
 		// 작은 값이 부모가 된다
-		if(a<b) parent[b] = a;
-		else parent[a] = b;
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
 	}
-	
+
 	// 부모 노드를 찾는 함수
 	private static int find(int x) {
-		if(parent[x] == x) {
+		if (parent[x] == x) {
 			return x;
 		}
-		
+
 		return find(parent[x]);
 	}
-	
+
 	private static void printParent() {
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			System.out.println(parent[i]);
 		}
 	}
-	
+
 }

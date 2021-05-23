@@ -59,24 +59,24 @@ import java.util.StringTokenizer;
 public class 주사위윷놀이_17825 {
 	private static int dice[] = new int[10];
 	private static int horse[] = new int[4];
-	
+
 	// -1은 해당 말이 도착
-	private static int dice10[] = {0, 13, 16, 19, 25};
-	private static int dice20[] = {0, 22, 24, 25};
-	private static int dice25[] = {0, 30, 35, 40, -1, -1}; 
-	private static int dice30[] = {0, 28, 27, 26, 25};
+	private static int dice10[] = { 0, 13, 16, 19, 25 };
+	private static int dice20[] = { 0, 22, 24, 25 };
+	private static int dice25[] = { 0, 30, 35, 40, -1, -1 };
+	private static int dice30[] = { 0, 28, 27, 26, 25 };
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		for(int i = 0; i < 10; i++) {
+
+		for (int i = 0; i < 10; i++) {
 			dice[i] = Integer.parseInt(st.nextToken());
 		}
-		
-		
+
 		br.close();
 	}
-	
+
 	private static void dice() {
 		int sum = 0;
 		int diceDir = 0;
@@ -84,23 +84,23 @@ public class 주사위윷놀이_17825 {
 		// 말이 지름길로 빠지는 것을 체크하기 위한 변수
 		// 지름길로 빠지는 순간 정상 궤도로 나갈 수 없기 때문에 boolean으로 체크
 		boolean flag = false;
-		for(int i = 0; i < 10; i++) {
-			if(diceNum == 10) {
+		for (int i = 0; i < 10; i++) {
+			if (diceNum == 10) {
 				diceNum = dice10[dice[i]];
 				sum += diceNum;
 				flag = true;
-			}else if(diceNum == 20) {
+			} else if (diceNum == 20) {
 				sum += dice20[dice[i]];
 				flag = true;
-			}else if(diceNum == 25) {
+			} else if (diceNum == 25) {
 				sum += dice25[dice[i]];
 				flag = true;
-			}else if(diceNum == 30) {
+			} else if (diceNum == 30) {
 				sum += dice30[dice[i]];
 				flag = true;
 			}
-			if(!flag) {
-				diceNum += dice[i]*2;
+			if (!flag) {
+				diceNum += dice[i] * 2;
 				diceDir += dice[i];
 				sum += diceNum;
 			}

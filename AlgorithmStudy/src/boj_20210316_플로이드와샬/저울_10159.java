@@ -64,59 +64,61 @@ public class 저울_10159 {
 	private static int fw[][];
 	private static int INF = 10000000;
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		N = Integer.parseInt(br.readLine());
 		M = Integer.parseInt(br.readLine());
-		
-		fw = new int[N+1][N+1];
-		
-		for(int i = 1; i <= N; i++) {
+
+		fw = new int[N + 1][N + 1];
+
+		for (int i = 1; i <= N; i++) {
 			Arrays.fill(fw[i], INF);
 			fw[i][i] = 0;
 		}
-		
-		for(int i = 1; i <= M; i++) {
+
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			
+
 			fw[a][b] = 1;
 		}
-		
+
 		floydWarshall();
-		
-		
+
 		br.close();
 	}
-	
+
 	private static void floydWarshall() {
-		for(int k = 1; k <= N; k++) {
-			for(int i = 1; i <= N; i++) {
-				for(int j = 1; j <= N; j++) {
-					if(i == j || i == k || k == j) continue;
-					if(fw[i][k] == 1 && fw[k][j] == 1) {
+		for (int k = 1; k <= N; k++) {
+			for (int i = 1; i <= N; i++) {
+				for (int j = 1; j <= N; j++) {
+					if (i == j || i == k || k == j)
+						continue;
+					if (fw[i][k] == 1 && fw[k][j] == 1) {
 						fw[i][j] = 1;
 					}
 				}
 			}
 		}
-		
+
 //		symmetry();
 		solve();
 	}
-	
+
 	private static void solve() {
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			int count = 0;
-			for(int j = 1; j <= N; j++) {
-				if(fw[i][j] == INF && fw[j][i] == INF) count++;
+			for (int j = 1; j <= N; j++) {
+				if (fw[i][j] == INF && fw[j][i] == INF)
+					count++;
 			}
 			sb.append(count + "\n");
 		}
-		
+
 		System.out.println(sb.toString());
 	}
-	
+
 }

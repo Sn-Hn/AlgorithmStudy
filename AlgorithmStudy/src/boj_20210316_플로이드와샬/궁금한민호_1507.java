@@ -54,57 +54,59 @@ public class 궁금한민호_1507 {
 	private static int road[][];
 	private static int fw[][];
 	private static int INF = Integer.MAX_VALUE;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		StringTokenizer st;
-		road = new int[N+1][N+1];
-		fw = new int[N+1][N+1];
-		
-		for(int i = 1; i <= N; i++) {
+		road = new int[N + 1][N + 1];
+		fw = new int[N + 1][N + 1];
+
+		for (int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 1; j <= N; j++) {
+			for (int j = 1; j <= N; j++) {
 				road[i][j] = Integer.parseInt(st.nextToken());
 				fw[i][j] = road[i][j];
 			}
 		}
 		floydWarshall();
-		
+
 		br.close();
 	}
-	
+
 	private static void floydWarshall() {
-		for(int k = 1; k <= N; k++) {
-			for(int i = 1; i <= N; i++) {
-				for(int j = 1; j <= N; j++) {
-					if(i == j || i == k || k == j) continue;
-					
-					if(road[i][j] > road[i][k] + road[k][j]) {
+		for (int k = 1; k <= N; k++) {
+			for (int i = 1; i <= N; i++) {
+				for (int j = 1; j <= N; j++) {
+					if (i == j || i == k || k == j)
+						continue;
+
+					if (road[i][j] > road[i][k] + road[k][j]) {
 						System.out.println(-1);
 						return;
 					}
-					
-					if(road[i][j] == road[i][k] + road[k][j]) {
+
+					if (road[i][j] == road[i][k] + road[k][j]) {
 						fw[i][j] = INF;
 					}
 				}
 			}
 		}
-		
+
 		sumRoad();
 	}
-	
+
 	private static void sumRoad() {
 		int answer = 0;
-		for(int i = 1; i <= N; i++) {
-			for(int j = i+1; j <= N; j++) {
-				if(fw[i][j] != INF && i != j) {
-					answer += fw[i][j];					
+		for (int i = 1; i <= N; i++) {
+			for (int j = i + 1; j <= N; j++) {
+				if (fw[i][j] != INF && i != j) {
+					answer += fw[i][j];
 				}
 			}
 		}
-		
+
 		System.out.println(answer);
 	}
-	
+
 }

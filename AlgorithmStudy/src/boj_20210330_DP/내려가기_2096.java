@@ -51,71 +51,72 @@ public class 내려가기_2096 {
 	private static int maxDp[];
 	private static int resultMax[];
 	private static int resultMin[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		map = new int[N+1][4];
+		map = new int[N + 1][4];
 		minDp = new int[4];
 		maxDp = new int[4];
 		resultMin = new int[4];
 		resultMax = new int[4];
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
-			for(int j = 1; j <= 3; j++) {
+			for (int j = 1; j <= 3; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 		minDp[0] = Integer.MAX_VALUE;
-		for(int i = 1; i <= 3; i++ ) {
+		for (int i = 1; i <= 3; i++) {
 			maxDp[i] = map[1][i];
 			minDp[i] = map[1][i];
 		}
 		int mx = 0;
 		int mn = -1;
-		for(int i = 2; i <= N; i++) {
+		for (int i = 2; i <= N; i++) {
 			mx = Integer.MIN_VALUE;
 			mn = Integer.MAX_VALUE;
-			for(int j = 1; j <= 3; j++) {
-				mx = Math.max(maxDp[j-1], maxDp[j]);
-				mn = Math.min(minDp[j-1], minDp[j]);
-				
-				if(j != 3) {
-					mx = Math.max(mx, maxDp[j+1]);
-					mn = Math.min(mn, minDp[j+1]);					
+			for (int j = 1; j <= 3; j++) {
+				mx = Math.max(maxDp[j - 1], maxDp[j]);
+				mn = Math.min(minDp[j - 1], minDp[j]);
+
+				if (j != 3) {
+					mx = Math.max(mx, maxDp[j + 1]);
+					mn = Math.min(mn, minDp[j + 1]);
 				}
-				
+
 				mx += map[i][j];
 				mn += map[i][j];
-				
+
 				resultMax[j] = mx;
 				resultMin[j] = mn;
 			}
-			
-			for(int j = 1; j <= 3; j++) {
+
+			for (int j = 1; j <= 3; j++) {
 				maxDp[j] = resultMax[j];
 				minDp[j] = resultMin[j];
 			}
 		}
-		
+
 		int min = Integer.MAX_VALUE;
 		int max = Integer.MIN_VALUE;
-		for(int i = 1; i <= 3; i++) {
+		for (int i = 1; i <= 3; i++) {
 			max = Math.max(max, maxDp[i]);
 			min = Math.min(min, minDp[i]);
 		}
-		
+
 		System.out.println(max + " " + min);
 
 		print();
-		
+
 		br.close();
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			System.out.print(minDp[i] + " ");
 		}
 		System.out.println();
 	}
-	
+
 }

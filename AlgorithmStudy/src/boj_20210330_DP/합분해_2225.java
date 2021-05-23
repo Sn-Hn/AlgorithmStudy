@@ -34,37 +34,38 @@ public class 합분해_2225 {
 	private static int N, K;
 	private static int dp[][];
 	private static int MAX_VALUE = 1000000000;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
-		dp = new int[K+1][N+1];
-		
-		for(int i = 0; i <= N; i++) {
+		dp = new int[K + 1][N + 1];
+
+		for (int i = 0; i <= N; i++) {
 			dp[1][i] = 1;
 		}
-		
-		for(int i = 1; i <= K; i++) {
+
+		for (int i = 1; i <= K; i++) {
 			dp[i][0] = 1;
 		}
-		
-		for(int i = 2; i <= K; i++) {
-			for(int j = 1; j <= N; j++) {
-				dp[i][j] = (dp[i-1][j] + dp[i][j-1])%MAX_VALUE;
+
+		for (int i = 2; i <= K; i++) {
+			for (int j = 1; j <= N; j++) {
+				dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % MAX_VALUE;
 			}
 		}
-		
+
 		print();
-		
+
 		System.out.println(dp[K][N]);
-		
+
 		br.close();
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= K; i++) {
-			for(int j = 0; j <= N; j++) {
+		for (int i = 1; i <= K; i++) {
+			for (int j = 0; j <= N; j++) {
 				System.out.print(dp[i][j] + " ");
 			}
 			System.out.println();

@@ -27,7 +27,6 @@ N이 주어졌을 때, 퀸을 놓는 방법의 수를 구하는 프로그램을 
 
 */
 
-
 // 기본적인 백트래킹
 // 퀸이 놓아질 수 있는 자리는 Row당 한 개씩 올 수 있다.
 // 또한, Col당 한 개씩 올 수 있다.
@@ -41,46 +40,47 @@ public class N_Queen_9663 {
 	private static int queen[];
 	private static boolean visited[];
 	private static int count = 0;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		queen = new int[N];
 		visited = new boolean[N];
-		
+
 		permutation(0);
 		System.out.println(count);
-		
+
 		br.close();
 	}
-	
+
 	// 순열을 뽑음
 	private static void permutation(int depth) {
-		if(depth == N) {
+		if (depth == N) {
 			count += 1;
 			return;
 		}
-		
-		for(int i = 0; i < N; i++) {
-			if(!visited[i]) {
+
+		for (int i = 0; i < N; i++) {
+			if (!visited[i]) {
 				visited[i] = true;
 				queen[depth] = i;
 				// 대각선 체크
-				if(isCheck(depth)) {
-					permutation(depth+1);					
+				if (isCheck(depth)) {
+					permutation(depth + 1);
 				}
 				visited[i] = false;
 			}
 		}
 	}
-	
+
 	private static boolean isCheck(int row) {
-		for(int i = 0; i < row; i++) {
+		for (int i = 0; i < row; i++) {
 			// 대각선
 			// 서로의 인덱스의 차이와 값의 차이가 같다면 대각선
-			// ex)  0, 2  <=>  queen[0], queen[2]
+			// ex) 0, 2 <=> queen[0], queen[2]
 			// - 0번째 row, 2번째 row <=> queen[0] = 2, queen[2] = 4
 			// 두칸 <=> 두칸 이므로 대각선
-			if(Math.abs(row - i) == Math.abs(queen[row] - queen[i])) {
+			if (Math.abs(row - i) == Math.abs(queen[row] - queen[i])) {
 				return false;
 			}
 		}

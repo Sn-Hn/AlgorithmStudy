@@ -59,74 +59,77 @@ public class 파티_1238 {
 	private static boolean visited[][];
 	private static int INF = Integer.MAX_VALUE;
 	private static int result[];
-	
+
 	private static class Node implements Comparable<Node> {
 		int index, distance;
+
 		public Node(int index, int distance) {
 			this.index = index;
 			this.distance = distance;
 		}
-		
+
 		@Override
 		public int compareTo(Node o) {
 			// TODO Auto-generated method stub
 			return distance - o.distance;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		X = Integer.parseInt(st.nextToken());
-		
+
 		list = new ArrayList<List<Node>>();
-		distance = new int[N+1][N+1];
-		visited = new boolean[N+1][N+1];
-		result = new int[N+1];
-		for(int i = 0; i <= N; i++) {
+		distance = new int[N + 1][N + 1];
+		visited = new boolean[N + 1][N + 1];
+		result = new int[N + 1];
+		for (int i = 0; i <= N; i++) {
 			list.add(new ArrayList<Node>());
 			Arrays.fill(distance[i], INF);
 		}
-		
-		for(int i = 0; i < M; i++) {
+
+		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			int c = Integer.parseInt(st.nextToken());
-			
+
 			list.get(a).add(new Node(b, c));
 		}
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			distance[i][i] = 0;
 			solve(i);
 		}
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			result[i] = distance[i][X] + distance[X][i];
 		}
-		
+
 		Arrays.sort(result);
-		
+
 		System.out.println(result[N]);
-		
+
 		br.close();
 	}
-	
+
 	private static void solve(int start) {
 		PriorityQueue<Node> q = new PriorityQueue<Node>();
 		q.add(new Node(start, 0));
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Node n = q.poll();
 			int now = n.index;
-			
-			if(visited[start][now]) continue;
+
+			if (visited[start][now])
+				continue;
 			visited[start][now] = true;
-			
-			for(Node node : list.get(now)) {
-				if(distance[start][node.index] > distance[start][now] + node.distance) {
+
+			for (Node node : list.get(now)) {
+				if (distance[start][node.index] > distance[start][now] + node.distance) {
 					distance[start][node.index] = distance[start][now] + node.distance;
 					q.add(new Node(node.index, distance[start][node.index]));
 				}

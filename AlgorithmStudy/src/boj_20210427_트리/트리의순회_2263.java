@@ -42,62 +42,60 @@ public class 트리의순회_2263 {
 	private static int postOrder[];
 	private static int index[];
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		inOrder = new int[N];
 		postOrder = new int[N];
-		index = new int[N+1];
+		index = new int[N + 1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			inOrder[i] = Integer.parseInt(st.nextToken());
 		}
-		
+
 		st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			postOrder[i] = Integer.parseInt(st.nextToken());
 		}
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			index[inOrder[i]] = i;
 		}
-		
-		preOrder(0, N-1, 0, N-1);
+
+		preOrder(0, N - 1, 0, N - 1);
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
-	
+
 	private static void preOrder(int inOrderStart, int inOrderEnd, int postOrderStart, int postOrderEnd) {
-		if(inOrderStart > inOrderEnd || postOrderStart > postOrderEnd) {
+		if (inOrderStart > inOrderEnd || postOrderStart > postOrderEnd) {
 			return;
 		}
-		
+
 		int root = postOrder[postOrderEnd];
 		sb.append(root + " ");
-		
+
 		// 현재 부모에서 왼쪽 자식의 수
 		int left = index[root] - inOrderStart;
-		
+
 //		7
 //		4 2 7 5 1 3 6  -  InOrder    왼쪽 자식 - 부모 - 오른쪽 자식/*
 //		4 7 5 2 6 3 1  -  PostOrder  왼쪽 자식 - 오른쪽 자식 - 부모*/
-		
+
 //		postOrder
 //		21
 //		16 8 17 4 18 9 2 19 10 5 11 20 1 12 21 6 13 3 14 7 15
 //		16 17 8 18 9 4 19 10 20 11 5 2 21 12 13 6 14 15 7 3 1
 //		 
-		
+
 		System.out.println("index : " + (index[root] - 1) + ", pOS : " + (postOrderStart + left - 1));
 		System.out.println("start : " + postOrderStart + ", end : " + postOrderEnd + ", root : " + root);
-		
-		
-		
-		// left													postOrderEnd
+
+		// left postOrderEnd
 		preOrder(inOrderStart, index[root] - 1, postOrderStart, postOrderStart + left - 1);
-		
-		
+
 		// right
 		preOrder(index[root] + 1, inOrderEnd, postOrderStart + left, postOrderEnd - 1);
 	}

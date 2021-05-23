@@ -58,116 +58,119 @@ public class 소문난칠공주_1941 {
 	private static boolean visited[] = new boolean[25];
 	private static boolean v[][];
 	private static int count = 0;
-	
-	private static int dx[] = {0, 0, 1, -1};
-	private static int dy[] = {1, -1, 0, 0};
+
+	private static int dx[] = { 0, 0, 1, -1 };
+	private static int dy[] = { 1, -1, 0, 0 };
+
 	private static class Pair {
 		int x, y;
+
 		public Pair(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		for(int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) {
 			String str = br.readLine();
-			for(int j = 0; j < 5; j++) {
+			for (int j = 0; j < 5; j++) {
 				map[i][j] = str.charAt(j);
 			}
 		}
-		
+
 		permutation(0);
 		sevenPricesses(0, 0);
-		
+
 		System.out.println(count);
-		
+
 		br.close();
 	}
-	
+
 	// 25명의 좌표를 전부 뽑아서 list에 넣었다.
 	private static void permutation(int depth) {
-		if(depth == 2) {
+		if (depth == 2) {
 			list.add(new Pair(pair[0], pair[1]));
 			return;
 		}
-		
-		for(int i = 0; i < 5; i++) {
+
+		for (int i = 0; i < 5; i++) {
 			pair[depth] = i;
-			permutation(depth+1);
+			permutation(depth + 1);
 		}
 	}
-	
+
 	// 25명의 좌표들 중 7개를 조합으로 뽑는다.
 	private static void sevenPricesses(int index, int depth) {
-		if(depth == 7) {
+		if (depth == 7) {
 			// '이다솜파'가 4명이 넘는지 check -> isfourCheck
 			// 서로 인접하는지 check -> isAdjacentCheckDFS
-			if(isFourCheck() && isAdjacentCheck()) {
-				count += 1;			
+			if (isFourCheck() && isAdjacentCheck()) {
+				count += 1;
 			}
-				
+
 			return;
 		}
-		
-		for(int i = index; i < 25; i++) {
-			if(!visited[i]) {
+
+		for (int i = index; i < 25; i++) {
+			if (!visited[i]) {
 				visited[i] = true;
 				result[depth] = i;
-				sevenPricesses(i+1, depth+1);
+				sevenPricesses(i + 1, depth + 1);
 				visited[i] = false;
 			}
-		}	
+		}
 	}
-	
+
 	// 인접한지 check
 	private static boolean isAdjacentCheck() {
 		v = new boolean[5][5];
 		int x = list.get(result[0]).x;
 		int y = list.get(result[0]).y;
 		dfs(x, y);
-		
-		// result에 있는 값을 dfs돌려 
+
+		// result에 있는 값을 dfs돌려
 		// 전부 방문처리 되어 있다면 인접한 경우이므로 true
-		for(int i : result) {
+		for (int i : result) {
 			x = list.get(i).x;
 			y = list.get(i).y;
-			
-			if(!v[x][y]) {
+
+			if (!v[x][y]) {
 				return false;
 			}
 		}
 		return true;
 	}
-	
+
 	private static void dfs(int x, int y) {
-		for(int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			
-			for(int j = 0; j < 7; j++) {
+
+			for (int j = 0; j < 7; j++) {
 				// 인접한 수라면 방문 체크!
-				if(X == list.get(result[j]).x && Y == list.get(result[j]).y && !v[X][Y]) {
+				if (X == list.get(result[j]).x && Y == list.get(result[j]).y && !v[X][Y]) {
 					v[X][Y] = true;
 					dfs(X, Y);
 				}
 			}
 		}
 	}
-	
+
 	// 4개 이상인지 체크
 	private static boolean isFourCheck() {
 		int cnt = 0;
-		for(int i = 0; i < 7; i++) {
+		for (int i = 0; i < 7; i++) {
 			Pair now = list.get(result[i]);
-			if(map[now.x][now.y] == 'S') {
+			if (map[now.x][now.y] == 'S') {
 				cnt += 1;
 			}
 		}
-		
-		if(cnt < 4) return false;
+
+		if (cnt < 4)
+			return false;
 		return true;
 	}
-	
+
 }

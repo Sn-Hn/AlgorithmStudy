@@ -115,62 +115,62 @@ public class 카카오머니_15998 {
 	private static int N;
 	private static long max = -1;
 	private static boolean flag = false;
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		
+
 		long a = 0;
 		long b = 0;
 		long preB = 0;
 		long M = 0;
 		long gcd = 0;
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			a = Long.parseLong(st.nextToken());
 			b = Long.parseLong(st.nextToken());
-			
+
 			// 출금해야하는 상황이면서 충전해야하는 상황
-			if(a < 0 && preB + a < 0) {
+			if (a < 0 && preB + a < 0) {
 				M = b - a - preB;
 				// 최대공약수를 구한다. (유클리드 호제법)
 				gcd = gcd(M, gcd);
 				// 최소 충전 금액이 남은 금액보다 적으면 안되므로
 				// max에 남은 금액의 최대값을 넣어준다.
 				max = Math.max(max, b);
-			
-			// 계산이 맞지 않을 떄
-			}else if(preB + a != b) {
+
+				// 계산이 맞지 않을 떄
+			} else if (preB + a != b) {
 				gcd = -1;
 				break;
 			}
 			preB = b;
-			
+
 		}
-		
+
 		// 최대공약수가 없다면 금액이 딱 떨어지는 것
 		// 즉, 1이 아니라 무슨 자연수가 오더라도 된다.
-		if(gcd == 0) {
+		if (gcd == 0) {
 			gcd = 1;
 		}
-		
+
 		// 최소 충전 금액이 남은 금액보다 크다면
-		if(gcd > max) {
+		if (gcd > max) {
 			System.out.println(gcd);
-		}else {
+		} else {
 			System.out.println(-1);
 		}
-		
-		
+
 		br.close();
 	}
-	
+
 	// 유클리드 호제법
 	private static long gcd(long a, long b) {
-		if(b == 0) return a;
-		else return gcd(b, a%b);
+		if (b == 0)
+			return a;
+		else
+			return gcd(b, a % b);
 	}
-	
-	
+
 }

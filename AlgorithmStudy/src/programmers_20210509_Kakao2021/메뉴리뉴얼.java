@@ -23,12 +23,12 @@ public class 메뉴리뉴얼 {
 		String[] result = null;
 		for (int i = 0; i < 3; i++) {
 			result = solution(orders[i], course[i]);
-			for(String res : result) {
+			for (String res : result) {
 				System.out.println(res);
 			}
 			System.out.println();
 		}
-		
+
 	}
 
 	public static String[] solution(String[] orders, int[] course) {
@@ -46,24 +46,24 @@ public class 메뉴리뉴얼 {
 				visited = new boolean[orders[j].length()];
 				combination(0, 0, MAX, orders[j]);
 			}
-			
-			for(Map.Entry<String, Integer> entry : map.entrySet()) {
+
+			for (Map.Entry<String, Integer> entry : map.entrySet()) {
 				max = Math.max(max, entry.getValue());
 			}
-			
-			for(Map.Entry<String, Integer> entry : map.entrySet()) {
-				if(max == entry.getValue() && entry.getValue() >= 2) {
+
+			for (Map.Entry<String, Integer> entry : map.entrySet()) {
+				if (max == entry.getValue() && entry.getValue() >= 2) {
 					result.add(entry.getKey());
 				}
 			}
 		}
-		
+
 		answer = new String[result.size()];
-		
-		for(int i = 0; i < result.size(); i++) {
+
+		for (int i = 0; i < result.size(); i++) {
 			answer[i] = result.get(i);
 		}
-		
+
 		Arrays.sort(answer);
 
 		return answer;
@@ -76,13 +76,13 @@ public class 메뉴리뉴얼 {
 			for (int i = 0; i < MAX_VALUE; i++) {
 				ch[i] = order[i];
 			}
-			
+
 			Arrays.sort(ch);
-			
-			for(char at : ch) {
+
+			for (char at : ch) {
 				sb.append(at);
 			}
-			
+
 			if (map.containsKey(sb.toString())) {
 				map.put(sb.toString(), map.get(sb.toString()) + 1);
 			} else {

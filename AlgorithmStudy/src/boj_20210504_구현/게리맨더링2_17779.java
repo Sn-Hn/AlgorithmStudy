@@ -115,96 +115,95 @@ public class 게리맨더링2_17779 {
 				population[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
-		
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= N; j++) {
-				for(int k = 1; k < N; k++) {
-					for(int l = 1; l < N; l++) {
-						if(i <= N - k - l && 1 + k < j && j <= N - l) {
+
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				for (int k = 1; k < N; k++) {
+					for (int l = 1; l < N; l++) {
+						if (i <= N - k - l && 1 + k < j && j <= N - l) {
 							simulation(i, j, k, l);
 						}
 					}
 				}
 			}
 		}
-		
+
 		System.out.println(min);
 
 		br.close();
 	}
-	
+
 	private static void simulation(int x, int y, int d1, int d2) {
 		int yStart = y;
 		int yEnd = y;
-		map = new int[N+1][N+1];
+		map = new int[N + 1][N + 1];
 		localPopulation = new int[6];
 		System.out.println("yStart : " + yStart + ", yEnd : " + yEnd);
-		for(int i = x; i <= x + d1 + d2; i++) {
-			for(int j = yStart; j <= yEnd; j++) {
+		for (int i = x; i <= x + d1 + d2; i++) {
+			for (int j = yStart; j <= yEnd; j++) {
 				map[i][j] = 5;
 				localPopulation[5] += population[i][j];
 			}
-			if(i < x + d1) {
+			if (i < x + d1) {
 				yStart -= 1;
-			}else {
+			} else {
 				yStart += 1;
 			}
-			
-			if(i < x + d2) {
+
+			if (i < x + d2) {
 				yEnd += 1;
-			}else {
+			} else {
 				yEnd -= 1;
 			}
 		}
-		
-		
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= N; j++) {
-				if(map[i][j] == 5) continue;
-				
+
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				if (map[i][j] == 5)
+					continue;
+
 				// 1번 구역
-				if((i >= 1 && i < x + d1) && (j >= 1 && j <= y)) {
+				if ((i >= 1 && i < x + d1) && (j >= 1 && j <= y)) {
 					map[i][j] = 1;
 					localPopulation[1] += population[i][j];
 					continue;
 				}
-				
+
 				// 2번 구역
-				if((i >= 1 && i <= x + d2) && (j > y && j <= N)) {
+				if ((i >= 1 && i <= x + d2) && (j > y && j <= N)) {
 					map[i][j] = 2;
 					localPopulation[2] += population[i][j];
 					continue;
 				}
-				
+
 				// 3번 구역
-				if((i >= x + d1 && i <= N) && (j >= 1 && j < y - d1 + d2)) {
+				if ((i >= x + d1 && i <= N) && (j >= 1 && j < y - d1 + d2)) {
 					map[i][j] = 3;
 					localPopulation[3] += population[i][j];
 					continue;
 				}
-				
+
 				// 4번 구역
-				if((i > x + d2 && i <= N) && (j >= y - d1 + d2 && j <= N)) {
+				if ((i > x + d2 && i <= N) && (j >= y - d1 + d2 && j <= N)) {
 					map[i][j] = 4;
 					localPopulation[4] += population[i][j];
 					continue;
 				}
 			}
 		}
-		
+
 		min = Math.min(min, calculatePeople());
-		
+
 		print();
 		System.out.println();
 	}
-	
+
 	private static int calculatePeople() {
 		int diff = 0;
 		Arrays.sort(localPopulation);
 		diff = localPopulation[5] - localPopulation[1];
 		return diff;
 	}
-	
 
 	private static void print() {
 		for (int i = 1; i <= N; i++) {

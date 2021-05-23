@@ -154,15 +154,16 @@ public class BeadEscape_13459 {
 	private static int blueBead[] = new int[2];
 	private static int hole[] = new int[2];
 	private static int result = 0;
-	
+
 	private static Pair beadList;
-	
+
 	// 동 서 남 북
-	private static int dx[] = {0, 0, 1, -1};
-	private static int dy[] = {1, -1, 0, 0};
-	
+	private static int dx[] = { 0, 0, 1, -1 };
+	private static int dy[] = { 1, -1, 0, 0 };
+
 	private static class Pair {
 		int redX, redY, blueX, blueY, count;
+
 		public Pair(int redX, int redY, int blueX, int blueY, int count) {
 			this.redX = redX;
 			this.redY = redY;
@@ -171,164 +172,158 @@ public class BeadEscape_13459 {
 			this.count = count;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new char[N][M];
 		visited = new boolean[N][M][N][M];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			String str = br.readLine();
-			for(int j = 0; j < M; j++) {
+			for (int j = 0; j < M; j++) {
 				map[i][j] = str.charAt(j);
-				if(map[i][j] == 'R') {
+				if (map[i][j] == 'R') {
 					redBead[0] = i;
 					redBead[1] = j;
-				}else if(map[i][j] == 'B') {
+				} else if (map[i][j] == 'B') {
 					blueBead[0] = i;
 					blueBead[1] = j;
-				}else if(map[i][j] == 'O') {
+				} else if (map[i][j] == 'O') {
 					hole[0] = i;
 					hole[1] = j;
 				}
 			}
 		}
-		
+
 		beadList = new Pair(redBead[0], redBead[1], blueBead[0], blueBead[1], 0);
-		
+
 		escapeBead();
 		System.out.println(result);
-		
+
 		br.close();
 	}
-	
+
 	private static void escapeBead() {
 		Queue<Pair> q = new LinkedList<Pair>();
 		boolean flag = false;
 		q.add(beadList);
 		visited[redBead[0]][redBead[1]][blueBead[0]][blueBead[1]] = true;
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair bead = q.poll();
 			int redX, redY, blueX, blueY;
 			int count = bead.count;
-			
+
 			// 10번 넘게 움직였으므로 실패
-			if(count >= 10) {
+			if (count >= 10) {
 				break;
 			}
-			
-			/*  5 7
-				#######
-				#######
-				#######
-				##ORB##
-				#######
-				위의 예제를 처리할 때 아래 if문이 없으면 1이 출력
-				
-			*/
-			if(bead.redX == hole[0] && bead.redY == hole[1]) {
+
+			/*
+			 * 5 7 ####### ####### ####### ##ORB## ####### 위의 예제를 처리할 때 아래 if문이 없으면 1이 출력
+			 * 
+			 */
+			if (bead.redX == hole[0] && bead.redY == hole[1]) {
 				continue;
 			}
-			
+
 			// 빨간 공과 파란 공의 위치에 따라 달라짐...
-			for(int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) {
 				// 회전을 할때마다 기존의 구슬 값을 받아옴
 				redX = bead.redX;
 				redY = bead.redY;
 				blueX = bead.blueX;
 				blueY = bead.blueY;
-				
+
 				// 기울여지기 시작
 				// while이 끝나면 구슬들이 한쪽으로 쏠림
-				while(true) {
+				while (true) {
 					int rx = redX + dx[i];
 					int ry = redY + dy[i];
 					int bx = blueX + dx[i];
 					int by = blueY + dy[i];
-					
+
 					// 한쪽으로 기울여질때 빨간구슬과 파란구슬이 동시에 들어오는 것을 구분하기 위해 flag를 사용
-					if(redX == hole[0] && redY == hole[1]) {
+					if (redX == hole[0] && redY == hole[1]) {
 						flag = true;
 					}
-					
-					
-					if(blueX == hole[0] && blueY == hole[1]) {
+
+					if (blueX == hole[0] && blueY == hole[1]) {
 						flag = false;
 						break;
 					}
-					
-					// 다음에 전진할 빨간 구슬의 위치가 벽이 아니라면 
-					if(map[rx][ry] != '#') {
+
+					// 다음에 전진할 빨간 구슬의 위치가 벽이 아니라면
+					if (map[rx][ry] != '#') {
 						redX += dx[i];
 						redY += dy[i];
 					}
-					
-					// 다음에 전진할 파란 구슬의 위치가 벽이 아니라면 
-					if(map[bx][by] != '#') {
+
+					// 다음에 전진할 파란 구슬의 위치가 벽이 아니라면
+					if (map[bx][by] != '#') {
 						blueX += dx[i];
 						blueY += dy[i];
 					}
-					
+
 					// 빨간 구슬 파란 구슬의 다음 위치가 둘다 벽이라면 while 종료
-					if(map[rx][ry] == '#' && map[bx][by] == '#') {
+					if (map[rx][ry] == '#' && map[bx][by] == '#') {
 						break;
 					}
-					
-					
+
 				}
-				if(flag) {
+				if (flag) {
 					result = 1;
 					break;
 				}
-				
+
 				// 빨간 구슬과 파란 구슬이 겹쳤을 때
-				if(redX == blueX && redY == blueY) {
+				if (redX == blueX && redY == blueY) {
 					// 기존의 빨간구슬의 X인덱스가 파란구슬의 X인덱스보다 크다면
-					if(bead.redX > bead.blueX) {
+					if (bead.redX > bead.blueX) {
 						// 아래로 기울였을 때
-						if(i == 2) {
+						if (i == 2) {
 							// blueX의 전 위치를 의미
 							blueX -= dx[i];
-						// 위로 기울였을 때
-						}else if(i == 3) {
-							redX -= dx[i];								
-						}
-					}else {
-						if(i == 2) {
+							// 위로 기울였을 때
+						} else if (i == 3) {
 							redX -= dx[i];
-						}else if(i == 3) {
-							blueX -= dx[i];								
+						}
+					} else {
+						if (i == 2) {
+							redX -= dx[i];
+						} else if (i == 3) {
+							blueX -= dx[i];
 						}
 					}
 					// 기존의 빨간구슬의 Y인덱스가 파란구슬의 Y인덱스보다 크다면
-					if(bead.redY > bead.blueY) {
+					if (bead.redY > bead.blueY) {
 						// 오른쪽으로 기울였을 때
-						if(i == 0) {
+						if (i == 0) {
 							blueY -= dy[i];
-						// 왼쪽으로 기울였을 때
-						}else if(i == 1) {
-							redY -= dy[i];								
-						}
-					}else {
-						if(i == 0) {
+							// 왼쪽으로 기울였을 때
+						} else if (i == 1) {
 							redY -= dy[i];
-						}else if(i == 1) {
-							blueY -= dy[i];								
+						}
+					} else {
+						if (i == 0) {
+							redY -= dy[i];
+						} else if (i == 1) {
+							blueY -= dy[i];
 						}
 					}
 				}
-				
+
 				// 방문처리
-				if(!visited[redX][redY][blueX][blueY]) {
+				if (!visited[redX][redY][blueX][blueY]) {
 					visited[redX][redY][blueX][blueY] = true;
-					q.add(new Pair(redX, redY, blueX, blueY, count+1));
+					q.add(new Pair(redX, redY, blueX, blueY, count + 1));
 				}
 			}
 		}
-		
+
 	}
 }

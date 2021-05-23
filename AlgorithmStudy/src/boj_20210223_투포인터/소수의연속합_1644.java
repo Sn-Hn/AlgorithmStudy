@@ -51,61 +51,63 @@ public class 소수의연속합_1644 {
 	private static boolean frimeNumber[];
 	private static int arr[];
 	private static int count = 0;
+
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		
-		frimeNumber = new boolean[N+1];
+
+		frimeNumber = new boolean[N + 1];
 		arr = new int[N];
-		
+
 		findFrimeNumber();
-		
+
 		System.out.println(solution());
-		
+
 		br.close();
 	}
-	
+
 	private static int solution() {
 		int start = 0;
 		int end = 0;
 		long sum = 0;
 		int result = 0;
-		
-		while(end <= count && start <= count) {
-			if(sum < N) {
+
+		while (end <= count && start <= count) {
+			if (sum < N) {
 				sum += arr[end];
 				end++;
 				continue;
-			}else if(sum == N){
+			} else if (sum == N) {
 				result++;
 			}
 			sum -= arr[start];
 			start++;
-			
+
 		}
-		
+
 		return result;
 	}
-	
+
 	private static void findFrimeNumber() {
 		frimeNumber[1] = false;
-		if(N == 1) return;
-		
-		for(int i = 2; i <= N; i++) {
+		if (N == 1)
+			return;
+
+		for (int i = 2; i <= N; i++) {
 			frimeNumber[i] = true;
 		}
-		
-		for(int i = 2; i*i <= N; i++) {
-			for(int j = i*i; j <= N; j+=i) {
+
+		for (int i = 2; i * i <= N; i++) {
+			for (int j = i * i; j <= N; j += i) {
 				frimeNumber[j] = false;
 			}
 		}
-		
+
 		int i = 0;
 		int j = 1;
-		
-		while(j <= N) {
-			if(frimeNumber[j]) {
+
+		while (j <= N) {
+			if (frimeNumber[j]) {
 				arr[i] = j;
 				count++;
 				i++;

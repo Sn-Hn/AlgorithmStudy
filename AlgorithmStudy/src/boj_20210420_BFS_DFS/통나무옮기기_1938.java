@@ -146,290 +146,293 @@ public class 통나무옮기기_1938 {
 	private static int log = 0;
 	private static List<Log> logList = new ArrayList<Log>();
 	private static List<Log> finalPosition = new ArrayList<Log>();
+
 	private static class Log {
 		int x, y, log;
+
 		public Log(int x, int y, int log) {
 			this.x = x;
 			this.y = y;
 		}
-		
+
 		// 생성자 오버로딩 - 깊은 복사
 		public Log(Log l) {
 			this.x = l.x;
 			this.y = l.y;
 		}
-		
+
 	}
-	
+
 	private static class Move {
 		List<Log> list = new ArrayList<Log>();
 		int cnt, log;
+
 		public Move(List<Log> list, int cnt, int log) {
 			this.list = list;
 			this.cnt = cnt;
 			this.log = log;
 		}
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+
 		N = Integer.parseInt(br.readLine());
 		map = new int[N][N];
 		visited = new boolean[2][N][N];
 		StringTokenizer st;
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			String input = br.readLine();
-			for(int j = 0; j < N; j++) {
+			for (int j = 0; j < N; j++) {
 				char ch = input.charAt(j);
-				if(ch == 'B') {
+				if (ch == 'B') {
 					map[i][j] = 5;
 					logList.add(new Log(i, j, log));
-				}else if(ch == 'E') {
+				} else if (ch == 'E') {
 					map[i][j] = 9;
 					finalPosition.add(new Log(i, j, log));
-				}else {
-					map[i][j] = ch - '0';					
+				} else {
+					map[i][j] = ch - '0';
 				}
 			}
 		}
-		
+
 		bfs();
-		
+
 //		printVisited();
-		
+
 		br.close();
 	}
-	
+
 	private static void bfs() {
 		Queue<Move> q = new LinkedList<Move>();
 		q.add(new Move(logList, 0, log));
 		boolean checked = false;
 		visited[log][logList.get(1).x][logList.get(1).y] = true;
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Move l = q.poll();
-			
-			for(int i = 0; i < 3; i++) {
-				if(l.list.get(i).x == finalPosition.get(i).x && l.list.get(i).y == finalPosition.get(i).y) {
+
+			for (int i = 0; i < 3; i++) {
+				if (l.list.get(i).x == finalPosition.get(i).x && l.list.get(i).y == finalPosition.get(i).y) {
 					checked = true;
-				}else {
+				} else {
 					checked = false;
 					break;
 				}
 			}
-			
-			if(checked) {
+
+			if (checked) {
 				System.out.println(l.cnt);
 				break;
 			}
-			
-			for(int i = 0; i < 5; i++) {
+
+			for (int i = 0; i < 5; i++) {
 				List<Log> list = new ArrayList<Log>();
-				for(int j = 0; j < 3; j++) {
+				for (int j = 0; j < 3; j++) {
 					list.add(new Log(l.list.get(j)));
 				}
-				if(i == 0) {
-					if(up(list, l.log)) {
-						q.add(new Move(list, l.cnt+1, l.log));
+				if (i == 0) {
+					if (up(list, l.log)) {
+						q.add(new Move(list, l.cnt + 1, l.log));
 					}
-				}else if(i == 1) {
-					if(down(list, l.log)) {
-						q.add(new Move(list, l.cnt+1, l.log));
+				} else if (i == 1) {
+					if (down(list, l.log)) {
+						q.add(new Move(list, l.cnt + 1, l.log));
 					}
-				}else if(i == 2) {
-					if(left(list, l.log)) {
-						q.add(new Move(list, l.cnt+1, l.log));
+				} else if (i == 2) {
+					if (left(list, l.log)) {
+						q.add(new Move(list, l.cnt + 1, l.log));
 					}
-				}else if(i == 3) {
-					if(right(list, l.log)) {
-						q.add(new Move(list, l.cnt+1, l.log));
+				} else if (i == 3) {
+					if (right(list, l.log)) {
+						q.add(new Move(list, l.cnt + 1, l.log));
 					}
-				}else if(i == 4) {
-					if(existTree(list.get(1).x, list.get(1).y, l.log)) {
+				} else if (i == 4) {
+					if (existTree(list.get(1).x, list.get(1).y, l.log)) {
 						rotate(list);
-						if(l.log == 0) {
-							q.add(new Move(list, l.cnt+1, 1));
-						}else {
-							q.add(new Move(list, l.cnt+1, 0));
+						if (l.log == 0) {
+							q.add(new Move(list, l.cnt + 1, 1));
+						} else {
+							q.add(new Move(list, l.cnt + 1, 0));
 						}
 					}
 				}
 			}
 		}
-		
-		if(!checked) {
+
+		if (!checked) {
 			System.out.println(0);
 		}
 	}
-	
+
 	private static boolean up(List<Log> list, int log) {
 		int x = list.get(0).x;
 		int y = list.get(0).y;
-		
-		if(x <= 0) {
+
+		if (x <= 0) {
 			return false;
 		}
-		
-		for(int i = 0; i < 3; i++) {
-			if(map[list.get(i).x-1][list.get(i).y] == 1) 
+
+		for (int i = 0; i < 3; i++) {
+			if (map[list.get(i).x - 1][list.get(i).y] == 1)
 				return false;
 		}
 
-		if(!visited[log][list.get(1).x-1][list.get(1).y]) {
-			visited[log][list.get(1).x-1][list.get(1).y] = true;
-			for(int i = 0; i < 3; i++) {
+		if (!visited[log][list.get(1).x - 1][list.get(1).y]) {
+			visited[log][list.get(1).x - 1][list.get(1).y] = true;
+			for (int i = 0; i < 3; i++) {
 				list.get(i).x = list.get(i).x - 1;
 			}
-		}else {
+		} else {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	private static boolean down(List<Log> list, int log) {
 		int x = list.get(2).x;
 		int y = list.get(2).y;
-		
-		if(x >= N - 1) {
+
+		if (x >= N - 1) {
 			return false;
 		}
-		
-		for(int i = 0; i < 3; i++) {
-			if(map[list.get(i).x+1][list.get(i).y] == 1) 
+
+		for (int i = 0; i < 3; i++) {
+			if (map[list.get(i).x + 1][list.get(i).y] == 1)
 				return false;
 		}
 
-		if(!visited[log][list.get(1).x+1][list.get(1).y]) {
-			visited[log][list.get(1).x+1][list.get(1).y] = true;
-			for(int i = 0; i < 3; i++) {
+		if (!visited[log][list.get(1).x + 1][list.get(1).y]) {
+			visited[log][list.get(1).x + 1][list.get(1).y] = true;
+			for (int i = 0; i < 3; i++) {
 				list.get(i).x = list.get(i).x + 1;
 			}
-		}else {
+		} else {
 			return false;
 		}
 		return true;
 	}
-	
+
 	private static boolean left(List<Log> list, int log) {
 		int x = list.get(0).x;
 		int y = list.get(0).y;
-		
-		if(y <= 0) {
+
+		if (y <= 0) {
 			return false;
 		}
-		
-		for(int i = 0; i < 3; i++) {
-			if(map[list.get(i).x][list.get(i).y-1] == 1) 
+
+		for (int i = 0; i < 3; i++) {
+			if (map[list.get(i).x][list.get(i).y - 1] == 1)
 				return false;
 		}
 
-		if(!visited[log][list.get(1).x][list.get(1).y-1]) {
-			visited[log][list.get(1).x][list.get(1).y-1] = true;
-			for(int i = 0; i < 3; i++) {
+		if (!visited[log][list.get(1).x][list.get(1).y - 1]) {
+			visited[log][list.get(1).x][list.get(1).y - 1] = true;
+			for (int i = 0; i < 3; i++) {
 				list.get(i).y = list.get(i).y - 1;
 			}
-		}else {
+		} else {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	private static boolean right(List<Log> list, int log) {
 		int x = list.get(2).x;
 		int y = list.get(2).y;
-		
-		if(y >= N - 1) {
+
+		if (y >= N - 1) {
 			return false;
 		}
-		
-		for(int i = 0; i < 3; i++) {
-			if(map[list.get(i).x][list.get(i).y+1] == 1) 
+
+		for (int i = 0; i < 3; i++) {
+			if (map[list.get(i).x][list.get(i).y + 1] == 1)
 				return false;
 		}
 
-		if(!visited[log][list.get(1).x][list.get(1).y+1]) {
-			visited[log][list.get(1).x][list.get(1).y+1] = true;
-			for(int i = 0; i < 3; i++) {
+		if (!visited[log][list.get(1).x][list.get(1).y + 1]) {
+			visited[log][list.get(1).x][list.get(1).y + 1] = true;
+			for (int i = 0; i < 3; i++) {
 				list.get(i).y = list.get(i).y + 1;
 			}
-		}else {
+		} else {
 			return false;
 		}
-		
+
 		return true;
 	}
-	
+
 	private static void rotate(List<Log> list) {
 		int firstX = list.get(0).x;
 		int firstY = list.get(0).y;
-		
+
 		int lastX = list.get(2).x;
 		int lastY = list.get(2).y;
-		
+
 		// ㅣ
-		if(firstX + 1 == list.get(1).x && firstY + 1 < N && lastY - 1 >= 0) {
+		if (firstX + 1 == list.get(1).x && firstY + 1 < N && lastY - 1 >= 0) {
 			list.get(0).x = list.get(0).x + 1;
 			list.get(0).y = list.get(0).y - 1;
-			
+
 			list.get(2).x = list.get(2).x - 1;
 			list.get(2).y = list.get(2).y + 1;
-			
-		// ㅡ
-		}else if(firstY + 1 == list.get(1).y && firstX - 1 >= 0 && lastX + 1< N) {
+
+			// ㅡ
+		} else if (firstY + 1 == list.get(1).y && firstX - 1 >= 0 && lastX + 1 < N) {
 			list.get(0).x = list.get(0).x - 1;
 			list.get(0).y = list.get(0).y + 1;
-			
+
 			list.get(2).x = list.get(2).x + 1;
 			list.get(2).y = list.get(2).y - 1;
 		}
 	}
-	
+
 	private static boolean existTree(int x, int y, int log) {
 		int ck = 0;
-		if(x <= 0 || x >= N-1 || y <= 0 || y >= N-1) {
+		if (x <= 0 || x >= N - 1 || y <= 0 || y >= N - 1) {
 			return false;
 		}
-		if(log == 0) {
+		if (log == 0) {
 			ck = 1;
-		}else {
+		} else {
 			ck = 0;
 		}
-		if(visited[ck][x][y]) {
+		if (visited[ck][x][y]) {
 			return false;
 		}
-		
-		for(int i = x-1; i <= x+1; i++) {
-			for(int j = y-1; j <= y+1; j++) {
-				if(map[i][j] == 1) {
+
+		for (int i = x - 1; i <= x + 1; i++) {
+			for (int j = y - 1; j <= y + 1; j++) {
+				if (map[i][j] == 1) {
 					return false;
 				}
 			}
 		}
-		
+
 		return true;
 	}
-	
+
 	private static void printLogPosition(List<Log> list, int log) {
-		for(int i = 0; i < list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			System.out.println(list.get(i).x + ", " + list.get(i).y + ", log : " + log);
 		}
 	}
-	
+
 	private static void print() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				System.out.print(map[i][j] + " ");
 			}
 			System.out.println();
 		}
 	}
-	
+
 	private static void printVisited() {
-		for(int i = 0; i < N; i++ ) {
-			for(int j = 0; j < N; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				System.out.print(visited[0][i][j] + " ");
 			}
 			System.out.println();

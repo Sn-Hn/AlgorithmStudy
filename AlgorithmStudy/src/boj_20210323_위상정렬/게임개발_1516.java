@@ -55,69 +55,69 @@ public class 게임개발_1516 {
 	private static int result[];
 	private static int inDegree[];
 	private static List<List<Integer>> graph = new ArrayList<List<Integer>>();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		N = Integer.parseInt(br.readLine());
-		time = new int[N+1];
-		result = new int[N+1];
-		inDegree = new int[N+1];
-		
-		for(int i = 0; i <= N; i++) {
+		time = new int[N + 1];
+		result = new int[N + 1];
+		inDegree = new int[N + 1];
+
+		for (int i = 0; i <= N; i++) {
 			graph.add(new ArrayList<Integer>());
 		}
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			st = new StringTokenizer(br.readLine());
 			time[i] = Integer.parseInt(st.nextToken());
 			result[i] = time[i];
 			int j = 0;
 			int a = Integer.parseInt(st.nextToken());
-			while(a != -1) {
+			while (a != -1) {
 				graph.get(a).add(i);
 				inDegree[i]++;
 				a = Integer.parseInt(st.nextToken());
 			}
-			
-			
+
 		}
-		
+
 		topologySort();
 		print();
-		
-		
+
 		br.close();
 	}
-	
+
 	private static void topologySort() {
 		Queue<Integer> q = new LinkedList<Integer>();
-		for(int i = 1; i <= N; i++) {
-			if(inDegree[i] == 0) {
+		for (int i = 1; i <= N; i++) {
+			if (inDegree[i] == 0) {
 				q.add(i);
 			}
 		}
-		
-		for(int i = 1; i <= N; i++) {
-			if(q.isEmpty()) return;
-			
+
+		for (int i = 1; i <= N; i++) {
+			if (q.isEmpty())
+				return;
+
 			int now = q.poll();
-			
-			for(int next : graph.get(now)) {
+
+			for (int next : graph.get(now)) {
 				inDegree[next]--;
-				
-				if(result[next] < result[now] + time[next]) {
+
+				if (result[next] < result[now] + time[next]) {
 					result[next] = result[now] + time[next];
 				}
-				
-				if(inDegree[next] == 0) {
+
+				if (inDegree[next] == 0) {
 					q.add(next);
 				}
 			}
 		}
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			System.out.println(result[i]);
 		}
 	}

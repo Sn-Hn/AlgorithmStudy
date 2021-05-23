@@ -48,59 +48,60 @@ public class 세용액_2473 {
 	private static long arr[];
 	private static long a, b, c;
 	private static long result = Long.MAX_VALUE;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		arr = new long[N];
-		
+
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			arr[i] = Long.parseLong(st.nextToken());
 		}
-		
+
 		Arrays.sort(arr);
-		
+
 		solution();
 		System.out.println(a + " " + b + " " + c);
-		
+
 		br.close();
 	}
-	
+
 	private static void solution() {
 		int start = 0;
-		int end = N-1;
+		int end = N - 1;
 		int middle = start + 1;
 		long sum = 0;
-		
-		while(true) {
+
+		while (true) {
 			sum = arr[start] + arr[middle] + arr[end];
-			
-			if(result > Math.abs(sum)) {
+
+			if (result > Math.abs(sum)) {
 				result = Math.abs(sum);
 				a = arr[start];
 				b = arr[middle];
 				c = arr[end];
 			}
-			if(sum > 0) {
+			if (sum > 0) {
 				end--;
-			}else if(sum < 0) {
+			} else if (sum < 0) {
 				middle++;
-			}else {
+			} else {
 				a = arr[start];
 				b = arr[middle];
 				c = arr[end];
 				break;
 			}
-			
-			if(middle == end) {
+
+			if (middle == end) {
 				start++;
 				middle = start + 1;
 			}
-			
-			if(start+1 >= end) {
+
+			if (start + 1 >= end) {
 				break;
 			}
 		}
-		
+
 	}
 }

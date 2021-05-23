@@ -123,122 +123,121 @@ public class 경사로_14890 {
 	private static int map[][];
 	private static boolean visited[];
 	private static int count = 0;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		L = Integer.parseInt(st.nextToken());
-		
+
 		map = new int[N][N];
-		
+
 		int now = 0;
 		int pre = 0;
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < N; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());				
+			for (int j = 0; j < N; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 		findRowWay();
 		findColWay();
-		
+
 		System.out.println(count);
-		
+
 		br.close();
-	}	
-	
+	}
+
 	private static void findRowWay() {
 		int now = 0;
 		int pre = 0;
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			boolean flag = false;
 			visited = new boolean[N];
 			pre = map[i][0];
-			LOOP :
-			for(int j = 1; j < N; j++) {
+			LOOP: for (int j = 1; j < N; j++) {
 				now = map[i][j];
-				
-				if(pre == now) {
+
+				if (pre == now) {
 					flag = true;
-				// 올라가는 경우
-				}else if(now-pre == 1) {
-					for(int k = j-1; k > j-L-1; k--) {
-						if(k < 0 || visited[k] || map[i][k] != map[i][j-1]) {
+					// 올라가는 경우
+				} else if (now - pre == 1) {
+					for (int k = j - 1; k > j - L - 1; k--) {
+						if (k < 0 || visited[k] || map[i][k] != map[i][j - 1]) {
 							flag = false;
 							break LOOP;
 						}
 						visited[k] = true;
 					}
 					flag = true;
-					
-				// 내려가는 경우
-				}else if(pre-now == 1) {
-					for(int k = j; k < j+L; k++) {
-						if(k >= N || visited[k] || map[i][k] != map[i][j]) {
+
+					// 내려가는 경우
+				} else if (pre - now == 1) {
+					for (int k = j; k < j + L; k++) {
+						if (k >= N || visited[k] || map[i][k] != map[i][j]) {
 							flag = false;
 							break LOOP;
 						}
 						visited[k] = true;
 					}
 					flag = true;
-				}else {
+				} else {
 					flag = false;
 					break;
 				}
-				
+
 				pre = now;
 			}
-			if(flag) {
+			if (flag) {
 				count += 1;
 			}
 		}
 	}
-	
+
 	private static void findColWay() {
 		int now = 0;
 		int pre = 0;
-		for(int j = 0; j < N; j++) {
+		for (int j = 0; j < N; j++) {
 			boolean flag = false;
 			visited = new boolean[N];
 			pre = map[0][j];
-			LOOP :
-			for(int i = 1; i < N; i++) {
+			LOOP: for (int i = 1; i < N; i++) {
 				now = map[i][j];
-				
-				if(pre == now) {
+
+				if (pre == now) {
 					flag = true;
-				// 올라가는 경우
-				}else if(now-pre == 1) {
-					for(int k = i-1; k > i-L-1; k--) {
-						if(k < 0 || visited[k] || map[k][j] != map[i-1][j]) {
+					// 올라가는 경우
+				} else if (now - pre == 1) {
+					for (int k = i - 1; k > i - L - 1; k--) {
+						if (k < 0 || visited[k] || map[k][j] != map[i - 1][j]) {
 							flag = false;
 							break LOOP;
 						}
 						visited[k] = true;
 					}
-					
-				// 내려가는 경우
-				}else if(pre-now == 1) {
-					for(int k = i; k < i+L; k++) {
-						if(k >= N || visited[k] || map[k][j] != map[i][j]) {
+
+					// 내려가는 경우
+				} else if (pre - now == 1) {
+					for (int k = i; k < i + L; k++) {
+						if (k >= N || visited[k] || map[k][j] != map[i][j]) {
 							flag = false;
 							break LOOP;
 						}
 						visited[k] = true;
 					}
-				}else {
+				} else {
 					flag = false;
 					break;
 				}
-				
+
 				pre = now;
 			}
-			if(flag) {
+			if (flag) {
 				count += 1;
 			}
 		}
 	}
-	
+
 }

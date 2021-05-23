@@ -64,69 +64,74 @@ public class 팰린드롬_10942 {
 	private static int arr[];
 	private static boolean dp[][];
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		arr = new int[N+1];
-		dp = new boolean[N+1][N+1];
+		arr = new int[N + 1];
+		dp = new boolean[N + 1][N + 1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 			dp[i][i] = true;
-			if(arr[i] == arr[i-1]) {
-				dp[i-1][i] = true;
+			if (arr[i] == arr[i - 1]) {
+				dp[i - 1][i] = true;
 			}
 		}
-		
+
 		M = Integer.parseInt(br.readLine());
-		
+
 		int S, E;
-		for(int i = 1; i <= M; i++) {
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			S = Integer.parseInt(st.nextToken());
 			E = Integer.parseInt(st.nextToken());
 //			bruteForce(S, E);
-			if(dp(S, E)) sb.append("1\n");
-			else sb.append("0\n");
+			if (dp(S, E))
+				sb.append("1\n");
+			else
+				sb.append("0\n");
 		}
-		
+
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
-	
+
 	private static boolean dp(int S, int E) {
-		if(dp[S][E]) return true;
+		if (dp[S][E])
+			return true;
 		int end = E;
-		for(int j = S; j <= end; j++) {
-			if(dp[j][end]) return true;
-			if(arr[j] == arr[end]) {
+		for (int j = S; j <= end; j++) {
+			if (dp[j][end])
+				return true;
+			if (arr[j] == arr[end]) {
 				end--;
 				dp[S][E] = true;
-			}else {
+			} else {
 				dp[S][E] = false;
 				break;
 			}
 		}
-		
+
 		return dp[S][E];
 	}
-	
+
 	private static void bruteForce(int S, int E) {
 		boolean flag = false;
-		for(int j = S; j <= E; j++) {
-			if(arr[j] == arr[E]) {
+		for (int j = S; j <= E; j++) {
+			if (arr[j] == arr[E]) {
 				E--;
 				flag = true;
-			}else {
+			} else {
 				flag = false;
 				break;
 			}
 		}
-		if(flag) {
+		if (flag) {
 			sb.append("1\n");
-		}else {
+		} else {
 			sb.append("0\n");
 		}
 	}

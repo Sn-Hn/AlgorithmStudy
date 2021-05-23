@@ -51,73 +51,76 @@ public class 커피숍_1275 {
 	private static int arr[];
 	private static long tree[];
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		Q = Integer.parseInt(st.nextToken());
-		
-		arr = new int[N+1];
-		tree = new long[N*4];
-		
+
+		arr = new int[N + 1];
+		tree = new long[N * 4];
+
 		st = new StringTokenizer(br.readLine());
-		for(int i = 1; i <= N; i++) {
+		for (int i = 1; i <= N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		
+
 		init(1, N, 1);
-		
-		for(int i = 0; i < Q; i++) {
+
+		for (int i = 0; i < Q; i++) {
 			st = new StringTokenizer(br.readLine());
 			int x = Integer.parseInt(st.nextToken());
 			int y = Integer.parseInt(st.nextToken());
-			if(x > y) {
+			if (x > y) {
 				int temp = x;
 				x = y;
 				y = temp;
 			}
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
-			
+
 			sb.append(sum(1, N, 1, x, y) + "\n");
 			update(1, N, 1, a, b);
 		}
-		
+
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
-	
+
 	private static long init(int start, int end, int node) {
-		if(start == end) return tree[node] = arr[start];
+		if (start == end)
+			return tree[node] = arr[start];
 		int mid = (start + end) / 2;
-		return tree[node] = init(start, mid, node*2) + init(mid+1, end, node*2+1);
+		return tree[node] = init(start, mid, node * 2) + init(mid + 1, end, node * 2 + 1);
 	}
-	
+
 	private static long sum(int start, int end, int node, int left, int right) {
-		if(left > end || right < start) {
+		if (left > end || right < start) {
 			return 0;
 		}
-		
-		if(left <= start && right >= end) {
+
+		if (left <= start && right >= end) {
 			return tree[node];
 		}
-		
+
 		int mid = (start + end) / 2;
-		
-		return sum(start, mid, node*2, left, right) + sum(mid+1, end, node*2+1, left, right);
+
+		return sum(start, mid, node * 2, left, right) + sum(mid + 1, end, node * 2 + 1, left, right);
 	}
-	
+
 	private static long update(int start, int end, int node, int idx, int val) {
-		if(idx < start || idx > end) {
+		if (idx < start || idx > end) {
 			return tree[node];
 		}
-		
-		if(start == end) return tree[node] = val;
-		
+
+		if (start == end)
+			return tree[node] = val;
+
 		int mid = (start + end) / 2;
-		
-		return tree[node] = update(start, mid, node*2, idx, val) + update(mid+1, end, node*2+1, idx, val);
+
+		return tree[node] = update(start, mid, node * 2, idx, val) + update(mid + 1, end, node * 2 + 1, idx, val);
 	}
 }

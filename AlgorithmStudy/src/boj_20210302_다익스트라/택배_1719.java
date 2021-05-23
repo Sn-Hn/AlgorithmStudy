@@ -70,36 +70,38 @@ public class 택배_1719 {
 	private static int distance[][];
 	private static int result[][];
 	private static StringBuilder sb = new StringBuilder();
-	
+
 	private static int INF = Integer.MAX_VALUE;
-	
+
 	private static class Node implements Comparable<Node> {
 		int index, distance;
+
 		public Node(int index, int distance) {
 			this.index = index;
 			this.distance = distance;
 		}
-		
+
 		@Override
 		public int compareTo(Node o) {
 			// TODO Auto-generated method stub
 			return distance - o.distance;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		list = new ArrayList<List<Node>>();
-		distance = new int[N+1][N+1];
-		result = new int[N+1][N+1];
-		for(int i = 0; i <= N; i++) {
+		distance = new int[N + 1][N + 1];
+		result = new int[N + 1][N + 1];
+		for (int i = 0; i <= N; i++) {
 			list.add(new ArrayList<Node>());
 			Arrays.fill(distance[i], INF);
 		}
-		
-		for(int i = 1; i <= M; i++) {
+
+		for (int i = 1; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
@@ -107,19 +109,19 @@ public class 택배_1719 {
 			list.get(a).add(new Node(b, c));
 			list.get(b).add(new Node(a, c));
 		}
-		
-		for(int i = 1; i <= N; i++) {
+
+		for (int i = 1; i <= N; i++) {
 			distance[i][i] = 0;
 			solve(i);
-			for(int j = 1; j <= N; j++) {
-				if(result[i][j] == 0) {
+			for (int j = 1; j <= N; j++) {
+				if (result[i][j] == 0) {
 					sb.append("- ");
-				}else if(result[i][j] == i) {
+				} else if (result[i][j] == i) {
 					sb.append(j + " ");
-				}else {
+				} else {
 					int next = result[i][j];
 					// 왔던 길을 거꾸로 되돌아간다
-					while(result[i][next] != i) {
+					while (result[i][next] != i) {
 						next = result[i][next];
 					}
 					sb.append(next + " ");
@@ -127,37 +129,38 @@ public class 택배_1719 {
 			}
 			sb.append("\n");
 		}
-		
+
 //		System.out.println(sb.toString());
 		print();
-		
+
 		br.close();
 	}
-	
+
 	private static void solve(int start) {
 		PriorityQueue<Node> q = new PriorityQueue<Node>();
-		boolean visited[] = new boolean[N+1];
+		boolean visited[] = new boolean[N + 1];
 		q.add(new Node(start, 0));
-		while(!q.isEmpty()) {
+		while (!q.isEmpty()) {
 			Node n = q.poll();
 			int now = n.index;
-			
-			if(visited[now]) continue;
+
+			if (visited[now])
+				continue;
 			visited[now] = true;
-			for(Node node : list.get(now)) {
-				if(distance[start][node.index] > distance[start][now] + node.distance) {
+			for (Node node : list.get(now)) {
+				if (distance[start][node.index] > distance[start][now] + node.distance) {
 					distance[start][node.index] = distance[start][now] + node.distance;
 					q.add(new Node(node.index, distance[start][node.index]));
 					result[start][node.index] = now;
-					
+
 				}
 			}
-		}		
+		}
 	}
-	
+
 	private static void print() {
-		for(int i = 1; i <= N; i++) {
-			for(int j = 1; j <= N; j++) {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
 				System.out.print(result[i][j]);
 			}
 			System.out.println();

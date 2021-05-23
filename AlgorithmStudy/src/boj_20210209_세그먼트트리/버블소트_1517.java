@@ -43,60 +43,61 @@ public class 버블소트_1517 {
 	private static int arr[];
 	private static int sort[];
 	private static long cnt = 0;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		arr = new int[N];
 		sort = new int[N];
-		
+
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		mergeSort(0, N-1);
+		mergeSort(0, N - 1);
 		System.out.println(cnt);
-		
+
 		br.close();
 	}
-	
+
 	// 재귀를 돌면서 계속 분할한다.
 	// 한개만 남을 때 까지 (start >= end)
-	private static void mergeSort(int start, int end) {	
-		if(start < end) {
-			int middle = (start + end)/2;
+	private static void mergeSort(int start, int end) {
+		if (start < end) {
+			int middle = (start + end) / 2;
 			mergeSort(start, middle);
-			mergeSort( middle+1, end);
+			mergeSort(middle + 1, end);
 			merge(start, middle, end);
 		}
 	}
-	
+
 	private static void merge(int start, int middle, int end) {
 		int s = start;
 		int m = middle + 1;
 		int e = start;
-		
-		while(s <= middle && m <= end) {
-			if(arr[s] <= arr[m]) {
+
+		while (s <= middle && m <= end) {
+			if (arr[s] <= arr[m]) {
 				sort[e++] = arr[s++];
-			}else {
+			} else {
 				sort[e++] = arr[m++];
 				cnt += (middle + 1 - s);
 			}
 		}
-		if(s > middle) {
-			for(int i = m; i <= end; i++, e++) {
+		if (s > middle) {
+			for (int i = m; i <= end; i++, e++) {
 				sort[e] = arr[i];
 			}
-		}else {
-			for(int i = s; i <= middle; i++, e++) {
+		} else {
+			for (int i = s; i <= middle; i++, e++) {
 				sort[e] = arr[i];
 			}
 		}
-		
-		for(int i = start; i <= end; i++) {
+
+		for (int i = start; i <= end; i++) {
 			arr[i] = sort[i];
 		}
-		
+
 	}
-	
+
 }

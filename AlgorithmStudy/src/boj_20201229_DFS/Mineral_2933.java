@@ -82,150 +82,147 @@ public class Mineral_2933 {
 	private static int R, C, N;
 	private static char map[][];
 	private static List<Pair> separateMineral = new ArrayList<Pair>();
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
-	
+
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	private static class Pair {
 		int x, y;
+
 		public Pair(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
-		
+
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
 		map = new char[R][C];
-		
-		for(int i = 0; i < R; i++) {
+
+		for (int i = 0; i < R; i++) {
 			String str = br.readLine();
-			for(int j = 0; j < C; j++) {
+			for (int j = 0; j < C; j++) {
 				map[i][j] = str.charAt(j);
 			}
 		}
-		
+
 		N = Integer.parseInt(br.readLine());
 		int stick[] = new int[N];
 		st = new StringTokenizer(br.readLine());
-		for(int i = 0; i < N; i++) {
-			stick[i] = R-Integer.parseInt(st.nextToken());
+		for (int i = 0; i < N; i++) {
+			stick[i] = R - Integer.parseInt(st.nextToken());
 		}
-				
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			separateMineral.clear();
 			removeMineral(stick[i], i);
 			floorMineral();
-			if(!separateMineral.isEmpty()) {
+			if (!separateMineral.isEmpty()) {
 				dropMineral();
 			}
-			
+
 		}
-		
+
 		printMap();
-		
+
 		br.close();
 	}
-	
+
 	// 미네랄 제거
 	private static void removeMineral(int stick, int index) {
-		if(index%2 == 0) {
-			for(int j = 0; j < C; j++) {
-				if(map[stick][j] == 'x') {
+		if (index % 2 == 0) {
+			for (int j = 0; j < C; j++) {
+				if (map[stick][j] == 'x') {
 					map[stick][j] = '.';
 					break;
 				}
 			}
-		}else {
-			for(int j = C-1; j >= 0; j--) {
-				if(map[stick][j] =='x') {
+		} else {
+			for (int j = C - 1; j >= 0; j--) {
+				if (map[stick][j] == 'x') {
 					map[stick][j] = '.';
 					break;
 				}
 			}
 		}
-		
+
 	}
-	
+
 	// 바닥에 붙어있는 미네랄 방문처리
 	private static void floorMineral() {
 		boolean visited[][] = new boolean[R][C];
 		Queue<Pair> q = new LinkedList<Pair>();
-		
+
 		// 바닥에 붙어있는 미네랄
-		for(int i = 0; i < C; i++) {
-			if(map[R-1][i] == 'x') {
-				q.add(new Pair(R-1, i));
+		for (int i = 0; i < C; i++) {
+			if (map[R - 1][i] == 'x') {
+				q.add(new Pair(R - 1, i));
 				// 메모리초과..
-				visited[R-1][i] = true;
+				visited[R - 1][i] = true;
 			}
 		}
-		
-		while(!q.isEmpty()) {
+
+		while (!q.isEmpty()) {
 			Pair p = q.poll();
-			
-			
-			for(int i = 0; i < 4; i++) {
+
+			for (int i = 0; i < 4; i++) {
 				int X = p.x + dx[i];
 				int Y = p.y + dy[i];
-				
-				if(X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
-					if(map[X][Y] == 'x') {
+
+				if (X >= 0 && X < R && Y >= 0 && Y < C && !visited[X][Y]) {
+					if (map[X][Y] == 'x') {
 						q.add(new Pair(X, Y));
 						visited[X][Y] = true;
 					}
 				}
 			}
 		}
-		
+
 		// 미네랄이 들어 있는 리스트에서 방문하지 않은 list를 dfs돌려 분리되어 있는 미네랄을 찾음
-		for(int i = 0; i < R; i++) {
-			for(int j = 0; j < C; j++) {
-				if(map[i][j] == 'x' && !visited[i][j]) {
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				if (map[i][j] == 'x' && !visited[i][j]) {
 					separateMineral.add(new Pair(i, j));
-				}				
+				}
 			}
 		}
 	}
 
-	
 	// 분리된 미네랄을 떨어뜨린다.
 	private static void dropMineral() {
 		int drop = 0;
-		for(Pair p : separateMineral) {
-			map[p.x][p.y] = '.'; 
+		for (Pair p : separateMineral) {
+			map[p.x][p.y] = '.';
 		}
-		
-		LOOP:
-		for(int i = 1; i < R; i++ ) {
-			for(Pair p : separateMineral) {
-				if(p.x + i >= R || map[p.x + i][p.y] == 'x') {
+
+		LOOP: for (int i = 1; i < R; i++) {
+			for (Pair p : separateMineral) {
+				if (p.x + i >= R || map[p.x + i][p.y] == 'x') {
 					break LOOP;
 				}
 			}
 			drop = i;
 		}
-		
-		for(Pair p : separateMineral) {
-			map[p.x+drop][p.y] = 'x'; 
+
+		for (Pair p : separateMineral) {
+			map[p.x + drop][p.y] = 'x';
 		}
-		
-		
+
 	}
-	
+
 	private static void printMap() throws IOException {
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		for(int i = 0; i < R; i++) {
-			for(int j = 0; j < C; j++) {
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
 				bw.write(map[i][j]);
 			}
 			bw.write("\n");
 		}
-		
+
 		bw.close();
 	}
 }

@@ -114,48 +114,48 @@ public class 거짓말 {
 	private static List<Integer> attend[];
 	private static boolean visited[];
 	private static int count;
-	
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		
+
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
+
 		count = M;
-		visited = new boolean[N+1];
-		parent = new int[N+1];
-		
-		for(int i = 1; i <= N; i++) {
+		visited = new boolean[N + 1];
+		parent = new int[N + 1];
+
+		for (int i = 1; i <= N; i++) {
 			parent[i] = i;
 		}
-		
+
 		attend = new ArrayList[M];
-		
+
 		st = new StringTokenizer(br.readLine());
 		person = Integer.parseInt(st.nextToken());
 		knowPeople = new int[person];
-		for(int i = 0; i < person; i++) {
+		for (int i = 0; i < person; i++) {
 			knowPeople[i] = Integer.parseInt(st.nextToken());
 			visited[knowPeople[i]] = true;
 		}
-		
-		for(int i = 0; i < M; i++) {
+
+		for (int i = 0; i < M; i++) {
 			attend[i] = new ArrayList<Integer>();
 			st = new StringTokenizer(br.readLine());
 			int cntPeople = Integer.parseInt(st.nextToken());
-			for(int j = 0; j < cntPeople; j++) {
+			for (int j = 0; j < cntPeople; j++) {
 				attend[i].add(Integer.parseInt(st.nextToken()));
 			}
 		}
-		
-		if(person == 0) {
+
+		if (person == 0) {
 			System.out.println(M);
-		}else {
+		} else {
 			party();
-			for(int i = 0; i < M; i++) {
-				for(int j = 0; j < knowPeople.length; j++) {
-					if(find(knowPeople[j]) == find(attend[i].get(0))) {
+			for (int i = 0; i < M; i++) {
+				for (int j = 0; j < knowPeople.length; j++) {
+					if (find(knowPeople[j]) == find(attend[i].get(0))) {
 						count -= 1;
 						break;
 					}
@@ -163,32 +163,35 @@ public class 거짓말 {
 			}
 			System.out.println(count);
 		}
-		
+
 		br.close();
 	}
-	
+
 	private static void party() {
-		for(int i = 0; i < M; i++) {
-			if(attend[i].size() < 2) continue;
-			for(int j = 0; j < attend[i].size()-1; j++) {
-				union(attend[i].get(j), attend[i].get(j+1));
+		for (int i = 0; i < M; i++) {
+			if (attend[i].size() < 2)
+				continue;
+			for (int j = 0; j < attend[i].size() - 1; j++) {
+				union(attend[i].get(j), attend[i].get(j + 1));
 			}
 		}
 	}
-	
+
 	private static int find(int x) {
-		if(parent[x] == x) {
+		if (parent[x] == x) {
 			return x;
 		}
 		return find(parent[x]);
 	}
-	
+
 	private static void union(int a, int b) {
 		a = find(a);
 		b = find(b);
-		
-		if(a < b) parent[b] = a;
-		else parent[a] = b;
+
+		if (a < b)
+			parent[b] = a;
+		else
+			parent[a] = b;
 	}
-	
+
 }

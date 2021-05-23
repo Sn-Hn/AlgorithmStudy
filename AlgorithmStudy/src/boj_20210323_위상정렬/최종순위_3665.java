@@ -77,91 +77,93 @@ public class 최종순위_3665 {
 	private static int prevRank[];
 	private static StringBuilder sb = new StringBuilder();
 	private static int gra[][];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		T = Integer.parseInt(br.readLine());
-		for(int i = 1; i <= T; i++) {
+		for (int i = 1; i <= T; i++) {
 			N = Integer.parseInt(br.readLine());
-			inDegree = new int[N+1];
-			prevRank = new int[N+1];
-			gra = new int[N+1][N+1];
+			inDegree = new int[N + 1];
+			prevRank = new int[N + 1];
+			gra = new int[N + 1][N + 1];
 
 			st = new StringTokenizer(br.readLine());
-			for(int j = 1; j <= N; j++) {
+			for (int j = 1; j <= N; j++) {
 				prevRank[j] = Integer.parseInt(st.nextToken());
 			}
-			
-			for(int j = 1; j <= N; j++) {
-				for(int k = j+1; k <= N; k++) {
+
+			for (int j = 1; j <= N; j++) {
+				for (int k = j + 1; k <= N; k++) {
 					gra[prevRank[j]][prevRank[k]] = 1;
 					inDegree[prevRank[k]]++;
 				}
 			}
-			
-			
+
 			M = Integer.parseInt(br.readLine());
-			for(int j = 1; j <= M; j++) {
+			for (int j = 1; j <= M; j++) {
 				st = new StringTokenizer(br.readLine());
 				int a = Integer.parseInt(st.nextToken());
 				int b = Integer.parseInt(st.nextToken());
 
-				if(gra[a][b] == 1) {
+				if (gra[a][b] == 1) {
 					gra[a][b] = 0;
 					gra[b][a] = 1;
 					inDegree[b]--;
 					inDegree[a]++;
-				}else {
+				} else {
 					gra[b][a] = 0;
 					gra[a][b] = 1;
 					inDegree[a]--;
 					inDegree[b]++;
 				}
 			}
-			
+
 			topologySort();
 			print();
 		}
-		
+
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
-	
+
 	private static void topologySort() {
 		Queue<Integer> q = new LinkedList<Integer>();
 		result.clear();
-		for(int i = 1; i <= N; i++) {
-			if(inDegree[i] == 0) {
+		for (int i = 1; i <= N; i++) {
+			if (inDegree[i] == 0) {
 				q.add(i);
 			}
 		}
-		
-		for(int i = 1; i <= N; i++) {
-			if(q.isEmpty()) return;
-			
+
+		for (int i = 1; i <= N; i++) {
+			if (q.isEmpty())
+				return;
+
 			int now = q.poll();
 			result.add(now);
-			for(int next = 1; next <= N; next++) {
-				if(gra[now][next] == 0) continue;
+			for (int next = 1; next <= N; next++) {
+				if (gra[now][next] == 0)
+					continue;
 				inDegree[next]--;
-				if(inDegree[next] == 0) {
+				if (inDegree[next] == 0) {
 					q.add(next);
 				}
 			}
-			
+
 		}
 	}
-	
+
 	private static void print() {
-		if(result.size() == N) {
-			for(int i : result) {
+		if (result.size() == N) {
+			for (int i : result) {
 				sb.append(i + " ");
 			}
 			sb.append("\n");
-		}else {
+		} else {
 			sb.append("IMPOSSIBLE\n");
 		}
-		
+
 	}
 }

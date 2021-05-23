@@ -60,37 +60,38 @@ public class 전화번호목록_5052 {
 	private static int T, N;
 	private static String[] str;
 	private static StringBuilder sb = new StringBuilder();
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		T = Integer.parseInt(br.readLine());
-		for(int i = 0; i < T; i++) {
+		for (int i = 0; i < T; i++) {
 			N = Integer.parseInt(br.readLine());
 			str = new String[N];
-			for(int j = 0; j < N; j++) {
+			for (int j = 0; j < N; j++) {
 				str[j] = br.readLine();
 			}
-			
+
 			Arrays.sort(str);
 			boolean flag = false;
-			
-			for(int j = 1; j < N; j++) {
+
+			for (int j = 1; j < N; j++) {
 				// str.startsWith로 쓸 수 있음
-				if(str[j].indexOf(str[j-1]) != 0) {
+				if (str[j].indexOf(str[j - 1]) != 0) {
 					flag = false;
-				}else {
+				} else {
 					flag = true;
 					break;
 				}
 			}
-			if(flag) {
+			if (flag) {
 				sb.append("NO\n");
-			}else {
+			} else {
 				sb.append("YES\n");
 			}
 		}
-		
+
 		System.out.println(sb.toString());
-		
+
 		br.close();
 	}
 }

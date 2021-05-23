@@ -42,18 +42,19 @@ public class 합이0인네정수_7453 {
 	private static long arr[][];
 	private static long A[], B[], C[], D[];
 	private static long AB[], CD[];
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
-		
+
 		A = new long[N];
 		B = new long[N];
 		C = new long[N];
-		D = new long[N];		
-		AB = new long[N*N];
-		CD = new long[N*N];		
-		
-		for(int i = 0; i < N ; i++) {
+		D = new long[N];
+		AB = new long[N * N];
+		CD = new long[N * N];
+
+		for (int i = 0; i < N; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			A[i] = Integer.parseInt(st.nextToken());
 			B[i] = Integer.parseInt(st.nextToken());
@@ -61,8 +62,8 @@ public class 합이0인네정수_7453 {
 			D[i] = Integer.parseInt(st.nextToken());
 		}
 		int idx = 0;
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < N; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
 				AB[idx] = A[i] + B[j];
 				CD[idx] = C[i] + D[j];
 				idx++;
@@ -70,42 +71,42 @@ public class 합이0인네정수_7453 {
 		}
 		Arrays.sort(AB);
 		Arrays.sort(CD);
-		
+
 		System.out.println(solution());
-		
+
 		br.close();
 	}
-	
+
 	private static long solution() {
 		int start = 0;
-		int end = N*N-1;
+		int end = N * N - 1;
 		long result = 0;
 		int s = 0;
 		int e = 0;
 		long sum = 0;
-		
-		while(end >= 0 && start < N*N) {
+
+		while (end >= 0 && start < N * N) {
 			sum = AB[start] + CD[end];
-			if(sum > 0) {
+			if (sum > 0) {
 				end--;
-			}else if(sum < 0) {
+			} else if (sum < 0) {
 				start++;
-			}else {
+			} else {
 				s = start + 1;
 				e = end - 1;
-				while(e > 0 && AB[start] + CD[e] == 0) {
+				while (e > 0 && AB[start] + CD[e] == 0) {
 					e--;
 				}
-				while(start < N*N && AB[s] + CD[end] == 0) {
+				while (start < N * N && AB[s] + CD[end] == 0) {
 					s++;
 				}
-				result += (long)(s-start) * (long)(end-e);
+				result += (long) (s - start) * (long) (end - e);
 				start = s;
 				end = e;
-				
+
 			}
 		}
-		
+
 		return result;
 	}
 }

@@ -70,113 +70,114 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class 트리의높이와너비_2250 {
-    private static int N;
-    private static int nodeIndex = 1;
-    private static int maxLevel = 0;
-    private static Node[] tree;
+	private static int N;
+	private static int nodeIndex = 1;
+	private static int maxLevel = 0;
+	private static Node[] tree;
 
-    private static int[] levelLeft;
-    private static int[] levelRight;
+	private static int[] levelLeft;
+	private static int[] levelRight;
 
-    private static class Node {
-        int parent, level, left, right;
-        public Node(int parent, int level, int left, int right) {
-            this.parent = parent;
-            this.level = level;
-            this.left = left;
-            this.right = right;
-        }
-    }
+	private static class Node {
+		int parent, level, left, right;
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        tree = new Node[N+1];
-        levelLeft = new int[N+1];
-        levelRight = new int[N+1];
+		public Node(int parent, int level, int left, int right) {
+			this.parent = parent;
+			this.level = level;
+			this.left = left;
+			this.right = right;
+		}
+	}
 
-        for(int i = 0; i <= N; i++) {
-            tree[i] = new Node(-1, -1, -1, -1);
-            levelLeft[i] = N+1;
-        }
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		N = Integer.parseInt(br.readLine());
+		tree = new Node[N + 1];
+		levelLeft = new int[N + 1];
+		levelRight = new int[N + 1];
 
-        StringTokenizer st;
-        for(int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            int nodeNumber = Integer.parseInt(st.nextToken());
-            int leftChild = Integer.parseInt(st.nextToken());
-            int rightChild = Integer.parseInt(st.nextToken());
+		for (int i = 0; i <= N; i++) {
+			tree[i] = new Node(-1, -1, -1, -1);
+			levelLeft[i] = N + 1;
+		}
 
-            tree[nodeNumber].left = leftChild;
-            tree[nodeNumber].right = rightChild;
+		StringTokenizer st;
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			int nodeNumber = Integer.parseInt(st.nextToken());
+			int leftChild = Integer.parseInt(st.nextToken());
+			int rightChild = Integer.parseInt(st.nextToken());
 
-            if(leftChild != -1) {
-                tree[leftChild].parent = nodeNumber;
-            }
+			tree[nodeNumber].left = leftChild;
+			tree[nodeNumber].right = rightChild;
 
-            if(rightChild != -1) {
-                tree[rightChild].parent = nodeNumber;
-            }
-        }
+			if (leftChild != -1) {
+				tree[leftChild].parent = nodeNumber;
+			}
 
-        int root = 0;
-        for(int i = 1; i <= N; i++) {
-            if(tree[i].parent == -1) {
-                root = i;
-            }
-        }
-        inOrder(root, 1);
+			if (rightChild != -1) {
+				tree[rightChild].parent = nodeNumber;
+			}
+		}
 
-        int width = levelRight[1] - levelLeft[1] + 1;
-        int resultLevel = 1;
+		int root = 0;
+		for (int i = 1; i <= N; i++) {
+			if (tree[i].parent == -1) {
+				root = i;
+			}
+		}
+		inOrder(root, 1);
 
-        for(int i = 2; i <= maxLevel; i++) {
-            int temp = levelRight[i] - levelLeft[i] + 1;
-            if(width < temp) {
-                width = temp;
-                resultLevel = i;
-            }
-        }
-        System.out.println(resultLevel + " " + width);
+		int width = levelRight[1] - levelLeft[1] + 1;
+		int resultLevel = 1;
 
-        br.close();
-    }
+		for (int i = 2; i <= maxLevel; i++) {
+			int temp = levelRight[i] - levelLeft[i] + 1;
+			if (width < temp) {
+				width = temp;
+				resultLevel = i;
+			}
+		}
+		System.out.println(resultLevel + " " + width);
 
-    // 중위순회
-    // 1. 한 열에는 한 노드만 존재한다.
-    // 2. 왼쪽 자식노드에는 부모노드보다 왼쪽의 열에, 오른쪽 자식은 오른쪽에 위치한다.
-    // 3. 아무 노드도 없이 비어있는 열은 없다.
-    // 위의 조건에 따라 열은 왼쪽 자식 -> 부모 -> 오른쪽 자식 으로 진행되는 것을 알 수 있음.
-    // 따라서 중위순회로 탐색한다.
-    private static void inOrder(int num, int level) {
-        Node node = tree[num];
+		br.close();
+	}
 
-        maxLevel = Math.max(maxLevel, level);
+	// 중위순회
+	// 1. 한 열에는 한 노드만 존재한다.
+	// 2. 왼쪽 자식노드에는 부모노드보다 왼쪽의 열에, 오른쪽 자식은 오른쪽에 위치한다.
+	// 3. 아무 노드도 없이 비어있는 열은 없다.
+	// 위의 조건에 따라 열은 왼쪽 자식 -> 부모 -> 오른쪽 자식 으로 진행되는 것을 알 수 있음.
+	// 따라서 중위순회로 탐색한다.
+	private static void inOrder(int num, int level) {
+		Node node = tree[num];
 
-        if(node.left != -1) {
-            inOrder(node.left, level+1);
-        }
+		maxLevel = Math.max(maxLevel, level);
 
-        // 한열에 하나씩 위치해야 하기 때문에
-        // leaf Node의 가장 왼쪽에 위치한 순서대로 중위 순회하며 1씩 증가한다.
-        levelLeft[level] = Math.min(levelLeft[level], nodeIndex);
-        levelRight[level] = nodeIndex++;
+		if (node.left != -1) {
+			inOrder(node.left, level + 1);
+		}
 
-        if(node.right != -1) {
-            inOrder(node.right, level+1);
-        }
-    }
+		// 한열에 하나씩 위치해야 하기 때문에
+		// leaf Node의 가장 왼쪽에 위치한 순서대로 중위 순회하며 1씩 증가한다.
+		levelLeft[level] = Math.min(levelLeft[level], nodeIndex);
+		levelRight[level] = nodeIndex++;
 
-    private static void print() {
-        for(int i = 1; i <= maxLevel; i++) {
-            System.out.print(levelLeft[i] + " ");
-        }
-        System.out.println();
+		if (node.right != -1) {
+			inOrder(node.right, level + 1);
+		}
+	}
 
-        for(int i = 1; i <= maxLevel; i++) {
-            System.out.print(levelRight[i] + " ");
-        }
-        System.out.println();
-    }
+	private static void print() {
+		for (int i = 1; i <= maxLevel; i++) {
+			System.out.print(levelLeft[i] + " ");
+		}
+		System.out.println();
+
+		for (int i = 1; i <= maxLevel; i++) {
+			System.out.print(levelRight[i] + " ");
+		}
+		System.out.println();
+	}
 
 }

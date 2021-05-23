@@ -42,55 +42,57 @@ public class 고냥이_16472 {
 	private static int arr[] = new int[26];
 	private static char c[] = new char[100001];
 	private static int max = Integer.MIN_VALUE;
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		str = br.readLine();
-		
-		for(int i = 0; i < str.length(); i++) {
+
+		for (int i = 0; i < str.length(); i++) {
 			c[i] = str.charAt(i);
 		}
-		
+
 		solution();
-		
+
 		// 87,88 참조 (if문이 없다면 81%에서 틀림)
 		// max가 Integer.MIN_VALUE로 값이 변하지 않았다면 N이 문자열의 크기보다 큰 것이므로 문자열의 크기가 답이 된다.
-		if(max == Integer.MIN_VALUE) max = str.length();
-		
+		if (max == Integer.MIN_VALUE)
+			max = str.length();
+
 		System.out.println(max);
-		
+
 		br.close();
 	}
-	
+
 	private static void solution() {
 		int start = 0;
 		int end = 0;
 		int count = 0;
 		int result = 0;
 		char ch = 'A';
-		
-		while(end < str.length()) {
+
+		while (end < str.length()) {
 			result++;
-			if(ch != c[end]) {
-				if(arr[c[end]-97] == 0)
-					count ++;
+			if (ch != c[end]) {
+				if (arr[c[end] - 97] == 0)
+					count++;
 			}
-			
-			while(count > N) {
-				arr[c[start]-97]--;
-				if(arr[c[start]-97] == 0) {
-					count --;
+
+			while (count > N) {
+				arr[c[start] - 97]--;
+				if (arr[c[start] - 97] == 0) {
+					count--;
 				}
 				start++;
 				result--;
 			}
 			// N의 크기가 str보다 클 때
 			// count가 N이랑 같아질 수 없으므로 max는 Integer.MIN_VALUE가 저장된 채로 메소드가 종료된다.
-			if(count == N) {
+			if (count == N) {
 				max = Math.max(max, result);
 			}
-			
-			arr[c[end]-97]++;
+
+			arr[c[end] - 97]++;
 			ch = c[end];
 			end++;
 		}

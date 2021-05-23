@@ -60,113 +60,116 @@ public class Cheese_2638 {
 	private static boolean visited[][];
 	// 치즈 정보를 담을 List
 	private static List<Pair> cheese = new ArrayList<Pair>();
-	
-	private static int dx[] = {1, -1, 0, 0};
-	private static int dy[] = {0, 0, 1, -1};
-	
+
+	private static int dx[] = { 1, -1, 0, 0 };
+	private static int dy[] = { 0, 0, 1, -1 };
+
 	// 치즈 정보를 담을 Pair클래스 선언
 	private static class Pair {
 		int x, y;
+
 		public Pair(int x, int y) {
 			this.x = x;
 			this.y = y;
 		}
 	}
+
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new int[N][M];
-		
-		for(int i = 0; i < N; i++) {
+
+		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j = 0; j < M; j++) {
+			for (int j = 0; j < M; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
-				if(map[i][j] == 1) {
+				if (map[i][j] == 1) {
 					cheese.add(new Pair(i, j));
 				}
 			}
 		}
 		int time = 0;
 		// 치즈가 전부 녹을 때까지 반복
-		while(true) {
+		while (true) {
 			visited = new boolean[N][M];
 			time++;
 			// 가장자리에는 치즈가 있을 수 없기 때문에 가장자리인 0, 0으로 외부공기를 구분
 			outSideAir(0, 0);
-			
+
 			// 치즈 정보가 담겨 있는 List를 반복
-			for(Pair p : cheese) {
+			for (Pair p : cheese) {
 				meltCheese(p.x, p.y, 0);
 			}
 			// 치즈가 남아 있는지 검사
-			if(isCheese()) break;
+			if (isCheese())
+				break;
 		}
 		System.out.println(time);
 		br.close();
 	}
-	
+
 	// 치즈가 녹는 메소드
 	private static void meltCheese(int x, int y, int count) {
-		
+
 		// 재귀를 돌리지 않고 각각의 치즈 정보를 받아 그 치즈의 4방면을 검사해 -1(외부 공기)이 두개 이상이면 치즈가 녹는다.
-		for(int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			
-			if(X >= 0 && X < N && Y >= 0 && Y < M && map[X][Y] == -1) {
+
+			if (X >= 0 && X < N && Y >= 0 && Y < M && map[X][Y] == -1) {
 				// count : 맞닿아 있는 외부공기의 수
 				count++;
 				// 맞닿아 있는 외부 공기가 2개 이상이면 치즈가 녹음
-				if(count >= 2) {
+				if (count >= 2) {
 					map[x][y] = 0;
 				}
 			}
 		}
 	}
-	
+
 	// 외부 공기와 내부 공기를 구분해야 하기 때문
 	private static void outSideAir(int x, int y) {
 		// -1은 외부 공기를 뜻함
 		map[x][y] = -1;
-		
-		for(int i = 0; i < 4; i++) {
+
+		for (int i = 0; i < 4; i++) {
 			int X = x + dx[i];
 			int Y = y + dy[i];
-			
+
 			visited[x][y] = true;
-			
+
 			// dfs를 돌려 외부 공기를 -1로 만듬
-			if(X >= 0 && X < N && Y >= 0 && Y < M && !visited[X][Y]) {
-				if(map[X][Y] == 0 || map[X][Y] == -1) {
+			if (X >= 0 && X < N && Y >= 0 && Y < M && !visited[X][Y]) {
+				if (map[X][Y] == 0 || map[X][Y] == -1) {
 					outSideAir(X, Y);
- 				}
+				}
 			}
 		}
 	}
-	
+
 	// 남아 있는 치즈가 있는지 확인하는 메소드
 	private static boolean isCheese() {
 		boolean flag = true;
 		// 치즈 정보를 클리어한 후 다시 받는다.
 		// 굳이 다시 받을 이유는 없지만 이미 녹은 치즈들을 계속 검사하기 때문에 cheese List를 새로 입력
 		cheese.clear();
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
-				if(map[i][j] == 1) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
+				if (map[i][j] == 1) {
 					flag = false;
 					cheese.add(new Pair(i, j));
 				}
 			}
 		}
-		
+
 		return flag;
 	}
-	
+
 	private static void printMap() {
-		for(int i = 0; i < N; i++) {
-			for(int j = 0; j < M; j++) {
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < M; j++) {
 				System.out.print(map[i][j]);
 			}
 			System.out.println();

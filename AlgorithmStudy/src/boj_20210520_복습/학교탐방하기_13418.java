@@ -143,6 +143,9 @@ public class 학교탐방하기_13418 {
 		br.close();
 	}
 
+	// 최대한 적은 비용으로 연결시키는 것
+	// 간선은 최대 node의 수 - 1
+	// 입구 따로 0 N + 1
 	private static int getFatigue(List<Node> roadList) {
 		int cnt = 0;
 		int fatigue = 0;
@@ -191,7 +194,7 @@ public class 학교탐방하기_13418 {
 	}
 
 	private static boolean isCycle(int a, int b) {
-		return find(a) == find(b);
+		return find(a) == find(b);  // true
 	}
 
 	private static boolean isResult(int answer) {

@@ -87,6 +87,7 @@ public class 문제집_1766 {
         br.close();
     }
 
+    
     private static void topologicySort() {
         PriorityQueue<Integer> q = new PriorityQueue<>();
 
@@ -95,7 +96,8 @@ public class 문제집_1766 {
                 q.add(i);
             }
         }
-
+        
+        // 900ms -> 528ms
         while(!q.isEmpty()) {
             int now = q.poll();
             sb.append(now).append(" ");

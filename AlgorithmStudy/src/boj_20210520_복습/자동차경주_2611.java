@@ -130,13 +130,13 @@ public class 자동차경주_2611 {
 
 		while (!q.isEmpty()) {
 			Node now = q.poll();
-			if(!isChecked[now]) {
+			if(!isChecked[now.child]) {
 				sb.append(now).append(" ");
 			}
 			
 			boolean check = false;
 
-			for (Node next : graph.get(now)) {
+			for (Node next : graph.get(now.child)) {
 				int nextChild = next.child;
 				inDegree[nextChild]--;
 

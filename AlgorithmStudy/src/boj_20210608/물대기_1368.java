@@ -1,4 +1,4 @@
-package boj_20210615;
+package boj_20210608;
 
 /*
 
@@ -47,7 +47,6 @@ public class 물대기_1368 {
     private static int[] cost;
     private static int[] parent;
     private static PriorityQueue<Node> paddyTree = new PriorityQueue<>();
-    private static boolean[] isVisited;
 
     private static class Node implements Comparable<Node> {
         int x;
@@ -72,19 +71,14 @@ public class 물대기_1368 {
         N = Integer.parseInt(br.readLine());
         cost = new int[N + 1];
         parent = new int[N + 1];
-        isVisited = new boolean[N + 1];
 
         initParent();
         int minCost = Integer.MAX_VALUE;
         int minIndex = 0;
         for (int i = 1; i <= N; i++) {
             cost[i] = Integer.parseInt(br.readLine());
-            if (minCost > cost[i]) {
-                minCost = cost[i];
-                minIndex = i;
-            }
+            paddyTree.add(new Node(i, 0, cost[i]));
         }
-        isVisited[minIndex] = true;
         int cost = 0;
         for (int i = 1; i <= N; i++) {
             st = new StringTokenizer(br.readLine());
@@ -97,16 +91,13 @@ public class 물대기_1368 {
             }
         }
 
-        int minPutWater = getConnectPaddy(minIndex) + minCost;
+        int minPutWater = getConnectPaddy(minIndex);
 
         System.out.println(minPutWater);
 
         br.close();
     }
 
-    // 1번 우물을 만드는 것이 최소일 때
-    // 1 ~ 2번 물을 연결시키는 것 보다 2번 우물을 만드는 것이 더 싸다면
-    // 2번 우물을 만들어야 한다.
     private static int getConnectPaddy(int minIndex) {
         int sum = 0;
         int count = 0;
@@ -116,43 +107,13 @@ public class 물대기_1368 {
             if (isCycle(node.x, node.y)) {
                 continue;
             }
+
             count++;
-
-            if (minIndex == node.x && !isVisited[node.y]) {
-                if (node.cost > cost[node.y]) {
-                    sum += cost[node.y];
-                    isVisited[node.y] = true;
-                    continue;
-                }
-            }
-
-            if (minIndex == node.y && !isVisited[node.x]) {
-                if (node.cost > cost[node.x]) {
-                    sum += cost[node.x];
-                    isVisited[node.x] = true;
-                    continue;
-                }
-            }
-            int tempCost = 0;
-            int tempNode = 0;
-            if (cost[node.x] > cost[node.y]) {
-                tempCost = cost[node.y];
-                tempNode = node.y;
-            }else {
-                tempCost = cost[node.x];
-                tempNode = node.x;
-            }
-
-            if (node.cost > tempCost && !isVisited[tempNode]) {
-                sum += tempCost;
-                isVisited[tempNode] = true;
-                continue;
-            }
 
             union(node.x, node.y);
             sum += node.cost;
 
-            if (count == N - 1) {
+            if (count == N) {
                 return sum;
             }
 

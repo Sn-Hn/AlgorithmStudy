@@ -62,7 +62,7 @@ public class 입국심사 {
         
         return answer;
     }
-	
+	 
 	private static long binarySearch(int n, int[] times) {
 		long start = 0;
 		long end = MAX;

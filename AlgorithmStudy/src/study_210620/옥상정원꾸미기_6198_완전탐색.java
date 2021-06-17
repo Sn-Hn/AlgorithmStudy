@@ -58,7 +58,7 @@ i번째 빌딩 관리인이 볼 수 있는 다른 빌딩의 옥상 정원은 i+1
 
 */
 
-public class 옥상정원꾸미기_6198 {
+public class 옥상정원꾸미기_6198_완전탐색 {
 	private static int N;
 	private static long[] buildingHeight;
 	public static void main(String[] args) throws IOException {

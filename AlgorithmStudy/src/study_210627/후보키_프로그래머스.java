@@ -42,7 +42,7 @@ relation   result
 
 import java.util.*;
 
-public class 후보키 {
+public class 후보키_프로그래머스 {
     private static List<Integer> uniqueKeys = new ArrayList<>();
     private static List<Integer> keys = new ArrayList<>();
     private static List<List<Integer>> candidateKeys = new ArrayList<List<Integer>>();

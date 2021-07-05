@@ -7,12 +7,12 @@ import java.io.InputStreamReader;
 /*
 
 홀수 홀릭 호석 출처전체 채점
-시간 제한	메모리 제한	제출	정답	맞은 사람	정답 비율
-1 초	512 MB	384	253	203	66.997%
+시간 제한   메모리 제한   제출   정답   맞은 사람   정답 비율
+1 초   512 MB   384   253   203   66.997%
 문제
-호석이는 짝수랑 홀수 중에서 이니셜이 같은 홀수를 더 좋아한다. 
-운전을 하던 호석이는 앞차의 번호판이 홀수로 가득할 때 사랑스러움을 느낄 정도이다. 
-전화번호도 홀수만 있고 싶다. 
+호석이는 짝수랑 홀수 중에서 이니셜이 같은 홀수를 더 좋아한다.
+운전을 하던 호석이는 앞차의 번호판이 홀수로 가득할 때 사랑스러움을 느낄 정도이다.
+전화번호도 홀수만 있고 싶다.
 그렇게 홀수 홀릭에 빠진 호석이는 가지고 있는 수 N을 일련의 연산을 거치면서, 등장하는 숫자들에서 홀수를 최대한 많이 많이 보고 싶다.
 
 하나의 수가 주어졌을 때 호석이는 한 번의 연산에서 다음과 같은 순서를 거친다.
@@ -21,9 +21,9 @@ import java.io.InputStreamReader;
 수가 한 자리이면 더 이상 아무것도 하지 못하고 종료한다.
 수가 두 자리이면 2개로 나눠서 합을 구하여 새로운 수로 생각한다.
 수가 세 자리 이상이면 임의의 위치에서 끊어서 3개의 수로 분할하고, 3개를 더한 값을 새로운 수로 생각한다.
-호석이는 연산이 종료된 순간에 종이에 적힌 수들을 모두 더한다. 
-그렇게 최종적으로 얻은 수를 최종값이라고 하자. 
-예를 들어, 시작하는 수가 82019 라고 하자. 
+호석이는 연산이 종료된 순간에 종이에 적힌 수들을 모두 더한다.
+그렇게 최종적으로 얻은 수를 최종값이라고 하자.
+예를 들어, 시작하는 수가 82019 라고 하자.
 그럼 아래와 같이 나누게 되면 5개의 홀수를 볼 수 있기 때문에, 최종값이 5가 된다.
 
 
@@ -38,9 +38,9 @@ import java.io.InputStreamReader;
 
 제한
 1 ≤ N ≤ 109-1, N 은 자연수이다.
-예제 입력 1 
+예제 입력 1
 514
-예제 출력 1 
+예제 출력 1
 4 4
 514 -> 5+1+4 = 10
 
@@ -50,13 +50,13 @@ import java.io.InputStreamReader;
 
 각 숫자에서 등장한 홀수가 2개, 1개, 1개 이므로 답은 4이다.
 
-예제 입력 2 
+예제 입력 2
 82019
-예제 출력 2 
+예제 출력 2
 4 5
-예제 입력 3 
+예제 입력 3
 999999999
-예제 출력 3 
+예제 출력 3
 11 18
 출처
 Contest > 류호석배 알고리즘 코딩 테스트 > 제1회 류호석배 알고리즘 코딩 테스트 1번
@@ -72,98 +72,93 @@ Contest > 류호석배 알고리즘 코딩 테스트 > 제1회 류호석배 알�
 */
 
 public class 홀수홀릭호석_20164 {
-	private static int N;
-	private static boolean[] isVisited = new boolean[1000000000];
-	private static int maxOddCount = Integer.MIN_VALUE;
-	private static int minOddCount = Integer.MAX_VALUE;
-	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		
-//		String n = Integer.toString(N);
-		int n = (int) (Math.log10(N) + 1);
-		
-		getMoreThanThreeDigits(N, n, getOddCount(N, 0));
-		
-		System.out.println(minOddCount + " " + maxOddCount);
-		
-		br.close();
-	}
-	
-	private static int getOddCount(int n, int oddCnt) {
-		int remain = 0;
-		while(n > 0) {
-			remain = n % 10;
-			if (remain % 2 == 1) {
-				oddCnt++;
-			}
-			n /= 10;
-		}
-		
-		return oddCnt;
-	}
-	
-	private static void getMoreThanThreeDigits(int n, int count, int oddCnt) {		
-		int copyN = 0;
-		int remain = 0;
-		int newN = 0;
-		
-		if (isVisited[n]) {
-			return;
-		}
-		
-		isVisited[n] = true;
-		
-//		System.out.println(n);
-		
-		for (int i = 1; i < n - 1; i++) {
-			copyN = n;
-			remain = (int) (copyN % Math.pow(10, i));
-			copyN /= Math.pow(10, i);
-			for (int j = 1; j < count - i; j++) {
-				newN = remain;
-				int copyNewN = copyN;
-				remain = (int) (copyNewN % Math.pow(10, j));
-				copyNewN /= Math.pow(10, j);
-				newN = newN + remain + copyNewN;
-				if (isVisited[newN]) {
-					continue;
-				}
-				isVisited[newN] = true;
-				int cnt = (int) (Math.log10(newN) + 1);
-				if (cnt >= 3) {
-					getMoreThanThreeDigits(newN, cnt, getOddCount(newN, oddCnt));
-				}else if(cnt == 2) {
-					getDoubleDigits(newN, oddCnt);
-				}else {
-					oddCnt = getOddCount(n, oddCnt);
-					maxOddCount = Math.max(maxOddCount, oddCnt);
-					minOddCount = Math.min(minOddCount, oddCnt);
-					return;
-				}
-				
-			}
-		}
-	}
-	 
-	
-	private static void getDoubleDigits(int n, int oddCnt) {
-		oddCnt = getOddCount(n, oddCnt);
-		int remain = n % 10;
-		n /= 10;
-		
-		n += remain;
-		
-		
-		if (n > 10) {
-			getDoubleDigits(n, oddCnt);
-		}
-		
-		if (n < 10) {
-			oddCnt = getOddCount(n, oddCnt);
-			maxOddCount = Math.max(maxOddCount, oddCnt);
-			minOddCount = Math.min(minOddCount, oddCnt);
-			return;
-		}
-	}
+    private static int N;
+    private static int maxOddCount = Integer.MIN_VALUE;
+    private static int minOddCount = Integer.MAX_VALUE;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
+
+        int n = (int) (Math.log10(N) + 1);
+
+        if (N > 99) {
+            getMoreThanThreeDigits(N, n, getOddCount(N, 0));
+        }else if(N > 9) {
+            getDoubleDigits(N, getOddCount(N, 0));
+        }else {
+            if (N % 2 == 1) {
+                minOddCount = 1;
+                maxOddCount = 1;
+            }else {
+                minOddCount = 0;
+                maxOddCount = 0;
+            }
+        }
+
+        System.out.println(minOddCount + " " + maxOddCount);
+
+        br.close();
+    }
+
+    private static int getOddCount(int n, int oddCnt) {
+        int remain = 0;
+        while(n > 0) {
+            remain = n % 10;
+            if (remain % 2 == 1) {
+                oddCnt++;
+            }
+            n /= 10;
+        }
+
+        return oddCnt;
+    }
+
+    private static void getMoreThanThreeDigits(int n, int count, int oddCnt) {
+        int copyN = 0;
+        int remain = 0;
+        int newN = 0;
+
+//      System.out.println(n);
+
+        // 틀린 부분 -> n - 1이 아니라 count - 1까지 (처음 변수 수정 후 안고침)
+        for (int i = 1; i < count - 1; i++) {
+            int pow = (int) Math.pow(10, i);
+            copyN = n;
+            remain = copyN % pow;
+            copyN /= pow;
+            for (int j = 1; j < count - i; j++) {
+                pow = (int) Math.pow(10, j);
+                newN = remain + (copyN % pow) + (copyN / pow);
+
+                int cnt = (int) (Math.log10(newN) + 1);
+                if (cnt >= 3) {
+                    getMoreThanThreeDigits(newN, cnt, getOddCount(newN, oddCnt));
+                }else if(cnt == 2) {
+                    getDoubleDigits(newN, getOddCount(newN, oddCnt));
+                }else {
+                    maxOddCount = Math.max(maxOddCount, getOddCount(newN, oddCnt));
+                    minOddCount = Math.min(minOddCount, getOddCount(newN, oddCnt));
+                }
+
+            }
+        }
+    }
+
+
+    private static void getDoubleDigits(int n, int oddCnt) {
+        int remain = n % 10;
+        n /= 10;
+        n += remain;
+
+        if (n >= 10) {
+            getDoubleDigits(n, getOddCount(n, oddCnt));
+        }
+
+        if (n < 10) {
+            oddCnt = getOddCount(n, oddCnt);
+            maxOddCount = Math.max(maxOddCount, oddCnt);
+            minOddCount = Math.min(minOddCount, oddCnt);
+            return;
+        }
+    }
 }

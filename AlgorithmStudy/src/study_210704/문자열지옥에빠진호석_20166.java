@@ -70,6 +70,41 @@ cab
 66
 32
 38
+
+--
+3 4 6
+abcb
+bcaa
+abac
+aba
+abc
+cab
+aba
+abc
+aba
+
+3 3 5
+aba
+aca
+fab
+abc
+abc
+abc
+abc
+aba
+
+66
+32
+38
+66
+32
+
+3 3 1
+aba
+aba
+aba
+
+
 출처
 Contest > 류호석배 알고리즘 코딩 테스트 > 제1회 류호석배 알고리즘 코딩 테스트 3번
 
@@ -87,20 +122,44 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
+// 오래 걸린 이유
+// 1. 중복 케이스
+// 2. 한 자리수 케이스
 public class 문자열지옥에빠진호석_20166 {
-    private static int N;
+	private static int N;
     private static int M;
     private static int K;
     private static char[][] tile;
     private static Map<String, Integer> favorite = new LinkedHashMap<String, Integer>();
+    private static Queue<Maps> duplicateFavorite = new LinkedList<Maps>();
     private static int max = 0;
 
     // 동 서 남 북 동북 동남 서남 서북
     private static int[] dx = {0, 0, 1, -1, 1, -1, -1, 1};
     private static int[] dy = {1, -1, 0, 0, 1, 1, -1, -1};
+
+    private static class Maps {
+        String str;
+        int index;
+
+        public Maps(String str, int index) {
+            this.str = str;
+            this.index = index;
+        }
+
+        public String getStr() {
+            return str;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -120,30 +179,45 @@ public class 문자열지옥에빠진호석_20166 {
         for (int i = 0; i < K; i++) {
             String input = br.readLine();
             max = Math.max(max, input.length());
+            if (favorite.containsKey(input)) {
+                duplicateFavorite.add(new Maps(input, i));
+            }
             favorite.put(input, 0);
+//            favorite.add(new Map(input, 0));
         }
 
         makeString();
 
         StringBuilder result = new StringBuilder();
-
+        int index = 0;
         for (int length : favorite.values()) {
+            while (!duplicateFavorite.isEmpty() && duplicateFavorite.peek().getIndex() == index) {
+                result.append(favorite.get(duplicateFavorite.poll().getStr())).append("\n");
+                index++;
+            }
             result.append(length).append("\n");
+            index++;
         }
 
-        System.out.println(result);
+        while (!duplicateFavorite.isEmpty()) {
+            result.append(favorite.get(duplicateFavorite.poll().getStr())).append("\n");
+        }
+
+        System.out.println(result.toString().trim());
 
         br.close();
     }
 
     private static void makeStringRecursive(int x, int y, StringBuilder str) {
-        if (str.length() > 5) {
+        if (str.length() > max) {
             return;
         }
 
         for (int i = 0; i < 8; i++) {
             int X = getCycle(x + dx[i], N);
             int Y = getCycle(y + dy[i], M);
+            
+//            System.out.println(X + ", " + Y);
 
             str.append(tile[X][Y]);
 
@@ -161,6 +235,8 @@ public class 문자열지옥에빠진호석_20166 {
             for (int j = 0; j < M; j++) {
                 StringBuilder str = new StringBuilder();
                 str.append(tile[i][j]);
+                // 신이 좋아하는 문자열이 1자리수일 때를 계산안했다.
+                containsFavorite_IncreaseCount(str.toString());
                 makeStringRecursive(i, j, str);
             }
         }
@@ -170,6 +246,13 @@ public class 문자열지옥에빠진호석_20166 {
         if (favorite.containsKey(str)) {
             favorite.put(str, favorite.get(str) + 1);
         }
+
+//        for (int i = 0; i < favorite.size(); i++) {
+//            if (favorite.get(i).getStr().equals(str)) {
+//                favorite.get(i).setCount();
+//            }
+//        }
+
     }
 
     // check : true -> 행, false -> 열

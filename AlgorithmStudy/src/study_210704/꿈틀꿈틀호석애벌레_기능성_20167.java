@@ -94,7 +94,7 @@ public class 꿈틀꿈틀호석애벌레_기능성_20167 {
 		
 		getMergeBranch();
 		
-		int result = addBranch();
+		int result = addEnergy();
 		
 		System.out.println(result);
 		
@@ -103,7 +103,7 @@ public class 꿈틀꿈틀호석애벌레_기능성_20167 {
 		br.close();
 	}
 	
-	private static int addBranch() {
+	private static int addEnergy() {
 		int len = newBranch.size();
 		dp = new int[len];
 		

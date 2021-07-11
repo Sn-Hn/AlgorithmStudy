@@ -121,8 +121,11 @@ Contest > 류호석배 알고리즘 코딩 테스트 > 제1회 류호석배 알�
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.StringTokenizer;
@@ -135,14 +138,16 @@ public class 문자열지옥에빠진호석_20166 {
     private static int M;
     private static int K;
     private static char[][] tile;
-    private static Map<String, Integer> favorite = new LinkedHashMap<String, Integer>();
-    private static Queue<Maps> duplicateFavorite = new LinkedList<Maps>();
+    private static Map<String, Integer> favorite = new HashMap<String, Integer>();
+//    private static Queue<Maps> duplicateFavorite = new LinkedList<Maps>();
+    private static List<String> resultList = new ArrayList<String>();
     private static int max = 0;
 
     // 동 서 남 북 동북 동남 서남 서북
     private static int[] dx = {0, 0, 1, -1, 1, -1, -1, 1};
     private static int[] dy = {1, -1, 0, 0, 1, 1, -1, -1};
 
+    /*
     private static class Maps {
         String str;
         int index;
@@ -160,6 +165,7 @@ public class 문자열지옥에빠진호석_20166 {
             return index;
         }
     }
+    */
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -180,9 +186,10 @@ public class 문자열지옥에빠진호석_20166 {
             String input = br.readLine();
             max = Math.max(max, input.length());
             if (favorite.containsKey(input)) {
-                duplicateFavorite.add(new Maps(input, i));
+//                duplicateFavorite.add(new Maps(input, i));
             }
             favorite.put(input, 0);
+            resultList.add(input);
 //            favorite.add(new Map(input, 0));
         }
 
@@ -190,18 +197,23 @@ public class 문자열지옥에빠진호석_20166 {
 
         StringBuilder result = new StringBuilder();
         int index = 0;
-        for (int length : favorite.values()) {
-            while (!duplicateFavorite.isEmpty() && duplicateFavorite.peek().getIndex() == index) {
-                result.append(favorite.get(duplicateFavorite.poll().getStr())).append("\n");
-                index++;
-            }
-            result.append(length).append("\n");
-            index++;
+//        for (int length : favorite.values()) {
+//            while (!duplicateFavorite.isEmpty() && duplicateFavorite.peek().getIndex() == index) {
+//                result.append(favorite.get(duplicateFavorite.poll().getStr())).append("\n");
+//                index++;
+//            }
+//            result.append(length).append("\n");
+//            index++;
+//        }
+//
+//        while (!duplicateFavorite.isEmpty()) {
+//            result.append(favorite.get(duplicateFavorite.poll().getStr())).append("\n");
+//        }
+        
+        for(int i = 0; i < resultList.size(); i++) {
+        	result.append(favorite.get(resultList.get(i))).append("\n");
         }
-
-        while (!duplicateFavorite.isEmpty()) {
-            result.append(favorite.get(duplicateFavorite.poll().getStr())).append("\n");
-        }
+        
 
         System.out.println(result.toString().trim());
 

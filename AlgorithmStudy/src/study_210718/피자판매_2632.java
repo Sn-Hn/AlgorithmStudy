@@ -3,6 +3,10 @@ package study_210718;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.StringTokenizer;
 
 /*
@@ -64,6 +68,8 @@ public class 피자판매_2632 {
 	private static int[] pizzaA;
 	private static int[] pizzaB;
 	private static int cnt = 0;
+	private static List<Integer> Aways = new ArrayList<Integer>();
+	private static List<Integer> Bways = new ArrayList<Integer>();
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		pizzaSize = Integer.parseInt(br.readLine().trim());
@@ -81,72 +87,97 @@ public class 피자판매_2632 {
 			pizzaB[i] = Integer.parseInt(br.readLine().trim());
 		}
 		
-		getCountPizzaA();
+		getWays(pizzaA, N, Aways);
+		getWays(pizzaB, M, Bways);
+		
+		Collections.sort(Aways);
+		Collections.sort(Bways);
+		
+		getAllWays();
 		
 		System.out.println(cnt);
+		
+		print();
 		
 		
 		br.close();
 	}
 	
-	private static void twoPointerA(int[] pizza, int std) {
-		int start = 0;
-		int end = 0;
-		int sum = pizza[start];
-		
-		while (start < std) {
-			if (sum > pizzaSize) {
-				sum -= pizza[start++];
-			}else if (sum < pizzaSize) {
-				twoPointerB(pizzaB, M, sum);
-				end = (end + 1) % std;
-				sum += pizza[end];
-			}else {
-				cnt++;
-				end = (end + 1) % std;
-				sum += pizza[end];
-			}
-		}
-	}
-	
-	private static void getCountPizzaA() {
+	private static void getWays(int[] pizza, int std, List<Integer> ways) {
 		int sum = 0;
 		int index = 0;
-		for (int i = 0; i < N; i++) {
-			sum = pizzaA[i];
-			for (int j = 0; j < N; j++) {
-				index = (i + j) % N;
+		for (int i = 0; i < std; i++) {
+			sum = pizza[i];
+			for (int j = 0; j < std; j++) {
+				index = (i + j) % std;
 				if (j != 0) {
-					sum += pizzaA[index];					
+					sum += pizza[index];
+				}
+				
+				if (i != 0 && j == std - 1) {
+					break;
 				}
 				
 				if (sum < pizzaSize) {
-					twoPointerB(pizzaB, M, sum);					
+					ways.add(sum);
 				}else if (sum > pizzaSize) {
 					break;
 				}else {
 					cnt ++;
+					break;
 				}
 			}
 		}
 	}
 	
-	private static void twoPointerB(int[] pizza, int std, int sum) {
+	private static void getAllWays() {
 		int start = 0;
-		int end = 0;
-		sum += pizza[start];
+		int end = Bways.size() - 1;
+		int sum = 0;
 		
-		while (start < std) {
-			if (sum > pizzaSize) {
-				sum -= pizza[start++];
-			}else if (sum < pizzaSize) {
-				end = (end + 1) % std;
-				sum += pizza[end];
+		while (start < Aways.size() && end >= 0) {
+			sum = Aways.get(start) + Bways.get(end);
+			
+			if (sum < pizzaSize) {
+				start ++;
+			}else if (sum > pizzaSize) {
+				end --;
 			}else {
-				cnt++;
-				end = (end + 1) % std;
-				sum += pizza[end];
+				int startCnt = 0;
+				int endCnt = 0;
+				
+				for (int i = start; i < Aways.size(); i++) {
+					if (Aways.get(start) != Aways.get(i)) {
+						break;
+					}
+					startCnt++;
+				}
+				
+				for (int i = end; i >= 0; i--) {
+					if (Bways.get(end) != Bways.get(i)) {
+						break;
+					}
+					endCnt++;
+				}
+				start += startCnt;
+				end -= endCnt;
+				
+				cnt += (startCnt * endCnt);
 			}
 		}
+	}
+	
+	private static void print() {
+		for (int i : Aways) {
+			System.out.print(i + " ");
+		}
+		
+		System.out.println("\n========");
+		
+		for (int i : Bways) {
+			System.out.print(i + " ");
+		}
+		
+		System.out.println();
 	}
 }

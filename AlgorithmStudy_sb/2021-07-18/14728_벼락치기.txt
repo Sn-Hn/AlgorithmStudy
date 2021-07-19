@@ -1,0 +1,49 @@
+//14728: 벼락치기
+//풀이 - https://moonsbeen.tistory.com/311
+
+import java.util.*;
+ 
+public class Main {
+ 
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+ 
+        int n = scan.nextInt();
+        int t = scan.nextInt();
+
+        Node[] node = new Node[n + 1]; 
+        for(int i = 1; i <= n; i++) {
+            int k = scan.nextInt();
+            int s = scan.nextInt();
+            node[i] = new Node(k, s);
+        }
+
+        int[][] dp = new int[n + 1][t + 1];
+        for(int i = 1; i <= n; i++) {
+            for(int j = 0; j <= t; j++) {
+                if(node[i].time <= j){
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - node[i].time] + node[i].score);
+                } else {
+                    dp[i][j] = dp[i - 1][j];
+                }
+            }
+        }
+        // for(int i = 1; i <= n; i++) {
+        //     for(int j = 1; j <= t; j++) {
+        //         System.out.print(dp[i][j] + " ");
+        //     }
+        //     System.out.println();
+        // }
+        System.out.println(dp[n][t]);
+    }
+
+    public static class Node {
+        int time;
+        int score;
+
+        public Node(int time, int score) {
+            this.time = time;
+            this.score = score;
+        }
+    }
+}

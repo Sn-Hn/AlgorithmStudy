@@ -86,8 +86,8 @@ public class 피자판매_2632 {
 			pizzaB[i] = Integer.parseInt(br.readLine().trim());
 		}
 		
-		getWays(pizzaA, N, Aways);
-		getWays(pizzaB, M, Bways);
+		getWays(pizzaA, Aways);
+		getWays(pizzaB, Bways);
 		
 		Collections.sort(Aways);
 		Collections.sort(Bways);
@@ -102,30 +102,34 @@ public class 피자판매_2632 {
 		br.close();
 	}
 	
-	private static void getWays(int[] pizza, int std, List<Integer> ways) {
+	private static void getWays(int[] pizza, List<Integer> ways) {
 		int sum = 0;
-		int index = 0;
-		for (int i = 0; i < std; i++) {
+		int totalSum = 0;
+		int len = pizza.length;
+		for (int i = 0; i < len; i++) {
 			sum = pizza[i];
-			for (int j = 0; j < std; j++) {
-				index = (i + j) % std;
-				if (j != 0) {
-					sum += pizza[index];
+			totalSum += sum;
+			addWays(sum, ways);
+			
+			for (int j = 1; j < len - 1; j++) {
+				sum += pizza[(i + j) % len];
+				
+				if (sum > pizzaSize) {
+					break;
 				}
 				
-				if (i != 0 && j == std - 1) {
-					break;
-				}
-				
-				if (sum < pizzaSize) {
-					ways.add(sum);
-				}else if (sum > pizzaSize) {
-					break;
-				}else {
-					cnt ++;
-					break;
-				}
+				addWays(sum, ways);
 			}
+		}
+		
+		addWays(totalSum, ways);
+	}
+	
+	private static void addWays(int sum, List<Integer> ways) {
+		if (sum == pizzaSize) {
+			cnt++;
+		}else if (sum < pizzaSize) {
+			ways.add(sum);
 		}
 	}
 	
@@ -135,7 +139,9 @@ public class 피자판매_2632 {
 		int sum = 0;
 		
 		while (start < Aways.size() && end >= 0) {
-			sum = Aways.get(start) + Bways.get(end);
+			int startValue = Aways.get(start);
+            int endValue = Bways.get(end);
+            sum = startValue + endValue;
 			
 			if (sum < pizzaSize) {
 				start ++;
@@ -146,14 +152,14 @@ public class 피자판매_2632 {
 				int endCnt = 0;
 				
 				for (int i = start; i < Aways.size(); i++) {
-					if (Aways.get(start) != Aways.get(i)) {
+					if (startValue != Aways.get(i)) {
 						break;
 					}
 					startCnt++;
 				}
 				
 				for (int i = end; i >= 0; i--) {
-					if (Bways.get(end) != Bways.get(i)) {
+					if (endValue != Bways.get(i)) {
 						break;
 					}
 					endCnt++;
@@ -165,6 +171,8 @@ public class 피자판매_2632 {
 			}
 		}
 	}
+	
+	
 	
 	private static void print() {
 		for (int i : Aways) {

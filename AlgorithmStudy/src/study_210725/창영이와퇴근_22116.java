@@ -54,6 +54,8 @@ A1,1에서 AN,N까지, 경로상의 최대 경사의 최솟값을 출력한다.
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
@@ -63,21 +65,19 @@ public class 창영이와퇴근_22116 {
 	
 	private static int N;
 	private static int map[][];
-	private static boolean[][] visited;
+	private static boolean[][][] visited;
 	private static int min = Integer.MAX_VALUE;
 	
 	private static class Pos implements Comparable<Pos> {
 		int x;
 		int y;
 		int slope;
-		boolean[][] visited;
 		
-		public Pos(int x, int y, int slope, boolean[][] visited) {
+		public Pos(int x, int y, int slope) {
 			// TODO Auto-generated constructor stub
 			this.x = x;
 			this.y = y;
 			this.slope = slope;
-			this.visited = visited.clone();
 		}
 		
 		@Override
@@ -91,7 +91,7 @@ public class 창영이와퇴근_22116 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		map = new int[N + 1][N + 1];
-		visited = new boolean[N + 1][N + 1];
+		visited = new boolean[4][N + 1][N + 1];
 		StringTokenizer st = null;
 		
 		for (int i = 1; i <= N; i++) {
@@ -101,74 +101,43 @@ public class 창영이와퇴근_22116 {
 			}
 		}
 		
-		leaveWork(1, 1, 0);
+		leaveWork();
 		
 		System.out.println(min);
 		
 		br.close();
 	}
-	
-	private static void leaveWork(int x, int y, int maxSlope) {
-		if (min <= maxSlope) {
-			return;
-		}
-		
-		if (x == N && y == N) {
-			min = Math.min(min, maxSlope);
-			return;
-		}
-		
-		int slope = 0;
-		
-		for (int i = 0; i < dx.length; i++) {
-			int X = x + dx[i];
-			int Y = y + dy[i];
-			
-			if (isValid(X, Y)) {
-				if (!visited[X][Y]) {
-					slope = Math.max(Math.abs(map[x][y] - map[X][Y]), maxSlope);
-					if (min <= slope) {
-						continue;
-					}
-					visited[X][Y] = true;
-					leaveWork(X, Y, slope);
-					visited[X][Y] = false;
-				}
-			}
-		}
-	}
-	
-	private static void leaveWork_BFS() {
+
+	private static void leaveWork() {
 		PriorityQueue<Pos> q = new PriorityQueue<Pos>();
-		boolean[][] visited = new boolean[N + 1][N + 1];
-		q.add(new Pos(1, 1, 0, visited));
+		q.add(new Pos(1, 1, 0));
 		
 		while (!q.isEmpty()) {
 			Pos pos = q.poll();
 			int x = pos.x;
 			int y = pos.y;
 			
+			
 			if (x == N && y == N) {
-				System.out.println(pos.slope);
+				min = Math.min(min, pos.slope);
+				break;
 			}
 			
 			for (int i = 0; i < dx.length; i++) {
 				int X = x + dx[i];
 				int Y = y + dy[i];
 				
-				if (isValid(X, Y)) {
-					if (!pos.visited[X][Y]) {
-						int slope = Math.abs(map[x][y] - map[X][Y]);
-						pos.visited[X][Y] = true;
-						q.add(new Pos(X, Y, Math.max(slope, pos.slope), pos.visited));						
-					}
+				if (isValid(X, Y, i)) {
+					int slope = Math.abs(map[x][y] - map[X][Y]);
+					visited[i][X][Y] = true;
+					q.add(new Pos(X, Y, Math.max(slope, pos.slope)));
 				}
 			}
 		}
 	}
 	
-	private static boolean isValid(int X, int Y) {
-		if (X > 0 && X <= N && Y > 0 && Y <= N) {
+	private static boolean isValid(int X, int Y, int dir) {
+		if (X > 0 && X <= N && Y > 0 && Y <= N && !visited[dir][X][Y]) {
 			return true;
 		}
 		

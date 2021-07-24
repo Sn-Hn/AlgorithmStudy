@@ -1,0 +1,100 @@
+// 20005: 보스몬스터 전리품
+// 풀이: https://moonsbeen.tistory.com/314
+
+import java.util.*;
+ 
+public class Main {
+ 
+    static int m, n, p;
+    static Map<Character, Player> playerMap;
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {-1, 0, 1, 0};
+    static Queue<Node> q;
+    static char[][] board;
+ 
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+ 
+        //입력
+        m = scan.nextInt();
+        n = scan.nextInt();
+        p = scan.nextInt();
+ 
+        board = new char[m][n];
+        q = new LinkedList<>();
+        for(int i = 0; i < m; i++) {
+            String str = scan.next();
+            for(int j = 0; j < n; j++) {
+                board[i][j] = str.charAt(j);
+                if(board[i][j] != '.' && board[i][j] != 'B' && board[i][j] != 'X') {
+                    q.add(new Node(board[i][j], i, j));
+                }
+            }
+        }
+ 
+        playerMap = new HashMap<>();
+        int num = 0; //playser에게 고유 번호를 부여함.
+        for(int i = 0; i < p; i++) {
+            char id = scan.next().toCharArray()[0];
+            int dps = scan.nextInt();
+            playerMap.put(id, new Player(num++, dps));
+        }
+        int boss_hp = scan.nextInt();
+        //입력 끝
+ 
+        System.out.println(bfs(boss_hp));
+    }
+ 
+    public static int bfs(int boss_hp) {
+        boolean[][][] visited = new boolean[m][n][p];
+        ArrayList<Character> attack = new ArrayList<>(); //공격할 수 있는 플레이어
+        
+        while(boss_hp > 0) {   
+            int q_size = q.size();
+            while(q_size > 0) {
+                Node current = q.poll();
+                q_size--;
+ 
+                if(attack.contains(current.id)) continue; //이미 보스에 도달한 플레이어인 경우
+                else {
+                    for(int i = 0; i < 4; i++) {
+                        int nx = current.x + dx[i];
+                        int ny = current.y + dy[i];
+                        if(nx < 0 || ny < 0 || nx >= m || ny >= n) continue;
+                        if(visited[nx][ny][playerMap.get(current.id).num] || board[nx][ny] == 'X') continue;
+                        
+                        visited[nx][ny][playerMap.get(current.id).num] = true;
+                        if(board[nx][ny] == 'B') attack.add(current.id);
+                        else q.offer(new Node(current.id, nx, ny));
+                    }
+                }
+            }
+            for(char p : attack) { //공격
+                boss_hp -= playerMap.get(p).dps;
+            }
+        }
+        return attack.size();
+    }
+ 
+    public static class Node {
+        char id;
+        int x;
+        int y;
+        
+        public Node(char id, int x, int y) {
+            this.id = id;
+            this.x = x;
+            this.y = y;
+        }
+    }
+ 
+    public static class Player {
+        int num;
+        int dps;
+ 
+        public Player(int num, int dps) {
+            this.num = num;
+            this.dps = dps;
+        }
+    }
+}

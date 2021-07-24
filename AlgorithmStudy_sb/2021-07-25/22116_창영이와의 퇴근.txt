@@ -1,0 +1,76 @@
+// 22116: 창영이와의 퇴근
+// 풀이: https://moonsbeen.tistory.com/315
+
+import java.util.*;
+ 
+public class Main {
+ 
+    static int n;
+    static int[][] board;
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {-1, 0, 1, 0};
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+ 
+        //입력
+        n = scan.nextInt();
+        board = new int[n][n];
+        int min = Integer.MAX_VALUE;
+        int max = -1;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                board[i][j] = scan.nextInt();
+                min = Math.min(min, board[i][j]);
+                max = Math.max(max, board[i][j]);
+            }
+        }
+        //입력 끝   
+    
+        int left = 0;
+        int right = max - min;
+        while(left <= right) {
+            int mid = (left + right) / 2;
+ 
+            if(can_reach(mid)) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+        System.out.println(left);
+    }
+ 
+    public static boolean can_reach(int mid) {
+        Queue<Node> q = new LinkedList<>();
+        boolean[][] visited = new boolean[n][n];
+ 
+        q.offer(new Node(0, 0));
+        visited[0][0] = true;
+ 
+        while(!q.isEmpty()) {
+            Node current = q.poll();
+ 
+            if(current.x == n - 1 && current.y == n - 1) return true;
+            for(int i = 0; i < 4; i++) {
+                int nx = current.x + dx[i];
+                int ny = current.y + dy[i];
+ 
+                if(nx < 0 || ny < 0 || nx >= n || ny >= n) continue;
+                if(visited[nx][ny] || Math.abs(board[nx][ny] - board[current.x][current.y]) > mid) continue;
+                visited[nx][ny] = true;
+                q.offer(new Node(nx, ny));
+            }
+        }
+        return false;
+    }
+ 
+    public static class Node {
+        int x;
+        int y;
+ 
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+}

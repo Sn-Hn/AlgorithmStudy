@@ -1,0 +1,69 @@
+// 29140: 가운데에서 만나기
+// 풀이: https://moonsbeen.tistory.com/318
+
+import java.util.*;
+ 
+public class Main {
+ 
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+ 
+        //입력
+        int n = scan.nextInt();
+        int m = scan.nextInt();
+        int INF = n * m + 1;
+ 
+        int[][] dist = new int[n + 1][n + 1];
+        for(int i = 1; i <= n; i++) {
+            for(int j = 1; j <= n; j++) {
+                dist[i][j] = INF;
+            }
+            dist[i][i] = 0;
+        }
+ 
+        for(int i = 0; i < m; i++) {
+            int s = scan.nextInt();
+            int e = scan.nextInt();
+            int c = scan.nextInt();
+            if(dist[s][e] > c) dist[s][e] = c;
+        }
+        
+        int k = scan.nextInt();
+        ArrayList<Integer> city = new ArrayList<>();
+        for(int i = 0; i < k; i++) {
+            city.add(scan.nextInt());
+        }
+        //입력 끝
+ 
+        //플로이드와샬
+        for(int l = 1; l <= n; l++) {
+            for(int i = 1; i <= n; i++) {
+                for(int j = 1; j <= n; j++) {
+                    if(dist[i][j] > dist[i][l] + dist[l][j]) dist[i][j] = dist[i][l] + dist[l][j];
+                }
+            }
+        }
+ 
+        int[] max = new int[n + 1];
+        int min = Integer.MAX_VALUE;
+        for(int i = 1; i <= n; i++) {
+            for(int j = 0; j < city.size(); j++) {
+                max[i] = Math.max(max[i], dist[city.get(j)][i] + dist[i][city.get(j)]);
+            }
+            min = Math.min(min, max[i]);
+        }
+ 
+        //최소값으로 갈 수 있는 도시 찾음.
+        ArrayList<Integer> result = new ArrayList<>();
+        for(int i = 1; i <= n; i++) {
+            if(min >= max[i]) result.add(i);
+        }
+        Collections.sort(result);
+ 
+        StringBuilder sb = new StringBuilder();
+        for(int c : result) {
+            sb.append(c + " ");
+        }
+        System.out.println(sb.toString());
+    }
+}

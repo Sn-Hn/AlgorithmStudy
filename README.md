@@ -1,6 +1,6 @@
 # AlgorithmStudy
 
-- 참여자 : 신 한(Sn-Hn), 이 윤수(yssy3135), 최 운식(choiwoonsik), 문 수빈(moonsbeen626) (3명)  
+- 참여자 : 신 한(Sn-Hn), 이 윤수(yssy3135), 최 운식(choiwoonsik), 문 수빈(moonsbeen626) (4명)  
 - 졸  업 : 김 무(kimsutto), 신 지호(jhhj424)  
 - 참여자 Git  
 1. 신 한 [Sn-Hn](https://github.com/Sn-Hn)  

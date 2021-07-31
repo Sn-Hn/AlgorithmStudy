@@ -1,0 +1,70 @@
+//22253: 트리 디자이너 호석
+//풀이: https://moonsbeen.tistory.com/328
+
+import java.io.*;
+import java.util.*;
+ 
+public class Main {
+ 
+    static int MOD = 1000000007;
+    static int[] node_value;
+    static ArrayList<Integer>[] edge;
+    static boolean[] visited;
+ 
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+ 
+        //입력
+        int n = Integer.parseInt(bf.readLine());
+ 
+        String str = bf.readLine();
+        StringTokenizer st = new StringTokenizer(str);
+        node_value = new int[n + 1];
+        for(int i = 1; i <= n; i++) {
+            node_value[i] = Integer.parseInt(st.nextToken());
+        }
+        if(n == 1) System.out.println("1");
+ 
+        edge = new ArrayList[n + 1];
+        for(int i = 1; i < n + 1; i++) {
+            edge[i] = new ArrayList<>();
+        }
+        for(int i = 0; i < n - 1; i++) {
+            String str2 = bf.readLine();
+            StringTokenizer st2 = new StringTokenizer(str2);
+            int n1 = Integer.parseInt(st2.nextToken());
+            int n2 = Integer.parseInt(st2.nextToken());
+            edge[n1].add(n2);
+            edge[n2].add(n1);
+        }
+        //입력 끝
+ 
+        visited = new boolean[n + 1];
+        long[] result = dfs(1); //루트 -> 리프 탐색
+ 
+        long total = 0;
+        for(int i = 0; i < 10; i++) {
+            total += result[i];
+            total %= MOD;
+        }
+        System.out.println(total);
+    }
+ 
+    public static long[] dfs(int current) {
+        visited[current] = true;
+        long[] result = new long[10];
+ 
+        result[node_value[current]] += 1; //자기 자신 뽑는 경우를 먼저 더해준다.
+        for(int next : edge[current]) {
+            if(visited[next]) continue; //이미 방문했던 노드는 방문하지 않는다.
+ 
+            long[] next_result = dfs(next); //연결 노드를 방문한다. 
+            for(int i = 0; i < 10; i++) { 
+                result[i] += next_result[i]; //연결 노드의 방문 정보를 합쳐준다.
+                if(i >= node_value[current]) result[node_value[current]] += next_result[i]; //오름차순이 성립된다면 모든 경우의 수를 더해준다.
+                result[i] %= MOD; 
+            }
+        }   
+        return result;
+    }
+}

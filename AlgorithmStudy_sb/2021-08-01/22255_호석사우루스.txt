@@ -1,0 +1,104 @@
+//22255: 호석사우루스
+//풀이: https://moonsbeen.tistory.com/331
+
+import java.io.*;
+import java.util.*;
+ 
+public class Main {
+ 
+    static int n, m;
+    static int[][] board;
+    static int[] dx = {-1, 1, 0, 0}; //상 하 좌 우 
+    static int[] dy = {0, 0, -1, 1};
+    static int[][][] dist;
+    static PriorityQueue<Node> q;
+ 
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+ 
+        //입력
+        String str = bf.readLine();
+        StringTokenizer st = new StringTokenizer(str);
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+ 
+        str = bf.readLine();
+        st = new StringTokenizer(str);
+        int s_x = Integer.parseInt(st.nextToken()) - 1;
+        int s_y = Integer.parseInt(st.nextToken()) - 1;
+        int e_x = Integer.parseInt(st.nextToken()) - 1;
+        int e_y = Integer.parseInt(st.nextToken()) - 1;
+ 
+        board = new int[n][m];
+        for(int i = 0; i < n; i++) {
+            str = bf.readLine(); 
+            st = new StringTokenizer(str);
+            for(int j = 0; j < m; j++) {
+                board[i][j] = Integer.parseInt(st.nextToken());
+            }
+        }
+        //입력 끝
+ 
+        dist = new int[n][m][3];// 이동한 번째가 3k, 3k+1 3k+2에 따라 결과 달라짐
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                for(int k = 0; k < 3; k++) {
+                    dist[i][j][k] = Integer.MAX_VALUE;
+                }
+            }  
+        }
+ 
+        int result_count = dijkstra(s_x, s_y, e_x, e_y);
+        if(result_count == -1) System.out.println("-1");
+        else System.out.println(dist[e_x][e_y][result_count % 3]);
+    }
+ 
+    public static int dijkstra(int x, int y, int e_x, int e_y) {
+        q = new PriorityQueue<>();
+        q.offer(new Node(x, y, 1, 0));
+        dist[x][y][1] = 0;
+        
+        while(!q.isEmpty()) {
+            Node current = q.poll();
+ 
+            if(dist[current.x][current.y][current.count % 3] < current.cost) continue; //현재 경로보다 더 작은 경로 이미 존재
+            if(current.x == e_x && current.y == e_y) return current.count;
+            
+            if(current.count % 3 == 0) {
+                for(int i = 0; i < 4; i++) cal_dist(i, current);
+            } else if(current.count % 3 == 1) {
+                for(int i = 0; i < 2; i++) cal_dist(i, current);
+            } else {
+                for(int i = 2; i < 4; i++) cal_dist(i, current);
+            }
+        }
+        return -1;
+    }
+ 
+    public static void cal_dist(int i, Node current) {
+        int nx = current.x + dx[i];
+        int ny = current.y + dy[i];
+                    
+        if(nx < 0 || ny < 0 || nx >= n || ny >= m) return ;
+        if(board[nx][ny] == -1) return;
+        if(dist[nx][ny][(current.count + 1) % 3] <= board[nx][ny] + current.cost) return;
+        dist[nx][ny][(current.count + 1) % 3] = board[nx][ny] + current.cost;
+        q.offer(new Node(nx, ny, current.count + 1, dist[nx][ny][(current.count + 1) % 3]));
+    }
+ 
+    public static class Node implements Comparable<Node>{
+        int x, y, count, cost;
+ 
+        public Node(int x, int y, int count, int cost) {
+            this.x = x;
+            this.y = y;
+            this.count = count;
+            this.cost = cost;
+        }
+ 
+        @Override
+        public int compareTo(Node n) {
+            return this.cost - n.cost;
+        }
+    }
+}

@@ -1,0 +1,43 @@
+//22252: 정보 상인 호석
+//풀이: https://moonsbeen.tistory.com/325
+
+import java.io.*;
+import java.util.*;
+ 
+public class Main {
+ 
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+ 
+        int q = Integer.parseInt(bf.readLine());
+ 
+        Map<String, PriorityQueue<Integer>> map = new HashMap<>();
+        long result = 0;
+        for(int i = 0; i < q; i++) {
+            String query = bf.readLine();
+            StringTokenizer st = new StringTokenizer(query);
+            
+            int code = Integer.parseInt(st.nextToken());
+            String name = st.nextToken();        
+            int count = Integer.parseInt(st.nextToken());
+            if(code == 1) {
+                for(int j = 0; j < count; j++) {
+                    if(!map.containsKey(name)) {
+                        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+                        pq.add(Integer.parseInt(st.nextToken()));
+                        map.put(name, pq);
+                    } else {
+                        map.get(name).add(Integer.parseInt(st.nextToken()));
+                    }
+                }
+            } else {
+                if(map.get(name) == null) continue;
+                while(!map.get(name).isEmpty() && count > 0) {
+                    result += map.get(name).poll();
+                    count--;
+                }
+            }
+        }
+        System.out.println(result);
+    }
+}

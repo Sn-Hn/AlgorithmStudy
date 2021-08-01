@@ -1,11 +1,12 @@
 # AlgorithmStudy
 
-- 참여자 : 신 한(Sn-Hn), 이 윤수(yssy3135), 최 운식(choiwoonsik) (3명)  
+- 참여자 : 신 한(Sn-Hn), 이 윤수(yssy3135), 최 운식(choiwoonsik), 문 수빈(moonsbeen626) (4명)  
 - 졸  업 : 김 무(kimsutto), 신 지호(jhhj424)  
 - 참여자 Git  
 1. 신 한 [Sn-Hn](https://github.com/Sn-Hn)  
 2. 이 윤수 [yssy3135](https://github.com/yssy3135)
 3. 최 운식 [choiwoonsik](https://github.com/choiwoonsik)
+4. 문 수빈 [moonsbeen626](https://github.com/moonsbeen626)
 
 - 매주 일요일 21:00  
 - 일주일에 5문제  
@@ -26,8 +27,9 @@
 
 ## 발표 방식
 1. 문제를 푸는데 사용한 알고리즘 및 자료구조 설명
-1. 왜 그 알고리즘 및 자료구조를 사용했고 어떻게 접근했는지
-1. 코드 설명 
+2. 자신이 푼 방식에 대한 시간 복잡도와 공간 복잡도 설명
+3. 왜 그 알고리즘 및 자료구조를 사용했고 어떻게 접근했는지
+4. 코드 설명 
 
 ## 스터디 형식
 - 코로나 확진자 수에 따라 온라인 OR 오프라인 

@@ -131,6 +131,7 @@ public class 다리만들기2_17472 {
 	private static int[] parent;
 	private static List<Pos> island = new ArrayList<Pos>();
 	private static int[][] connectIsland;
+	private static PriorityQueue<Pos> q = new PriorityQueue<Pos>();
 	
 	private static class Pos implements Comparable<Pos>{
 		int x;
@@ -182,7 +183,7 @@ public class 다리만들기2_17472 {
 	private static void makeBridge() {
 		visited = new boolean[N][M];
 		for (int i = 0; i < island.size(); i++) {
-			getMinBridgeLength(island.get(i));			
+			getMinBridgeLength(island.get(i));	
 		}
 		
 	}
@@ -190,6 +191,7 @@ public class 다리만들기2_17472 {
 	private static void getMinBridgeLength(Pos pos) {
 		int x = pos.x;
 		int y = pos.y;
+		int number = pos.count;
 		visited[x][y] = true;
 		
 		for (int i = 0; i < dx.length; i++) {
@@ -200,7 +202,7 @@ public class 다리만들기2_17472 {
 				continue;
 			}
 			
-			if (map[X][Y] == pos.count && !visited[X][Y]) {
+			if (map[X][Y] == number && !visited[X][Y]) {
 				getMinBridgeLength(new Pos(X, Y, pos.count));
 				continue;
 			}
@@ -219,22 +221,15 @@ public class 다리만들기2_17472 {
 			if (count >= 2) {
 				int a = map[x][y];
 				int b = map[X][Y];
-				connectIsland[a][b] = Math.min(connectIsland[a][b], count);
+//				connectIsland[a][b] = Math.min(connectIsland[a][b], count);
+				q.add(new Pos(a, b, count));
 			}
 		}
 	}
 	
 	private static int connectAllIsland() {
-		PriorityQueue<Pos> q = new PriorityQueue<Pos>();
 		int cnt = 1;
 		int min = 0;
-		for (int i = 0; i < number; i++) {
-			for (int j = 0; j < number; j++) {
-				if (connectIsland[i][j] != INF) {
-					q.add(new Pos(i, j, connectIsland[i][j]));
-				}
-			}
-		}
 		
 		while (!q.isEmpty() && cnt < number) {
 			Pos pos = q.poll();

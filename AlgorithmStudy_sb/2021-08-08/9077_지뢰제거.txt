@@ -1,0 +1,71 @@
+// 9077: 지뢰제거
+// 시간초과..
+
+import java.io.*;
+import java.util.*;
+ 
+public class Main {
+
+    static ArrayList<Node> list;
+
+    public static void main(String[] args) throws IOException {
+
+        //입력
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+
+        int t = Integer.parseInt(bf.readLine());
+        for(int i = 0; i < t; i++) {
+            int n = Integer.parseInt(bf.readLine());
+            list = new ArrayList<>();
+            for(int j = 0; j < n; j++) {
+                String str = bf.readLine();
+                StringTokenizer st = new StringTokenizer(str);  
+                list.add(new Node(Integer.parseInt(st.nextToken()),Integer.parseInt(st.nextToken())));
+            }
+            //입력 끝
+
+            //각 점들을 네 모서리에 두고 확인 -> 확인 시 모든 지뢰 확인 ->  * O(4N^2) N최대 400억
+            //왼쪽 아래, 오른쪽 위 좌표 지정
+            int max = -1;
+            for(int j = 0; j < list.size(); j++) {
+                Node current = list.get(j);
+                int m1 = cal_mine(current.x - 10, current.y - 10, current.x, current.y);
+                int m2 = cal_mine(current.x - 10, current.y, current.x, current.y + 10);
+                int m3 = cal_mine(current.x, current.y, current.x + 10, current.y + 10);
+                int m4 = cal_mine(current.x, current.y - 10, current.x + 10, current.y);
+                max = Math.max(max, Math.max(m1, Math.max(m2, Math.max(m3, m4))));
+            }
+
+            //추가 케이스 검증 네 모서리 확인!
+            max = Math.max(max, cal_mine(0, 0, 10, 10));
+            max = Math.max(max, cal_mine(0, 9990, 10, 10000));
+            max = Math.max(max, cal_mine(9990, 9990, 10000, 10000));
+            max = Math.max(max, cal_mine(9990, 0, 10000, 10));
+
+            System.out.println(max);
+        }
+    }        
+
+    public static int cal_mine(int x1, int y1, int x2, int y2) {
+        if(x1 < 0 || y1 < 0 || x1 > 10000 || y1 > 10000) return 0;
+        if(x2 < 0 || y2 < 0 || x2 > 10000 || y2 > 10000) return 0;
+
+        int count = 0;
+        for(int i = 0; i < list.size(); i++) {
+            Node current = list.get(i);
+            if(current.x < x1 || current.x > x2) continue;
+            if(current.y < y1 || current.y > y2) continue;
+            count++; 
+        }
+        return count;
+    }
+
+    public static class Node {
+        int x,  y;
+
+        public Node(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+}

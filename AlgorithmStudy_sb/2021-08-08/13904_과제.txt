@@ -1,0 +1,54 @@
+// 13904: 과제
+// 풀이: https://moonsbeen.tistory.com/337
+
+import java.io.*;
+import java.util.*;
+ 
+public class Main {
+ 
+    public static void main(String[] args) throws IOException {
+ 
+        //입력
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+ 
+        int n = Integer.parseInt(bf.readLine());
+        Node[] works = new Node[n];
+        int last_day = -1;
+        for(int i = 0; i < n; i++) {
+            String str = bf.readLine();
+            StringTokenizer st = new StringTokenizer(str);
+            int d = Integer.parseInt(st.nextToken());
+            int c = Integer.parseInt(st.nextToken());
+            works[i] = new Node(d, c);
+            last_day = Math.max(last_day, d);
+        }
+        //입력 끝
+        Arrays.sort(works, (o1, o2) -> o2.day - o1.day); //날짜 순 내림차순
+ 
+        int result = 0;
+        int works_idx = 0;
+        PriorityQueue<Node> q = new PriorityQueue<>();
+        for(int i = last_day; i > 0; i--) {
+            while(works_idx < n && works[works_idx].day >= i) {
+                q.offer(works[works_idx++]);
+            }
+            if(!q.isEmpty()) result += q.poll().score;
+        }
+        System.out.println(result);
+    }
+ 
+    public static class Node implements Comparable<Node> {
+        int day;
+        int score;
+ 
+        public Node(int day, int score) {
+            this.day = day;
+            this.score = score;
+        }
+ 
+        @Override
+        public int compareTo(Node n) {
+            return n.score - this.score;
+        }
+    }
+}

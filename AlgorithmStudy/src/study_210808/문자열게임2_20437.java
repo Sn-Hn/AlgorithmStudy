@@ -86,7 +86,7 @@ public class 문자열게임2_20437 {
 		br.close();
 	}
 	
-	private static void runGame2(String input, int n) {
+	private static void runGame(String input, int n) {
 		int maxLen = input.length();
 		for (int i = 0; i < maxLen; i++) {
 			char now = input.charAt(i);

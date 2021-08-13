@@ -12,9 +12,11 @@ public class 학교탐방하기_13418 {
 	
 	private static int N;
 	private static int M;
-	private static PriorityQueue<Road> bestRoad;
-	private static PriorityQueue<Road> worstRoad;
-	private static int[] parent;
+	private static PriorityQueue<Road> bestRoads;
+	private static PriorityQueue<Road> worstRoads;
+	private static int[] parents;
+	private static int[] bestParents;
+	private static int[] worstParents;
 	
 	private static class Road {
 		int a;
@@ -33,19 +35,21 @@ public class 학교탐방하기_13418 {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		parent = new int[N + 1];
+		parents = new int[N + 1];
+		bestParents = new int[N + 1];
+		worstParents = new int[N + 1];
 		
-		bestRoad = getPriorityQueue(BEST);
-		worstRoad = getPriorityQueue(WORST);
+		bestRoads = getPriorityQueue(BEST);
+		worstRoads = getPriorityQueue(WORST);
 		
-		for (int i = 0; i < M + 1; i++) {
+		for (int i = 0; i <= M; i++) {
 			st = new StringTokenizer(br.readLine());
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			int value = Integer.parseInt(st.nextToken());
 			
-			bestRoad.add(new Road(a, b, value));
-			worstRoad.add(new Road(a, b, value));
+			bestRoads.add(new Road(a, b, value));
+			worstRoads.add(new Road(a, b, value));
 		}
 		
 		getFatigueDifference();
@@ -54,8 +58,8 @@ public class 학교탐방하기_13418 {
 	}
 	
 	private static void getFatigueDifference() {
-		int bestFatigue = findFatigue(bestRoad);
-		int worstFatigue = findFatigue(worstRoad);
+		int bestFatigue = findFatigue(bestRoads);
+		int worstFatigue = findFatigue(worstRoads);
 		
 		System.out.println(worstFatigue * worstFatigue - bestFatigue * bestFatigue);
 		System.out.println(bestFatigue);
@@ -71,8 +75,8 @@ public class 학교탐방하기_13418 {
 			int a = road.a;
 			int b = road.b;
 			
-			if (!isCycle(a, b)) {
-				union(a, b);
+			if (!isCycle(parents, a, b)) {
+				union(parents, a, b);
 				if (road.value == 0) {
 					fatigue ++;					
 				}
@@ -88,17 +92,17 @@ public class 학교탐방하기_13418 {
 		return fatigue;
 	}
 	
-	private static int find(int x) {
+	private static int find(int[] parent, int x) {
 		if (parent[x] == x) {
 			return x;
 		}
 		
-		return parent[x] = find(parent[x]);
+		return parent[x] = find(parent, parent[x]);
 	}
 	
-	private static void union(int a, int b) {
-		a = find(a);
-		b = find(b);
+	private static void union(int[] parent, int a, int b) {
+		a = find(parent, a);
+		b = find(parent, b);
 		
 		if (a > b) {
 			parent[a] = b;
@@ -108,8 +112,8 @@ public class 학교탐방하기_13418 {
 		parent[b] = a;
 	}
 	
-	private static boolean isCycle(int a, int b) {
-		return find(a) == find(b);
+	private static boolean isCycle(int[] parent, int a, int b) {
+		return find(parent, a) == find(parent, b);
 	}
 	
 	private static PriorityQueue<Road> getPriorityQueue(int flag) {
@@ -118,7 +122,9 @@ public class 학교탐방하기_13418 {
 	
 	private static void init() {
 		for (int i = 1; i <= N; i++) {
-			parent[i] = i;
+			parents[i] = i;
+			bestParents[i] = i;
+			worstParents[i] = i;
 		}
 	}
 }

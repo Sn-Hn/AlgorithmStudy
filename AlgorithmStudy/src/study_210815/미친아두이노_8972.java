@@ -93,7 +93,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class 미친아두이노_8972 {
@@ -107,7 +109,6 @@ public class 미친아두이노_8972 {
 	private static Pos jongsuArduio;
 	private static List<Pos> crazyArduino = new ArrayList<Pos>();
 	private static List<Pos> removeCrazy = new ArrayList<Pos>();
-	private static boolean endGame = false;
 	
 	private static class Pos {
 		int x;
@@ -158,7 +159,7 @@ public class 미친아두이노_8972 {
 	
 	private static boolean endGame(int dir, int index) {
 		if (!isMoveJongsu(dir) || !isMoveCrazyArduino()) {
-			System.out.println("Kraj " + (index + 1));
+			System.out.println("kraj " + (index + 1));
 			return true;
 		}
 		
@@ -256,11 +257,14 @@ public class 미친아두이노_8972 {
 	}
 	
 	private static void print() {
+		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < R; i++) {
 			for (int j = 0; j < C; j++) {
-				System.out.print(map[i][j]);
+				result.append(map[i][j]);
 			}
-			System.out.println();
+			result.append("\n");
 		}
+		
+		System.out.println(result.toString().trim());
 	}
 }

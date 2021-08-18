@@ -77,48 +77,21 @@ public class 달이차오른다가자_1194 {
 	private static int N;
 	private static int M;
 	private static char[][] map;
-	private static boolean[][] visited;
+	private static boolean[][][] visited;
 	private static Pos startPos;
 	
 	private static class Pos {
 		int x;
 		int y;
+		int key;
 		int moveCount;
-		int[] keys = new int[6];
-		boolean[][] visit = new boolean[N][M];
 		
-		public Pos(int x, int y, int moveCount) {
+		public Pos(int x, int y, int key, int moveCount) {
 			// TODO Auto-generated constructor stub
 			this.x = x;
 			this.y = y;
+			this.key = key;
 			this.moveCount = moveCount;
-		}
-		
-		public Pos(int x, int y, int moveCount, int[] k, boolean[][] v) {
-			// TODO Auto-generated constructor stub
-			this.x = x;
-			this.y = y;
-			this.moveCount = moveCount;
-			this.keys = k.clone();
-			copyVisit(v);
-		}
-		
-		public void addKey(char key) {
-			keys[ctoi(key)] ++;
-		}
-		
-		public void initVisit() {
-			for (int i = 0; i < N; i++) {
-				Arrays.fill(visit[i], false);
-			}
-		}
-		
-		public void copyVisit(boolean[][] v) {
-			for (int i = 0; i < v.length; i++) {
-				for (int j = 0; j < v[0].length; j++) {
-					visit[i][j] = v[i][j];
-				}
-			}
 		}
 	}
 	public static void main(String[] args) throws IOException {
@@ -127,13 +100,13 @@ public class 달이차오른다가자_1194 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		map = new char[N][M];
-		visited = new boolean[N][M];
+		visited = new boolean[64][N][M];
 		
 		for (int i = 0; i < N; i++) {
 			map[i] = br.readLine().toCharArray();
 			for (int j = 0; j < M; j++) {
 				if (map[i][j] == '0') {
-					startPos = new Pos(i, j, 0);
+					startPos = new Pos(i, j, 0, 0);
 				}
 			}
 		}
@@ -147,8 +120,8 @@ public class 달이차오른다가자_1194 {
 	private static int escapeMaze() {
 		Queue<Pos> q = new LinkedList<Pos>();
 		q.add(startPos);
-		int index = 0;
 		
+		int index = 0;
 		while (!q.isEmpty()) {
 			Pos pos = q.poll();
 			int x = pos.x;
@@ -157,43 +130,40 @@ public class 달이차오른다가자_1194 {
 			for (int i = 0; i < dx.length; i++) {
 				int X = x + dx[i];
 				int Y = y + dy[i];
+				int key = pos.key;
 				
 				if (!isValid(X, Y)) {
 					continue;
 				}
 				
-				if (pos.visit[X][Y]) {
+				if (visited[key][X][Y]) {
 					continue;
 				}
 				
+				visited[key][X][Y] = true;
 				
-				if (map[X][Y] >= 'A' && map[X][Y] <= 'F' && !openDoor(pos.keys, map[X][Y])) {
+				if (map[X][Y] >= 'A' && map[X][Y] <= 'F' && !isOpenDoor(key, map[X][Y])) {
 					continue;
-				}
+				}				
 				
 				if (map[X][Y] >= 'a' && map[X][Y] <= 'f') {
-					pos.addKey(map[X][Y]);
-					pos.initVisit();
-					System.out.println(index++ + ": " + X + ", " + Y + ", " + map[X][Y] + ", " + Arrays.toString(pos.keys) + ", " + (pos.moveCount + 1));
+					key |= (1 << ctoi(map[X][Y]));
 				}
 				
-				pos.visit[X][Y] = true;
-//				System.out.println(index++ + ": " + X + ", " + Y + ", " + map[X][Y] + ", " + Arrays.toString(pos.keys));
-				
+				System.out.println(index++ + ": " + X + ", " + Y + ", " + map[X][Y] + ", " + pos.key + ", " + (pos.moveCount + 1));
 				if (map[X][Y] == '1') {
 					return pos.moveCount + 1;
-				}
-				
-				pos.copyVisit(pos.visit);
-				q.add(new Pos(X, Y, pos.moveCount + 1, pos.keys, pos.visit));
+				}				
+
+				q.add(new Pos(X, Y, key, pos.moveCount + 1));
 			}
 		}
 		
 		return FAIL;
 	}
 	
-	private static boolean openDoor(int[] keys, char key) {
-		if (keys[CTOI(key)] != 0) {
+	private static boolean isOpenDoor(int bitKey, char key) {
+		if ((bitKey & (1 << CTOI(key))) != 0) {
 			return true;
 		}
 		

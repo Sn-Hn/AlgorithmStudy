@@ -71,8 +71,8 @@ N과 M은 구간 [1, 2×105]에 속하는 정수입니다.
 999999998 999999999 21
 999999998 999999999 20
 999999997 999999998 30
-999999996 999999997 40
-999999995 999999996 50
+-999999998 -999999999 1
+-999999995 999999996 50
 
 
 */
@@ -89,13 +89,15 @@ import java.io.IOException;
 
 public class 가희와btd5_22238 {
 	private static final int MAX_DAMAGE = 1000000000;
+	private static final int INF = 1000000001;
 	
 	private static int N;
 	private static int M;
-//	private static Map<Double, Queue<Integer>> balloon = new HashMap<>();
-//	private static Map<Double, Long> damages = new HashMap<>();
 	private static Map<BigDecimal, Queue<Integer>> balloon = new HashMap<>();
+	private static Queue<Integer> balloons = new LinkedList<>();
 	private static Map<BigDecimal, Long> damages = new HashMap<>();
+	private static BigDecimal slope;
+	private static boolean flag = false;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -111,20 +113,31 @@ public class 가희와btd5_22238 {
 			double y = Integer.parseInt(st.nextToken());
 			int blood = Integer.parseInt(st.nextToken());
 			
-			balloonX = new BigDecimal(x);
-			balloonY = new BigDecimal(y);
-			
-			BigDecimal divide = balloonX.divide(balloonY, 18, BigDecimal.ROUND_HALF_UP);
-			
-			if (balloon.containsKey(divide)) {
-				balloon.get(divide).add(blood);
-				continue;
+			BigDecimal divide = null;
+			if (x == 0) {
+				divide = new BigDecimal(INF);
+				slope = new BigDecimal(INF);
+			}else if (y == 0) {
+				divide = new BigDecimal(0L);
+				slope = new BigDecimal(0L);
+			}else {
+				balloonX = new BigDecimal(x);
+				balloonY = new BigDecimal(y);
+				
+				divide = balloonX.divide(balloonY, 20, BigDecimal.ROUND_HALF_UP);				
+				slope = balloonX.divide(balloonY, 20, BigDecimal.ROUND_HALF_UP);				
 			}
 			
-			Queue<Integer> bloodList = new LinkedList<Integer>();
-			bloodList.add(blood);
+//			if (balloon.containsKey(divide)) {
+//				balloon.get(divide).add(blood);
+//				continue;
+//			}
 			
-			balloon.put(divide, bloodList);
+//			Queue<Integer> bloodList = new LinkedList<Integer>();
+//			bloodList.add(blood);
+			balloons.add(blood);
+			
+//			balloon.put(divide, bloodList);
 		}
 		BigDecimal damageX = null;
 		BigDecimal damageY = null;
@@ -135,15 +148,24 @@ public class 가희와btd5_22238 {
 			long damage = Long.parseLong(st.nextToken());
 			
 			if (damage >= MAX_DAMAGE) {
-				System.out.println("0");
-				br.close();
-				return;
+				flag = true;
+				break;
 			}
 			
-			damageX = new BigDecimal(x);
-			damageY = new BigDecimal(y);
+			BigDecimal divide = null;
+			if (x == 0 && y == 0) {
+				continue;
+			}else if (x == 0) {
+				divide = new BigDecimal(INF);
+			}else if (y == 0) {
+				divide = new BigDecimal(0L);
+			}else {
+				damageX = new BigDecimal(x);
+				damageY = new BigDecimal(y);
+				
+				divide = damageX.divide(damageY, 20, BigDecimal.ROUND_HALF_UP);				
+			}
 			
-			BigDecimal divide = damageX.divide(damageY, 18, BigDecimal.ROUND_HALF_UP);
 			
 			if (damages.containsKey(divide)) {
 				damage += damages.get(divide);
@@ -151,10 +173,40 @@ public class 가희와btd5_22238 {
 			damages.put(divide, damage);				
 		}
 		
-		attack();
-		System.out.println(getCount());
+		if (!flag) {
+			attack2();
+		System.out.println(balloons.size());
+//			System.out.println(getCount());			
+		}else {
+			System.out.println(0);
+		}
+
+//		double q = -11111;
+//		double w = -2;
+//		
+//		BigDecimal a = new BigDecimal(q);
+//		BigDecimal b = new BigDecimal(w);
+//		
+//		BigDecimal c = a.divide(b, 20, BigDecimal.ROUND_HALF_UP);
+//		
+//		System.out.println(c);
 	
 		br.close();
+	}
+	
+	private static void attack2() {
+		for (BigDecimal s : damages.keySet()) {
+			if (slope.equals(s)) {
+				long damage = damages.get(s); 
+				int size = balloons.size();
+				for (int i = 0; i < size; i++) {
+					int blood = balloons.poll();
+					if (blood > damage) {
+						balloons.add((int) (blood - damage));
+					}
+				}
+			}
+		}
 	}
 	 
 	private static void attack() {

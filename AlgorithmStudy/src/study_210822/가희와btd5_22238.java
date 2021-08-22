@@ -55,49 +55,68 @@ N과 M은 구간 [1, 2×105]에 속하는 정수입니다.
 
 [그림2] 첫 공격 후 상황
 
-5 3
+3 4
 1 1 3
 3 3 4
 2 2 2
-1 2 5
-1 3 4
-1 1 3
+1 1 4
 2 6 2
 1 2 5
+6 3 1
+
+0
 
 
 2 4
-999999999 1000000000 10
-999999998 999999999 21
-999999998 999999999 20
+1 1000000000 10
+1 1000000000 21
+1 1000000000 20
 999999997 999999998 30
--999999998 -999999999 1
+-999999998 -999999999 10
 -999999995 999999996 50
 
+1 3
+999999999 1000000000 10
+999999998 999999999 21
+999999997 999999998 20
+999999999 1000000000 10
+
+3 1
+1 2 5
+5 10 5
+100 200 5
+2 4 4
+
+3 1
+0 2 15
+0 7 39
+0 1111111 66
+0 1 25
+
+3 1
+2 0 15
+7 0 39
+1111111 0 66
+5 1 552
 
 */
 
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.IOException;
 
 public class 가희와btd5_22238 {
-	private static final int MAX_DAMAGE = 1000000000;
 	private static final int INF = 1000000001;
 	
 	private static int N;
 	private static int M;
-	private static Map<BigDecimal, Queue<Integer>> balloon = new HashMap<>();
-	private static Queue<Integer> balloons = new LinkedList<>();
-	private static Map<BigDecimal, Long> damages = new HashMap<>();
-	private static BigDecimal slope;
-	private static boolean flag = false;
+	private static PriorityQueue<Integer> balloons = new PriorityQueue<>();
+	private static long damages = 0;
+	private static BigDecimal slope = null;
+	private static StringBuilder result = new StringBuilder();
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -105,132 +124,71 @@ public class 가희와btd5_22238 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		
-		BigDecimal balloonX = null;
-		BigDecimal balloonY = null;
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			double x = Integer.parseInt(st.nextToken());
 			double y = Integer.parseInt(st.nextToken());
 			int blood = Integer.parseInt(st.nextToken());
 			
-			BigDecimal divide = null;
-			if (x == 0) {
-				divide = new BigDecimal(INF);
-				slope = new BigDecimal(INF);
-			}else if (y == 0) {
-				divide = new BigDecimal(0L);
-				slope = new BigDecimal(0L);
-			}else {
-				balloonX = new BigDecimal(x);
-				balloonY = new BigDecimal(y);
-				
-				divide = balloonX.divide(balloonY, 20, BigDecimal.ROUND_HALF_UP);				
-				slope = balloonX.divide(balloonY, 20, BigDecimal.ROUND_HALF_UP);				
-			}
-			
-//			if (balloon.containsKey(divide)) {
-//				balloon.get(divide).add(blood);
-//				continue;
-//			}
-			
-//			Queue<Integer> bloodList = new LinkedList<Integer>();
-//			bloodList.add(blood);
 			balloons.add(blood);
 			
-//			balloon.put(divide, bloodList);
+			if (slope != null) {
+				continue;
+			}
+			
+			if (x == 0) {
+				slope = new BigDecimal(INF);
+			}else if (y == 0) {
+				slope = new BigDecimal(0);
+			}else {
+				BigDecimal balloonX = new BigDecimal(x);
+				BigDecimal balloonY = new BigDecimal(y);
+							
+				slope = balloonX.divide(balloonY, 20, BigDecimal.ROUND_HALF_UP);
+			}
 		}
+		
+		BigDecimal divide = null;
 		BigDecimal damageX = null;
 		BigDecimal damageY = null;
+		
+		int count = N;
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
 			double x = Integer.parseInt(st.nextToken());
 			double y = Integer.parseInt(st.nextToken());
-			long damage = Long.parseLong(st.nextToken());
+			int damage = Integer.parseInt(st.nextToken());
 			
-			if (damage >= MAX_DAMAGE) {
-				flag = true;
-				break;
-			}
-			
-			BigDecimal divide = null;
 			if (x == 0 && y == 0) {
+				result.append(count).append("\n");
 				continue;
 			}else if (x == 0) {
 				divide = new BigDecimal(INF);
 			}else if (y == 0) {
-				divide = new BigDecimal(0L);
+				divide = new BigDecimal(0);
 			}else {
 				damageX = new BigDecimal(x);
 				damageY = new BigDecimal(y);
-				
-				divide = damageX.divide(damageY, 20, BigDecimal.ROUND_HALF_UP);				
+				divide = damageX.divide(damageY, 20, BigDecimal.ROUND_HALF_UP);	
 			}
 			
-			
-			if (damages.containsKey(divide)) {
-				damage += damages.get(divide);
+			if (!slope.equals(divide)) {
+				result.append(count).append("\n");
+				continue;
 			}
-			damages.put(divide, damage);				
-		}
-		
-		if (!flag) {
-			attack2();
-		System.out.println(balloons.size());
-//			System.out.println(getCount());			
-		}else {
-			System.out.println(0);
-		}
+			
+			damages += damage;
+			
+			while (!balloons.isEmpty() && balloons.peek() <= damages) {
+				balloons.poll();
+			}
+			
+			count = balloons.size();
 
-//		double q = -11111;
-//		double w = -2;
-//		
-//		BigDecimal a = new BigDecimal(q);
-//		BigDecimal b = new BigDecimal(w);
-//		
-//		BigDecimal c = a.divide(b, 20, BigDecimal.ROUND_HALF_UP);
-//		
-//		System.out.println(c);
-	
+			result.append(count).append("\n");
+		}
+		System.out.println(result.toString().trim());
+
 		br.close();
-	}
-	
-	private static void attack2() {
-		for (BigDecimal s : damages.keySet()) {
-			if (slope.equals(s)) {
-				long damage = damages.get(s); 
-				int size = balloons.size();
-				for (int i = 0; i < size; i++) {
-					int blood = balloons.poll();
-					if (blood > damage) {
-						balloons.add((int) (blood - damage));
-					}
-				}
-			}
-		}
-	}
-	 
-	private static void attack() {
-		for (BigDecimal s : damages.keySet()) {
-			if (balloon.containsKey(s)) {
-				Queue<Integer> q = balloon.get(s);
-				long damage = damages.get(s); 
-				int size = q.size();
-				for (int i = 0; i < size; i++) {
-					int blood = q.poll();
-					if (blood > damage) {
-						q.add((int) (blood - damage));
-					}
-				}
-			}
-		}
-	}
-	
-	private static int getCount() {
-		int count = 0;
-		for (BigDecimal s : balloon.keySet()) {
-			count += balloon.get(s).size();
-		}
-		
-		return count;
 	}
 }

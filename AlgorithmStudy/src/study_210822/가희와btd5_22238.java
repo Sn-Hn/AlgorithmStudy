@@ -82,10 +82,10 @@ N과 M은 구간 [1, 2×105]에 속하는 정수입니다.
 999999999 1000000000 10
 
 3 1
-1 2 5
-5 10 5
-100 200 5
-2 4 4
+1 -2 5
+5 -10 5
+100 -200 5
+2 -4 10
 
 3 1
 0 2 15
@@ -97,7 +97,7 @@ N과 M은 구간 [1, 2×105]에 속하는 정수입니다.
 2 0 15
 7 0 39
 1111111 0 66
-5 1 552
+5 0 552
 
 */
 
@@ -117,6 +117,7 @@ public class 가희와btd5_22238 {
 	private static long damages = 0;
 	private static BigDecimal slope = null;
 	private static StringBuilder result = new StringBuilder();
+	private static int direction = 0;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -130,6 +131,7 @@ public class 가희와btd5_22238 {
 			double y = Integer.parseInt(st.nextToken());
 			int blood = Integer.parseInt(st.nextToken());
 			
+			direction = getDir(x, y);
 			balloons.add(blood);
 			
 			if (slope != null) {
@@ -157,7 +159,9 @@ public class 가희와btd5_22238 {
 			st = new StringTokenizer(br.readLine());
 			double x = Integer.parseInt(st.nextToken());
 			double y = Integer.parseInt(st.nextToken());
-			int damage = Integer.parseInt(st.nextToken());
+			long damage = Integer.parseInt(st.nextToken());
+			
+			int dir = getDir(x, y);
 			
 			if (x == 0 && y == 0) {
 				result.append(count).append("\n");
@@ -172,10 +176,13 @@ public class 가희와btd5_22238 {
 				divide = damageX.divide(damageY, 20, BigDecimal.ROUND_HALF_UP);	
 			}
 			
-			if (!slope.equals(divide)) {
+//			System.out.println(direction + ", " + dir);
+			
+			if (!slope.equals(divide) || direction != dir) {
 				result.append(count).append("\n");
 				continue;
 			}
+			
 			
 			damages += damage;
 			
@@ -188,7 +195,53 @@ public class 가희와btd5_22238 {
 			result.append(count).append("\n");
 		}
 		System.out.println(result.toString().trim());
-
+		
+//		BigDecimal a = new BigDecimal(-0.111111111110000);
+//		BigDecimal b = new BigDecimal(-0.111111111111000);
+//		
+//		System.out.println(a.divide(b, 20, BigDecimal.ROUND_HALF_UP));
+//		System.out.println(a.equals(b));
+		
 		br.close();
+	}
+	
+	private static int getDir(double x, double y) {
+		
+		if (x == 0 && y > 0) {
+			return 1;
+		}
+		
+		if (x == 0 && y < 0) {
+			return -1;
+		}
+		
+		if (x > 0) {
+			return 1;
+		}
+		
+		return -1;
+//		if (x > 0 && y > 0) {
+//			return 1;
+//		}
+//		
+//		if (x < 0 && y < 0) {
+//			return -1;
+//		}
+//		
+//		if (x > 0 && y < 0) {
+//			return 1;
+//		}
+//		
+//		if (x < 0 && y > 0) {
+//			return -1;
+//		}
+//		
+//		if (x == 0 && y > 0) {
+//			return 1;
+//		}
+//		
+//		if (x == 0 && y < 0) {
+//			
+//		}
 	}
 }

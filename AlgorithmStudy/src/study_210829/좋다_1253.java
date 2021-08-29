@@ -69,20 +69,10 @@ public class 좋다_1253 {
 		
 		while (start < end) {
 			int sum = input[start] + input[end];
-			
-			if (start == index) {
-				start ++;
-				continue;
-			}
-			
-			if (end == index) {
+		
+			if (findNumber < sum || end == index) {
 				end --;
-				continue;
-			}
-			
-			if (findNumber < sum) {
-				end --;
-			}else if (findNumber > sum) {
+			}else if (findNumber > sum || start == index) {
 				start ++;
 			}else {
 				return true;

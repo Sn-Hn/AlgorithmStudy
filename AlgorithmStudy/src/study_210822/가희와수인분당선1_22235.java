@@ -174,7 +174,7 @@ public class 가희와수인분당선1_22235 {
 		
 		N = Integer.parseInt(br.readLine());
 		StringTokenizer st;
-		int current = MORAN;
+		
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			int start = Integer.parseInt(st.nextToken().substring(1));
@@ -190,7 +190,9 @@ public class 가희와수인분당선1_22235 {
 		
 		int result = arrivalTime[272] - 20;
 		
-		if (result >= 86400) {
+		// 24:00:00 -> 
+		String[] limitTime = {"24", "00", "00"};
+		if (result >= timeToSeconds(limitTime)) {
 			System.out.println(-1);
 		}else {
 			System.out.println(secondsToTime(result));			
@@ -233,14 +235,12 @@ public class 가희와수인분당선1_22235 {
 	}
 	
 	private static int arriveTime(int start, int end, int startSeconds) {
-		int time = 0;
+		int time = startSeconds;
 		for (int i = start; i < end; i++) {
 			time += train[i];
 		}
 		
-		int currentSeconds = startSeconds + time;
-		
-		return currentSeconds;
+		return time;
 	}
 	
 	private static int timeToSeconds(String[] input) {

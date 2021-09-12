@@ -55,8 +55,6 @@ jobs	return
 
 */
 
-
-
 public class 디스크컨트롤러 {
 	private static class Job {
 		int request;
@@ -92,6 +90,8 @@ public class 디스크컨트롤러 {
 		int cnt = 0;
 
 		while (cnt < len) {
+			// 요청이 겹치면  costOrders -> add
+			// 하나의 작업이 완료되는 시점까지 들어온 모든 요청을 큐에 넣음
 			while (!requestOrders.isEmpty() && requestOrders.peek().request <= currentTime) {
 				costOrders.add(requestOrders.poll());
 			}

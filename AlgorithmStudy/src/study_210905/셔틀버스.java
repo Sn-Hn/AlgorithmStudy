@@ -67,7 +67,7 @@ public class 셔틀버스 {
     }
 	
 	private static String attend(int[] crew, int[] buses, int m) {
-		Queue<Integer> q = new LinkedList<>();
+		int size = 0;
 		int[] lastTime = new int[buses.length];
 		int busCnt = buses.length - 1;
 		int cnt = 0;
@@ -80,23 +80,24 @@ public class 셔틀버스 {
 			
 			while (buses[cnt] < crew[i]) {
 				cnt ++;
-				if (!q.isEmpty()) {
-					q.clear();
-				}
+				size = 0;
 				
 				if (cnt == busCnt + 1) {
                     break LOOP;
                 }
 			}
 			
-			q.add(crew[i]);
-			if (q.size() == m) {
+			size ++;
+			if (size == m) {
 				lastTime[cnt] = crew[i];
 				cnt ++;
-				q.clear();
+				size = 0;
 			}
 		}
 		int lastArrivalMinutesTime = lastTime[busCnt] == 0 ? buses[busCnt] : lastTime[busCnt] - 1;
+		
+		print(lastTime);
+		System.out.println();
 		
 		return minutesToTimes(lastArrivalMinutesTime);
 	}
@@ -117,11 +118,17 @@ public class 셔틀버스 {
 		return ho + ":" + mi;
 	}
 	
+	private static void print(int[] lastTime) {
+		for (int i = 0; i < lastTime.length; i++) {
+			System.out.print(lastTime[i] + " ");
+		}
+	}
+	
 	public static void main(String[] args) {
 		int n = 2;
-		int t = 10;
+		int t = 1;
 		int m = 2;
-		String[] timetable = {"09:10", "09:09", "08:00"};
+		String[] timetable = {"09:01", "09:01", "09:01", "09:01"};
 		
 		System.out.println(new 셔틀버스().solution(n, t, m, timetable));
 	}
